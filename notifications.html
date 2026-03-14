@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — YaroShop</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .notif-page { padding: 100px 0 80px; min-height: 100vh; }
+    .notif-container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+    .notif-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; flex-wrap: wrap; gap: 12px;
+    }
+    .notif-header h1 { font-size: 1.6rem; font-weight: 800; }
+    .notif-header-right { display: flex; gap: 10px; }
+    .btn-mark-all {
+      padding: 8px 16px; background: none; border: 1.5px solid var(--border);
+      border-radius: var(--radius-full); color: var(--text-muted); font-size: 0.82rem;
+      font-weight: 500; cursor: pointer; transition: all var(--transition);
+    }
+    .btn-mark-all:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Filter tabs */
+    .notif-tabs {
+      display: flex; gap: 4px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 6px; margin-bottom: 24px; width: fit-content;
+    }
+    .notif-tab {
+      padding: 8px 18px; border-radius: var(--radius-lg); font-size: 0.85rem; font-weight: 500;
+      color: var(--text-muted); cursor: pointer; transition: all var(--transition); border: none; background: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .notif-tab.active { background: var(--primary); color: white; }
+    .notif-tab .tab-count {
+      background: rgba(255,255,255,0.2); color: inherit; font-size: 0.7rem;
+      font-weight: 700; padding: 1px 6px; border-radius: var(--radius-full);
+    }
+    .notif-tab:not(.active) .tab-count { background: var(--bg-3); color: var(--text-muted); }
+
+    /* Notification list */
+    .notif-group { margin-bottom: 28px; }
+    .notif-group-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-muted); margin-bottom: 10px; padding-left: 4px;
+    }
+    .notif-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .notif-item {
+      display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px;
+      border-radius: var(--radius-xl); transition: background var(--transition);
+      cursor: pointer; position: relative; animation: fadeIn 0.3s ease;
+    }
+    .notif-item:hover { background: var(--bg-card); }
+    .notif-item.unread { background: rgba(108,71,255,0.04); }
+    .notif-item.unread:hover { background: rgba(108,71,255,0.08); }
+    .unread-dot {
+      position: absolute; top: 20px; right: 18px;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--primary);
+    }
+
+    .notif-icon {
+      width: 44px; height: 44px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-size: 1.2rem;
+      flex-shrink: 0; position: relative;
+    }
+    .notif-icon.order { background: rgba(108,71,255,0.12); }
+    .notif-icon.payment { background: rgba(92,219,149,0.12); }
+    .notif-icon.promo { background: rgba(255,107,53,0.12); }
+    .notif-icon.review { background: rgba(255,204,0,0.12); }
+    .notif-icon.system { background: rgba(100,100,120,0.12); }
+    .notif-icon.vendor { background: rgba(37,211,102,0.1); }
+    .notif-icon.security { background: rgba(255,85,85,0.1); }
+
+    .notif-body { flex: 1; min-width: 0; padding-right: 20px; }
+    .notif-title { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
+    .notif-item:not(.unread) .notif-title { font-weight: 500; color: var(--text-secondary); }
+    .notif-text { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
+    .notif-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .notif-time { font-size: 0.75rem; color: var(--text-muted); }
+    .notif-action-btn {
+      font-size: 0.75rem; font-weight: 600; color: var(--primary);
+      background: rgba(108,71,255,0.1); border: none; padding: 3px 10px;
+      border-radius: var(--radius-full); cursor: pointer; transition: background var(--transition);
+    }
+    .notif-action-btn:hover { background: rgba(108,71,255,0.2); }
+    .notif-action-btn.wa {
+      color: var(--whatsapp); background: rgba(37,211,102,0.1);
+    }
+    .notif-action-btn.wa:hover { background: rgba(37,211,102,0.2); }
+
+    /* Empty state */
+    .notif-empty {
+      text-align: center; padding: 60px 24px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+    }
+    .notif-empty-icon { font-size: 3rem; margin-bottom: 16px; }
+    .notif-empty h3 { font-weight: 700; margin-bottom: 8px; }
+    .notif-empty p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Settings card */
+    .notif-settings {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 24px; margin-top: 24px;
+    }
+    .notif-settings h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 18px; }
+    .notif-setting-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+    }
+    .notif-setting-row:last-child { border-bottom: none; }
+    .notif-setting-info { display: flex; flex-direction: column; gap: 2px; }
+    .notif-setting-name { font-size: 0.875rem; font-weight: 500; }
+    .notif-setting-desc { font-size: 0.78rem; color: var(--text-muted); }
+    .toggle-pill {
+      width: 44px; height: 24px; border-radius: var(--radius-full);
+      background: var(--primary); border: none; cursor: pointer;
+      position: relative; transition: background var(--transition); flex-shrink: 0;
+    }
+    .toggle-pill.off { background: var(--bg-3); border: 1px solid var(--border); }
+    .toggle-pill::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: white; transition: transform var(--transition);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .toggle-pill.off::after { transform: translateX(0); }
+    .toggle-pill:not(.off)::after { transform: translateX(20px); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#lg3)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="lg3" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Se connecter</a>
+      <a href="register.html" class="btn-primary">Vendre</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="services.html">Services Web</a>
+    <a href="login.html">Se connecter</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<main class="notif-page">
+  <div class="notif-container">
+    <div class="notif-header">
+      <div>
+        <h1>Notifications <span style="font-size:1rem;background:var(--primary);color:white;padding:3px 10px;border-radius:var(--radius-full);font-weight:700;vertical-align:middle;margin-left:8px" id="unreadCount">5</span></h1>
+      </div>
+      <div class="notif-header-right">
+        <button class="btn-mark-all" onclick="markAllRead()">Tout marquer comme lu</button>
+      </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="notif-tabs">
+      <button class="notif-tab active" onclick="filterNotifs('all', this)">
+        Tout <span class="tab-count" id="countAll">8</span>
+      </button>
+      <button class="notif-tab" onclick="filterNotifs('orders', this)">
+        Commandes <span class="tab-count" id="countOrders">3</span>
+      </button>
+      <button class="notif-tab" onclick="filterNotifs('promos', this)">
+        Promos <span class="tab-count" id="countPromos">2</span>
+      </button>
+      <button class="notif-tab" onclick="filterNotifs('system', this)">
+        Système <span class="tab-count" id="countSystem">3</span>
+      </button>
+    </div>
+
+    <!-- Today -->
+    <div class="notif-group" id="group-today">
+      <div class="notif-group-label">Aujourd'hui</div>
+      <div class="notif-list">
+
+        <div class="notif-item unread" data-category="orders" onclick="markRead(this)">
+          <div class="notif-icon order">🚴</div>
+          <div class="notif-body">
+            <div class="notif-title">Votre commande est en route !</div>
+            <div class="notif-text">Déo Makiadi est en route pour livrer votre commande <strong>YS-2024-7842</strong>. Arrivée prévue entre 18h30–19h15.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Il y a 23 min</span>
+              <button class="notif-action-btn" onclick="window.location='tracking.html?order=YS-2024-7842'">Suivre →</button>
+            </div>
+          </div>
+          <div class="unread-dot"></div>
+        </div>
+
+        <div class="notif-item unread" data-category="orders" onclick="markRead(this)">
+          <div class="notif-icon payment">💚</div>
+          <div class="notif-body">
+            <div class="notif-title">Paiement confirmé — 448 $</div>
+            <div class="notif-text">Votre paiement Airtel Money de <strong>448 $</strong> a été validé pour la commande YS-2024-7842.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Il y a 2h</span>
+              <button class="notif-action-btn">Voir reçu</button>
+            </div>
+          </div>
+          <div class="unread-dot"></div>
+        </div>
+
+        <div class="notif-item unread" data-category="promos" onclick="markRead(this)">
+          <div class="notif-icon promo">🔥</div>
+          <div class="notif-body">
+            <div class="notif-title">Flash Sale — -40% sur l'électronique</div>
+            <div class="notif-text">Profitez des offres flash du jour ! Jusqu'à 40% de réduction sur les smartphones, écouteurs et accessoires. Offre valable 6h seulement.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Il y a 3h</span>
+              <button class="notif-action-btn" onclick="window.location='marketplace.html?cat=electronique'">Voir les offres →</button>
+            </div>
+          </div>
+          <div class="unread-dot"></div>
+        </div>
+
+        <div class="notif-item unread" data-category="system" onclick="markRead(this)">
+          <div class="notif-icon vendor">✅</div>
+          <div class="notif-body">
+            <div class="notif-title">Votre boutique a été vérifiée !</div>
+            <div class="notif-text">Félicitations ! TechStyle Kinshasa a obtenu le badge <strong>Vendeur Vérifié</strong>. Vos produits seront mis en avant dans les résultats de recherche.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Il y a 5h</span>
+              <button class="notif-action-btn" onclick="window.location='dashboard.html'">Mon tableau de bord</button>
+            </div>
+          </div>
+          <div class="unread-dot"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Hier -->
+    <div class="notif-group" id="group-yesterday">
+      <div class="notif-group-label">Hier</div>
+      <div class="notif-list">
+
+        <div class="notif-item" data-category="orders" onclick="markRead(this)">
+          <div class="notif-icon review">⭐</div>
+          <div class="notif-body">
+            <div class="notif-title">Nouvel avis sur votre boutique</div>
+            <div class="notif-text">Claudine M. a laissé un avis 5 étoiles : <em>"Produits de qualité, livraison rapide ! Je recommande vivement cette boutique."</em></div>
+            <div class="notif-meta">
+              <span class="notif-time">Hier, 20:14</span>
+              <button class="notif-action-btn" onclick="window.location='shop.html'">Voir l'avis</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="notif-item" data-category="promos" onclick="markRead(this)">
+          <div class="notif-icon promo">🎁</div>
+          <div class="notif-body">
+            <div class="notif-title">Code promo exclusif pour vous</div>
+            <div class="notif-text">En tant que client fidèle, profitez du code <strong>YARO10</strong> pour obtenir 10% de réduction sur votre prochaine commande.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Hier, 10:00</span>
+              <button class="notif-action-btn" onclick="window.location='marketplace.html'">En profiter</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="notif-item" data-category="system" onclick="markRead(this)">
+          <div class="notif-icon security">🔒</div>
+          <div class="notif-body">
+            <div class="notif-title">Nouvelle connexion à votre compte</div>
+            <div class="notif-text">Une nouvelle connexion a été détectée depuis Kinshasa, DRC. Si ce n'est pas vous, sécurisez votre compte immédiatement.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Hier, 08:52</span>
+              <button class="notif-action-btn" style="color:#FF5555;background:rgba(255,85,85,0.1)">Sécuriser →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="notif-item" data-category="system" onclick="markRead(this)">
+          <div class="notif-icon system">📢</div>
+          <div class="notif-body">
+            <div class="notif-title">YaroShop version 2.4 disponible</div>
+            <div class="notif-text">Nouvelles fonctionnalités : suivi de commande en temps réel, paiement Orange Money, et nouveau système de reviews vendeurs.</div>
+            <div class="notif-meta">
+              <span class="notif-time">Hier, 07:00</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="notif-settings">
+      <h3>Préférences de notifications</h3>
+      <div class="notif-setting-row">
+        <div class="notif-setting-info">
+          <div class="notif-setting-name">Commandes & livraisons</div>
+          <div class="notif-setting-desc">Mises à jour sur vos commandes en cours</div>
+        </div>
+        <button class="toggle-pill" onclick="togglePill(this)"></button>
+      </div>
+      <div class="notif-setting-row">
+        <div class="notif-setting-info">
+          <div class="notif-setting-name">Promotions & offres</div>
+          <div class="notif-setting-desc">Flash sales, codes promo, nouveautés</div>
+        </div>
+        <button class="toggle-pill" onclick="togglePill(this)"></button>
+      </div>
+      <div class="notif-setting-row">
+        <div class="notif-setting-info">
+          <div class="notif-setting-name">Avis & messages vendeurs</div>
+          <div class="notif-setting-desc">Nouveaux avis sur votre boutique</div>
+        </div>
+        <button class="toggle-pill" onclick="togglePill(this)"></button>
+      </div>
+      <div class="notif-setting-row">
+        <div class="notif-setting-info">
+          <div class="notif-setting-name">Sécurité</div>
+          <div class="notif-setting-desc">Connexions et activités suspectes</div>
+        </div>
+        <button class="toggle-pill" onclick="togglePill(this)"></button>
+      </div>
+      <div class="notif-setting-row">
+        <div class="notif-setting-info">
+          <div class="notif-setting-name">Notifications WhatsApp</div>
+          <div class="notif-setting-desc">Recevoir les alertes importantes sur WhatsApp</div>
+        </div>
+        <button class="toggle-pill off" onclick="togglePill(this)"></button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-full);padding:12px 24px;font-size:0.875rem;font-weight:500;z-index:9999;transition:transform 0.3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)"></div>
+
+<script src="assets/app.js"></script>
+<script>
+  let unread = 5;
+
+  function markRead(el) {
+    if (el.classList.contains('unread')) {
+      el.classList.remove('unread');
+      const dot = el.querySelector('.unread-dot');
+      if (dot) dot.remove();
+      unread = Math.max(0, unread - 1);
+      updateUnreadBadge();
+    }
+  }
+
+  function markAllRead() {
+    document.querySelectorAll('.notif-item.unread').forEach(el => markRead(el));
+    showToast('Toutes les notifications ont été lues', 'success');
+  }
+
+  function updateUnreadBadge() {
+    const badge = document.getElementById('unreadCount');
+    badge.textContent = unread;
+    if (unread === 0) badge.style.display = 'none';
+  }
+
+  function filterNotifs(cat, btn) {
+    document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.notif-item').forEach(item => {
+      if (cat === 'all') {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = item.dataset.category === cat ? 'flex' : 'none';
+      }
+    });
+    // Hide empty groups
+    document.querySelectorAll('.notif-group').forEach(group => {
+      const visible = [...group.querySelectorAll('.notif-item')].some(i => i.style.display !== 'none');
+      group.style.display = visible ? 'block' : 'none';
+    });
+  }
+
+  function togglePill(btn) {
+    btn.classList.toggle('off');
+    showToast(btn.classList.contains('off') ? 'Notifications désactivées' : 'Notifications activées', 'info');
+  }
+</script>
+</body>
+</html>

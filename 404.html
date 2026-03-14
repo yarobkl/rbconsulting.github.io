@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page introuvable — YaroShop</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .error-page {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 40px 24px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .error-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+    .error-orb {
+      position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12;
+    }
+    .error-orb-1 {
+      width: 600px; height: 600px; background: var(--primary);
+      top: -200px; left: -150px; animation: orbFloat 8s ease-in-out infinite;
+    }
+    .error-orb-2 {
+      width: 400px; height: 400px; background: var(--accent);
+      bottom: -100px; right: -100px; animation: orbFloat 10s ease-in-out infinite reverse;
+    }
+    .error-content { position: relative; z-index: 1; max-width: 600px; }
+
+    .error-code {
+      font-size: clamp(7rem, 18vw, 12rem); font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: -0.04em; margin-bottom: 8px;
+      animation: scaleIn 0.5s ease;
+    }
+    .error-emoji { font-size: 3rem; margin-bottom: 16px; animation: fadeIn 0.6s 0.1s ease both; }
+    .error-title {
+      font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800;
+      margin-bottom: 14px; animation: fadeIn 0.5s 0.15s ease both;
+    }
+    .error-desc {
+      font-size: 1rem; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 40px; animation: fadeIn 0.5s 0.2s ease both;
+    }
+    .error-actions {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      animation: fadeIn 0.5s 0.25s ease both;
+    }
+    .btn-home {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--primary), #9B78FF);
+      color: white; padding: 14px 28px; border-radius: var(--radius-lg);
+      font-weight: 600; text-decoration: none;
+      box-shadow: 0 4px 20px rgba(108,71,255,0.35);
+      transition: all var(--transition);
+    }
+    .btn-home:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,71,255,0.5); }
+    .btn-marketplace {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1.5px solid var(--border); color: var(--text);
+      padding: 14px 28px; border-radius: var(--radius-lg);
+      font-weight: 600; text-decoration: none; transition: all var(--transition);
+    }
+    .btn-marketplace:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Quick links */
+    .error-links {
+      margin-top: 56px; animation: fadeIn 0.5s 0.3s ease both;
+    }
+    .error-links-title { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+    .error-link-grid {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    }
+    .error-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: var(--radius-full);
+      font-size: 0.85rem; color: var(--text-secondary); text-decoration: none;
+      transition: all var(--transition);
+    }
+    .error-link:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Search */
+    .error-search {
+      margin-top: 32px; display: flex; gap: 10px; max-width: 420px; margin-inline: auto;
+      animation: fadeIn 0.5s 0.35s ease both;
+    }
+    .error-search input {
+      flex: 1; padding: 12px 18px; background: var(--bg-card);
+      border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+      color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none;
+      transition: border-color var(--transition);
+    }
+    .error-search input:focus { border-color: var(--primary); }
+    .error-search input::placeholder { color: var(--text-muted); }
+    .error-search button {
+      padding: 12px 20px; background: var(--primary); color: white;
+      border: none; border-radius: var(--radius-lg); font-weight: 600;
+      cursor: pointer; transition: opacity var(--transition);
+    }
+    .error-search button:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<div class="error-bg">
+  <div class="error-orb error-orb-1"></div>
+  <div class="error-orb error-orb-2"></div>
+</div>
+
+<!-- Minimal navbar -->
+<nav class="navbar" id="navbar" style="position:fixed">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#lg4)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="lg4" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Se connecter</a>
+      <a href="register.html" class="btn-primary">Vendre</a>
+    </div>
+  </div>
+</nav>
+
+<main class="error-page">
+  <div class="error-content">
+    <div class="error-code">404</div>
+    <div class="error-emoji">🔍</div>
+    <h1 class="error-title">Cette page s'est perdue en chemin</h1>
+    <p class="error-desc">La page que vous cherchez n'existe pas ou a été déplacée.<br>Mais la marketplace regorge de trésors — venez explorer !</p>
+
+    <div class="error-actions">
+      <a href="index.html" class="btn-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Retour à l'accueil
+      </a>
+      <a href="marketplace.html" class="btn-marketplace">
+        Explorer la marketplace
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- Search -->
+    <div class="error-search">
+      <input type="text" id="errorSearch" placeholder="Rechercher un produit..." />
+      <button onclick="doSearch()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+    </div>
+
+    <!-- Quick links -->
+    <div class="error-links">
+      <div class="error-links-title">Pages populaires</div>
+      <div class="error-link-grid">
+        <a href="marketplace.html?cat=electronique" class="error-link">📱 Électronique</a>
+        <a href="marketplace.html?cat=mode" class="error-link">👗 Mode</a>
+        <a href="marketplace.html?cat=alimentaire" class="error-link">🍎 Alimentation</a>
+        <a href="vendors.html" class="error-link">🏪 Vendeurs</a>
+        <a href="services.html" class="error-link">💻 Services Web</a>
+        <a href="register.html" class="error-link">➕ Vendre</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="assets/app.js"></script>
+<script>
+  function doSearch() {
+    const q = document.getElementById('errorSearch').value.trim();
+    if (q) window.location.href = 'marketplace.html?q=' + encodeURIComponent(q);
+  }
+  document.getElementById('errorSearch').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suivi de commande — YaroShop</title>
+  <meta name="description" content="Suivez votre commande YaroShop en temps réel. Statut de livraison, position du livreur, historique des étapes." />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .tracking-page { padding: 100px 0 80px; min-height: 100vh; }
+    .tracking-container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* Search bar */
+    .tracking-search {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 28px 32px; margin-bottom: 40px;
+      text-align: center;
+    }
+    .tracking-search h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .tracking-search p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .tracking-input-row {
+      display: flex; gap: 10px; max-width: 540px; margin: 0 auto;
+    }
+    .tracking-input {
+      flex: 1; padding: 12px 18px; background: var(--bg-3); border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg); color: var(--text); font-family: inherit;
+      font-size: 0.95rem; outline: none; transition: border-color var(--transition);
+      letter-spacing: 0.04em;
+    }
+    .tracking-input:focus { border-color: var(--primary); }
+    .tracking-input::placeholder { color: var(--text-muted); letter-spacing: 0; }
+    .btn-track-order {
+      padding: 12px 24px; background: var(--primary); color: white; border: none;
+      border-radius: var(--radius-lg); font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; transition: opacity var(--transition); white-space: nowrap;
+    }
+    .btn-track-order:hover { opacity: 0.85; }
+
+    /* Order card */
+    .order-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); overflow: hidden; margin-bottom: 24px;
+      animation: fadeIn 0.4s ease;
+    }
+    .order-card-header {
+      padding: 20px 28px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px;
+    }
+    .order-id-group { display: flex; flex-direction: column; gap: 4px; }
+    .order-id-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+    .order-id-val { font-size: 1.1rem; font-weight: 800; color: var(--text); font-family: monospace; letter-spacing: 0.08em; }
+    .order-status-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px; border-radius: var(--radius-full);
+      font-size: 0.85rem; font-weight: 700;
+    }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 2s infinite; }
+    .status-en-route { background: rgba(255,204,0,0.12); color: #FFCC00; border: 1px solid rgba(255,204,0,0.3); }
+    .status-en-route .status-dot { background: #FFCC00; }
+    .status-livre { background: rgba(92,219,149,0.12); color: #5CDB95; border: 1px solid rgba(92,219,149,0.3); }
+    .status-livre .status-dot { background: #5CDB95; }
+    .status-preparation { background: rgba(108,71,255,0.12); color: var(--primary); border: 1px solid rgba(108,71,255,0.3); }
+    .status-preparation .status-dot { background: var(--primary); }
+    .status-annule { background: rgba(255,85,85,0.1); color: #FF5555; border: 1px solid rgba(255,85,85,0.3); }
+    .status-annule .status-dot { background: #FF5555; animation: none; }
+
+    /* Progress bar */
+    .order-progress { padding: 32px 28px; border-bottom: 1px solid var(--border); }
+    .progress-steps { display: flex; align-items: flex-start; gap: 0; position: relative; }
+    .progress-line {
+      position: absolute; top: 20px; left: 20px; right: 20px; height: 2px;
+      background: var(--border); z-index: 0;
+    }
+    .progress-fill {
+      position: absolute; top: 0; left: 0; height: 100%;
+      background: linear-gradient(90deg, var(--primary), #5CDB95);
+      transition: width 0.8s ease; border-radius: 2px;
+    }
+    .progress-step {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      gap: 10px; position: relative; z-index: 1;
+    }
+    .progress-node {
+      width: 40px; height: 40px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-size: 1rem;
+      border: 2px solid var(--border); background: var(--bg-card);
+      transition: all 0.4s ease;
+    }
+    .progress-step.done .progress-node { background: var(--primary); border-color: var(--primary); }
+    .progress-step.active .progress-node {
+      background: var(--bg-card); border-color: #FFCC00; color: #FFCC00;
+      box-shadow: 0 0 0 4px rgba(255,204,0,0.15);
+    }
+    .progress-step-label { text-align: center; }
+    .progress-step-name { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
+    .progress-step.done .progress-step-name { color: var(--primary); }
+    .progress-step.active .progress-step-name { color: #FFCC00; }
+    .progress-step-time { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ETA banner */
+    .eta-banner {
+      margin: 0 28px 28px; padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(108,71,255,0.08), rgba(255,107,53,0.06));
+      border: 1px solid rgba(108,71,255,0.2); border-radius: var(--radius-lg);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .eta-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .eta-label { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 2px; }
+    .eta-time { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .eta-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .eta-wa-btn {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.25);
+      color: var(--whatsapp); padding: 10px 16px; border-radius: var(--radius-full);
+      font-size: 0.82rem; font-weight: 600; text-decoration: none;
+      transition: all var(--transition); white-space: nowrap; flex-shrink: 0;
+    }
+    .eta-wa-btn:hover { background: rgba(37,211,102,0.18); }
+
+    /* Timeline */
+    .order-timeline { padding: 28px; }
+    .timeline-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 20px; color: var(--text); }
+    .timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 19px; top: 0; bottom: 0;
+      width: 1.5px; background: var(--border);
+    }
+    .timeline-item { display: flex; gap: 20px; padding-bottom: 28px; position: relative; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border);
+      background: var(--bg-card); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 1rem; z-index: 1; transition: all 0.3s ease;
+    }
+    .timeline-item.done .timeline-dot { border-color: var(--primary); background: rgba(108,71,255,0.1); }
+    .timeline-item.active .timeline-dot { border-color: #FFCC00; background: rgba(255,204,0,0.1); box-shadow: 0 0 0 4px rgba(255,204,0,0.12); }
+    .timeline-body { padding-top: 8px; }
+    .timeline-event { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
+    .timeline-item:not(.done):not(.active) .timeline-event { color: var(--text-muted); }
+    .timeline-detail { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .timeline-time { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
+
+    /* Products in order */
+    .order-products { padding: 0 28px 28px; }
+    .order-products-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; }
+    .order-product-item {
+      display: flex; align-items: center; gap: 14px; padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .order-product-item:last-child { border-bottom: none; }
+    .order-product-emoji { font-size: 1.6rem; width: 48px; height: 48px; background: var(--bg-3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .order-product-name { font-weight: 500; font-size: 0.875rem; flex: 1; }
+    .order-product-qty { font-size: 0.8rem; color: var(--text-muted); }
+    .order-product-price { font-weight: 700; font-size: 0.9rem; }
+
+    /* Help section */
+    .tracking-help {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 28px;
+    }
+    .tracking-help h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+    .help-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .help-option {
+      padding: 16px; background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); text-align: center; cursor: pointer;
+      transition: all var(--transition); text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .help-option:hover { border-color: var(--primary); background: rgba(108,71,255,0.04); }
+    .help-option-icon { font-size: 1.5rem; }
+    .help-option-label { font-size: 0.8rem; font-weight: 600; }
+    .help-option-desc { font-size: 0.72rem; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .order-card-header { flex-direction: column; align-items: flex-start; }
+      .progress-step-name { font-size: 0.65rem; }
+      .help-options { grid-template-columns: 1fr 1fr; }
+      .eta-banner { flex-wrap: wrap; }
+      .eta-wa-btn { margin-left: 0; }
+      .tracking-input-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#lg2)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="lg2" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Se connecter</a>
+      <a href="register.html" class="btn-primary">Vendre</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="services.html">Services Web</a>
+    <a href="login.html">Se connecter</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<main class="tracking-page">
+  <div class="tracking-container">
+
+    <!-- Hero search -->
+    <div class="tracking-search">
+      <h2>Suivre ma commande</h2>
+      <p>Entrez votre numéro de commande pour voir le statut en temps réel</p>
+      <div class="tracking-input-row">
+        <input type="text" class="tracking-input" id="orderInput" placeholder="Ex: YS-2024-7842" value="YS-2024-7842" />
+        <button class="btn-track-order" onclick="trackOrder()">
+          Suivre
+        </button>
+      </div>
+    </div>
+
+    <!-- Order result -->
+    <div id="orderResult">
+
+      <div class="order-card">
+        <!-- Header -->
+        <div class="order-card-header">
+          <div>
+            <div class="order-id-group">
+              <span class="order-id-label">Numéro de commande</span>
+              <span class="order-id-val">YS-2024-7842</span>
+            </div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:6px">Passée le 12 mars 2024 à 14h32 · Kinshasa</div>
+          </div>
+          <div class="order-status-badge status-en-route">
+            <span class="status-dot"></span>
+            En route
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="order-progress">
+          <div class="progress-steps" id="progressSteps">
+            <div class="progress-line"><div class="progress-fill" id="progressFill" style="width:58%"></div></div>
+            <div class="progress-step done">
+              <div class="progress-node">✓</div>
+              <div class="progress-step-label">
+                <div class="progress-step-name">Confirmée</div>
+                <div class="progress-step-time">14:35</div>
+              </div>
+            </div>
+            <div class="progress-step done">
+              <div class="progress-node">✓</div>
+              <div class="progress-step-label">
+                <div class="progress-step-name">Préparée</div>
+                <div class="progress-step-time">16:20</div>
+              </div>
+            </div>
+            <div class="progress-step active">
+              <div class="progress-node">🚴</div>
+              <div class="progress-step-label">
+                <div class="progress-step-name">En livraison</div>
+                <div class="progress-step-time">Maintenant</div>
+              </div>
+            </div>
+            <div class="progress-step">
+              <div class="progress-node">🏠</div>
+              <div class="progress-step-label">
+                <div class="progress-step-name">Livré</div>
+                <div class="progress-step-time">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ETA Banner -->
+        <div class="eta-banner">
+          <div class="eta-icon">🚴</div>
+          <div>
+            <div class="eta-label">Livraison estimée</div>
+            <div class="eta-time">Aujourd'hui entre 18h30 et 19h15</div>
+            <div class="eta-desc">Livreur : Déo Makiadi · À ~3.2 km de vous</div>
+          </div>
+          <a href="https://wa.me/243810000099?text=Bonjour%20D%C3%A9o%2C%20je%20suis%20votre%20client%20pour%20la%20commande%20YS-2024-7842" class="eta-wa-btn" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Contacter livreur
+          </a>
+        </div>
+
+        <!-- Timeline -->
+        <div class="order-timeline">
+          <div class="timeline-title">Historique détaillé</div>
+          <div class="timeline">
+            <div class="timeline-item done">
+              <div class="timeline-dot">✓</div>
+              <div class="timeline-body">
+                <div class="timeline-event">Commande confirmée</div>
+                <div class="timeline-detail">Votre paiement Airtel Money a été validé</div>
+                <div class="timeline-time">12 mars 2024 · 14:35</div>
+              </div>
+            </div>
+            <div class="timeline-item done">
+              <div class="timeline-dot">✓</div>
+              <div class="timeline-body">
+                <div class="timeline-event">Commande transmise au vendeur</div>
+                <div class="timeline-detail">TechStyle Kinshasa a reçu votre commande</div>
+                <div class="timeline-time">12 mars 2024 · 14:38</div>
+              </div>
+            </div>
+            <div class="timeline-item done">
+              <div class="timeline-dot">✓</div>
+              <div class="timeline-body">
+                <div class="timeline-event">Produit préparé et emballé</div>
+                <div class="timeline-detail">Samsung Galaxy A54 + Écouteurs prêts à être expédiés</div>
+                <div class="timeline-time">12 mars 2024 · 16:20</div>
+              </div>
+            </div>
+            <div class="timeline-item active">
+              <div class="timeline-dot">🚴</div>
+              <div class="timeline-body">
+                <div class="timeline-event">Livreur en route vers vous</div>
+                <div class="timeline-detail">Déo Makiadi a pris en charge votre colis à la Commune de Gombe</div>
+                <div class="timeline-time">12 mars 2024 · 17:45 · En cours</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot">🏠</div>
+              <div class="timeline-body">
+                <div class="timeline-event">Livraison à domicile</div>
+                <div class="timeline-detail">Votre commande sera déposée à votre adresse</div>
+                <div class="timeline-time">Estimé : 18h30–19h15</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products in order -->
+        <div class="order-products">
+          <div class="order-products-title">Articles commandés</div>
+          <div class="order-product-item">
+            <div class="order-product-emoji">📱</div>
+            <div class="order-product-name">Samsung Galaxy A54 5G — Noir 256Go</div>
+            <div class="order-product-qty">× 1</div>
+            <div class="order-product-price">350 $</div>
+          </div>
+          <div class="order-product-item">
+            <div class="order-product-emoji">🎧</div>
+            <div class="order-product-name">Écouteurs Bluetooth TWS Pro Max — Blanc</div>
+            <div class="order-product-qty">× 2</div>
+            <div class="order-product-price">58 $</div>
+          </div>
+          <div class="order-product-item">
+            <div class="order-product-emoji">👗</div>
+            <div class="order-product-name">Robe Wax Africaine — Taille M, Bleu royal</div>
+            <div class="order-product-qty">× 1</div>
+            <div class="order-product-price">35 $</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;padding-top:16px;gap:6px;align-items:center">
+            <span style="font-size:0.85rem;color:var(--text-muted)">Total payé :</span>
+            <span style="font-size:1.2rem;font-weight:800;color:var(--primary)">448 $</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help -->
+      <div class="tracking-help">
+        <h3>Besoin d'aide avec votre commande ?</h3>
+        <div class="help-options">
+          <a href="https://wa.me/243810000001?text=Bonjour%2C%20j'ai%20un%20probl%C3%A8me%20avec%20ma%20commande%20YS-2024-7842" class="help-option" target="_blank">
+            <div class="help-option-icon">💬</div>
+            <div class="help-option-label">Contacter vendeur</div>
+            <div class="help-option-desc">Via WhatsApp</div>
+          </a>
+          <a href="https://wa.me/243800000000?text=Support%20YaroShop%20-%20Commande%20YS-2024-7842" class="help-option" target="_blank">
+            <div class="help-option-icon">🛡️</div>
+            <div class="help-option-label">Support YaroShop</div>
+            <div class="help-option-desc">Assistance 24h/24</div>
+          </a>
+          <a href="#" class="help-option" onclick="reportIssue(); return false;">
+            <div class="help-option-icon">⚠️</div>
+            <div class="help-option-label">Signaler un problème</div>
+            <div class="help-option-desc">Litige ou retard</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-full);padding:12px 24px;font-size:0.875rem;font-weight:500;z-index:9999;transition:transform 0.3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)"></div>
+
+<script src="assets/app.js"></script>
+<script>
+  // Read order from URL
+  const params = new URLSearchParams(window.location.search);
+  const urlOrder = params.get('order');
+  if (urlOrder) {
+    document.getElementById('orderInput').value = urlOrder;
+  }
+
+  function trackOrder() {
+    const val = document.getElementById('orderInput').value.trim();
+    if (!val) { showToast('Entrez un numéro de commande', 'error'); return; }
+    // Demo: update order id display
+    document.querySelectorAll('.order-id-val').forEach(el => el.textContent = val);
+    showToast('Commande trouvée : ' + val, 'success');
+    document.getElementById('orderResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function reportIssue() {
+    const order = document.getElementById('orderInput').value.trim() || 'YS-2024-7842';
+    window.open('https://wa.me/243800000000?text=Signalement%20-%20Commande%20' + encodeURIComponent(order) + '%20-%20Probl%C3%A8me%3A%20', '_blank');
+  }
+
+  // Auto-animate progress on page load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('progressFill').style.width = '58%';
+    }, 300);
+  });
+
+  // Enter key support
+  document.getElementById('orderInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') trackOrder();
+  });
+</script>
+</body>
+</html>

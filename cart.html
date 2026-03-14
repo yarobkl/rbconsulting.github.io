@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Panier — YaroShop</title>
+  <meta name="description" content="Finalisez votre commande sur YaroShop. Paiement sécurisé par Airtel Money, MTN Mobile Money, Orange Money ou à la livraison." />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* ── Cart layout ── */
+    .cart-page { padding: 100px 0 80px; min-height: 100vh; }
+    .cart-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .cart-header { margin-bottom: 40px; }
+    .cart-header h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; }
+    .cart-header p { color: var(--text-muted); margin-top: 6px; }
+
+    .cart-grid { display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start; }
+
+    /* Steps indicator */
+    .checkout-steps {
+      display: flex; align-items: center; gap: 0; margin-bottom: 36px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 6px; width: fit-content;
+    }
+    .step {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-radius: var(--radius-lg);
+      font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
+      transition: all var(--transition); cursor: pointer; position: relative;
+    }
+    .step.active { background: var(--primary); color: white; }
+    .step.done { color: var(--text-secondary); }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); display: flex; align-items: center;
+      justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+    }
+    .step.active .step-num { background: rgba(255,255,255,0.25); }
+    .step.done .step-num {
+      background: rgba(92,219,149,0.2); color: #5CDB95;
+      border: 1px solid rgba(92,219,149,0.3);
+    }
+    .step-sep { width: 20px; height: 1px; background: var(--border); flex-shrink: 0; }
+
+    /* Cart items */
+    .cart-section-title {
+      font-size: 1rem; font-weight: 600; color: var(--text);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .cart-count-badge {
+      background: var(--primary); color: white; font-size: 0.7rem;
+      font-weight: 700; padding: 2px 8px; border-radius: var(--radius-full);
+    }
+
+    .cart-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .cart-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 16px; display: flex;
+      gap: 16px; align-items: flex-start;
+      transition: border-color var(--transition);
+    }
+    .cart-item:hover { border-color: rgba(108,71,255,0.3); }
+    .cart-item-img {
+      width: 90px; height: 90px; border-radius: var(--radius-lg);
+      object-fit: cover; background: var(--bg-3); flex-shrink: 0;
+      overflow: hidden;
+    }
+    .cart-item-img-placeholder {
+      width: 90px; height: 90px; border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--bg-3), var(--bg-card-hover));
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    .cart-item-body { flex: 1; min-width: 0; }
+    .cart-item-shop { font-size: 0.75rem; color: var(--primary); font-weight: 500; margin-bottom: 4px; }
+    .cart-item-name { font-weight: 600; color: var(--text); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-item-options { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+    .cart-item-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .qty-control {
+      display: flex; align-items: center; gap: 2px;
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--radius-md); overflow: hidden;
+    }
+    .qty-btn {
+      width: 30px; height: 30px; background: none; border: none;
+      color: var(--text); cursor: pointer; font-size: 1rem; font-weight: 600;
+      transition: background var(--transition); display: flex; align-items: center; justify-content: center;
+    }
+    .qty-btn:hover { background: var(--bg-card-hover); }
+    .qty-val { width: 32px; text-align: center; font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .btn-remove {
+      background: none; border: none; color: var(--text-muted); cursor: pointer;
+      font-size: 0.8rem; transition: color var(--transition); display: flex; align-items: center; gap: 4px;
+      padding: 4px 8px; border-radius: var(--radius-md);
+    }
+    .btn-remove:hover { color: #FF5555; background: rgba(255,85,85,0.08); }
+    .cart-item-price { text-align: right; flex-shrink: 0; }
+    .item-price { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+    .item-price-unit { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Seller groups */
+    .seller-group { margin-bottom: 24px; }
+    .seller-group-header {
+      display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+      background: var(--bg-3); border-radius: var(--radius-lg); margin-bottom: 8px;
+    }
+    .seller-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; color: white;
+    }
+    .seller-name { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .seller-verified { color: var(--primary); font-size: 0.75rem; }
+    .seller-wa-btn {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.25);
+      color: var(--whatsapp); padding: 6px 12px; border-radius: var(--radius-full);
+      font-size: 0.78rem; font-weight: 600; text-decoration: none;
+      transition: all var(--transition);
+    }
+    .seller-wa-btn:hover { background: rgba(37,211,102,0.18); }
+
+    /* Delivery options */
+    .delivery-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 24px; }
+    .delivery-options { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .delivery-option {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .delivery-option:hover { border-color: var(--primary); background: rgba(108,71,255,0.04); }
+    .delivery-option.selected { border-color: var(--primary); background: rgba(108,71,255,0.06); }
+    .delivery-option input[type="radio"] { margin-top: 3px; accent-color: var(--primary); flex-shrink: 0; }
+    .delivery-label { flex: 1; }
+    .delivery-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+    .delivery-desc { font-size: 0.8rem; color: var(--text-muted); }
+    .delivery-price { font-weight: 700; color: var(--text); font-size: 0.95rem; flex-shrink: 0; }
+    .delivery-badge {
+      font-size: 0.68rem; font-weight: 700; padding: 2px 7px;
+      border-radius: var(--radius-full); background: rgba(92,219,149,0.15);
+      color: #5CDB95; border: 1px solid rgba(92,219,149,0.3); margin-left: 6px;
+    }
+
+    /* Address form */
+    .address-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 0; }
+    .form-group label { font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 10px 14px; background: var(--bg-3); border: 1.5px solid var(--border);
+      border-radius: var(--radius-md); color: var(--text); font-family: inherit;
+      font-size: 0.9rem; transition: border-color var(--transition);
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+    .form-group select option { background: var(--bg-card); }
+    .form-full { grid-column: 1 / -1; }
+
+    /* Order summary (sidebar) */
+    .order-summary {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 28px; position: sticky; top: 90px;
+    }
+    .summary-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 24px; }
+    .summary-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem;
+    }
+    .summary-line:last-of-type { border-bottom: none; }
+    .summary-line .label { color: var(--text-muted); }
+    .summary-line .value { font-weight: 600; color: var(--text); }
+    .summary-line.total { padding-top: 16px; margin-top: 8px; border-top: 2px solid var(--border); border-bottom: none; }
+    .summary-line.total .label { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .summary-line.total .value { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+    .summary-line.economy { border-bottom: none; }
+    .summary-line.economy .label, .summary-line.economy .value { color: #5CDB95; font-size: 0.85rem; }
+
+    /* Promo code */
+    .promo-row {
+      display: flex; gap: 8px; margin: 20px 0;
+      background: var(--bg-3); border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg); padding: 6px 6px 6px 14px; align-items: center;
+    }
+    .promo-row input {
+      flex: 1; background: none; border: none; color: var(--text);
+      font-family: inherit; font-size: 0.875rem; outline: none;
+    }
+    .promo-row input::placeholder { color: var(--text-muted); }
+    .btn-promo {
+      background: var(--primary); color: white; border: none;
+      padding: 8px 16px; border-radius: var(--radius-md); font-weight: 600;
+      font-size: 0.8rem; cursor: pointer; transition: opacity var(--transition);
+    }
+    .btn-promo:hover { opacity: 0.85; }
+
+    /* Payment methods */
+    .payment-title { font-size: 0.9rem; font-weight: 600; margin: 24px 0 14px; color: var(--text); }
+    .payment-methods { display: flex; flex-direction: column; gap: 8px; }
+    .payment-method {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .payment-method:hover { border-color: var(--primary); background: rgba(108,71,255,0.04); }
+    .payment-method.selected { border-color: var(--primary); background: rgba(108,71,255,0.06); }
+    .payment-method input[type="radio"] { accent-color: var(--primary); flex-shrink: 0; }
+    .payment-icon {
+      width: 36px; height: 36px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800; flex-shrink: 0;
+    }
+    .payment-icon.airtel { background: rgba(255,0,0,0.1); color: #FF3B3B; }
+    .payment-icon.mtn { background: rgba(255,204,0,0.12); color: #FFCC00; }
+    .payment-icon.orange { background: rgba(255,107,53,0.12); color: var(--accent); }
+    .payment-icon.cash { background: rgba(92,219,149,0.12); color: #5CDB95; }
+    .payment-name { font-weight: 600; font-size: 0.875rem; }
+    .payment-desc { font-size: 0.75rem; color: var(--text-muted); }
+    .payment-badge {
+      margin-left: auto; font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
+      border-radius: var(--radius-full); background: rgba(108,71,255,0.12);
+      color: var(--primary); border: 1px solid rgba(108,71,255,0.25); flex-shrink: 0;
+    }
+
+    /* Phone number input */
+    .phone-input-wrap { margin-top: 8px; display: none; }
+    .phone-input-wrap.visible { display: block; }
+    .phone-input-inner {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg-3); border: 1.5px solid var(--border);
+      border-radius: var(--radius-md); padding: 4px 14px; margin-top: 8px;
+    }
+    .phone-prefix { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; flex-shrink: 0; }
+    .phone-input-inner input { flex: 1; background: none; border: none; color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; padding: 8px 0; }
+
+    /* CTA */
+    .btn-checkout {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 16px 24px; background: linear-gradient(135deg, var(--primary), #9B78FF);
+      color: white; border: none; border-radius: var(--radius-lg); font-weight: 700;
+      font-size: 1rem; cursor: pointer; margin-top: 20px;
+      box-shadow: 0 4px 20px rgba(108,71,255,0.35);
+      transition: all var(--transition);
+    }
+    .btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,71,255,0.5); }
+    .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .order-trust { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; font-size: 0.78rem; color: var(--text-muted); }
+    .order-trust svg { color: #5CDB95; }
+
+    /* Empty state */
+    .cart-empty {
+      text-align: center; padding: 80px 24px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+    }
+    .cart-empty-icon { font-size: 4rem; margin-bottom: 20px; }
+    .cart-empty h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+    .cart-empty p { color: var(--text-muted); margin-bottom: 28px; }
+    .btn-shop { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: white; padding: 12px 24px; border-radius: var(--radius-lg); font-weight: 600; text-decoration: none; transition: opacity var(--transition); }
+    .btn-shop:hover { opacity: 0.85; }
+
+    /* Confirmation modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+      z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 24px; padding: 40px; max-width: 480px; width: 100%;
+      transform: scale(0.95); transition: transform 0.3s ease;
+      text-align: center;
+    }
+    .modal-overlay.active .modal { transform: scale(1); }
+    .modal-icon { font-size: 4rem; margin-bottom: 20px; }
+    .modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+    .modal p { color: var(--text-muted); margin-bottom: 8px; font-size: 0.9rem; }
+    .modal-order-id { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin: 16px 0; font-family: monospace; letter-spacing: 0.1em; }
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
+    .btn-track { display: block; width: 100%; padding: 14px; background: var(--primary); color: white; border-radius: var(--radius-lg); font-weight: 600; text-decoration: none; transition: opacity var(--transition); }
+    .btn-track:hover { opacity: 0.85; }
+    .btn-continue { display: block; width: 100%; padding: 14px; border: 1.5px solid var(--border); color: var(--text); border-radius: var(--radius-lg); font-weight: 600; text-decoration: none; transition: all var(--transition); }
+    .btn-continue:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Responsive */
+    @media (max-width: 1024px) { .cart-grid { grid-template-columns: 1fr; } .order-summary { position: static; } }
+    @media (max-width: 768px) {
+      .checkout-steps { gap: 0; }
+      .step span.step-text { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .cart-item { flex-wrap: wrap; }
+    }
+    @media (max-width: 480px) {
+      .checkout-steps { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#lg)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Se connecter</a>
+      <a href="register.html" class="btn-primary">Vendre</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="services.html">Services Web</a>
+    <a href="login.html">Se connecter</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<!-- CART PAGE -->
+<main class="cart-page">
+  <div class="cart-container">
+    <div class="cart-header">
+      <h1>Mon Panier <span id="cartItemCount" class="gradient-text">3 articles</span></h1>
+      <p>Vérifiez votre commande avant de payer</p>
+    </div>
+
+    <!-- Steps -->
+    <div class="checkout-steps" id="checkoutSteps">
+      <div class="step active" id="step1" onclick="goToStep(1)">
+        <span class="step-num" id="stepNum1">1</span>
+        <span class="step-text">Panier</span>
+      </div>
+      <div class="step-sep"></div>
+      <div class="step" id="step2" onclick="goToStep(2)">
+        <span class="step-num" id="stepNum2">2</span>
+        <span class="step-text">Livraison</span>
+      </div>
+      <div class="step-sep"></div>
+      <div class="step" id="step3" onclick="goToStep(3)">
+        <span class="step-num" id="stepNum3">3</span>
+        <span class="step-text">Paiement</span>
+      </div>
+    </div>
+
+    <div class="cart-grid">
+      <!-- LEFT COLUMN -->
+      <div class="cart-left">
+
+        <!-- STEP 1: Cart items -->
+        <div id="cartStep1">
+          <!-- Seller group 1 -->
+          <div class="seller-group">
+            <div class="seller-group-header">
+              <div class="seller-avatar">T</div>
+              <div>
+                <div class="seller-name">TechStyle Kinshasa
+                  <span class="seller-verified">✓ Vérifié</span>
+                </div>
+              </div>
+              <a href="https://wa.me/243810000001?text=Bonjour%2C%20j'ai%20des%20questions%20sur%20ma%20commande" class="seller-wa-btn" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                Contacter
+              </a>
+            </div>
+
+            <div class="cart-items">
+              <div class="cart-item" id="item1">
+                <div class="cart-item-img-placeholder">📱</div>
+                <div class="cart-item-body">
+                  <div class="cart-item-shop">TechStyle Kinshasa</div>
+                  <div class="cart-item-name">Samsung Galaxy A54 5G — 256Go</div>
+                  <div class="cart-item-options">Couleur: Noir • Mémoire: 256Go</div>
+                  <div class="cart-item-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn" onclick="changeQty('item1', -1)">−</button>
+                      <span class="qty-val" id="qty-item1">1</span>
+                      <button class="qty-btn" onclick="changeQty('item1', 1)">+</button>
+                    </div>
+                    <button class="btn-remove" onclick="removeItem('item1')">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-item-price">
+                  <div class="item-price" id="price-item1">350 $</div>
+                  <div class="item-price-unit">350 $/unité</div>
+                </div>
+              </div>
+
+              <div class="cart-item" id="item2">
+                <div class="cart-item-img-placeholder">🎧</div>
+                <div class="cart-item-body">
+                  <div class="cart-item-shop">TechStyle Kinshasa</div>
+                  <div class="cart-item-name">Écouteurs Bluetooth TWS Pro Max</div>
+                  <div class="cart-item-options">Couleur: Blanc</div>
+                  <div class="cart-item-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn" onclick="changeQty('item2', -1)">−</button>
+                      <span class="qty-val" id="qty-item2">2</span>
+                      <button class="qty-btn" onclick="changeQty('item2', 1)">+</button>
+                    </div>
+                    <button class="btn-remove" onclick="removeItem('item2')">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-item-price">
+                  <div class="item-price" id="price-item2">58 $</div>
+                  <div class="item-price-unit">29 $/unité</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seller group 2 -->
+          <div class="seller-group">
+            <div class="seller-group-header">
+              <div class="seller-avatar" style="background:linear-gradient(135deg,#FF6B35,#FF9A5C)">M</div>
+              <div>
+                <div class="seller-name">Mode Élégance Brazza</div>
+              </div>
+              <a href="https://wa.me/242060000002?text=Bonjour%2C%20j'ai%20des%20questions%20sur%20ma%20commande" class="seller-wa-btn" target="_blank">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                Contacter
+              </a>
+            </div>
+
+            <div class="cart-items">
+              <div class="cart-item" id="item3">
+                <div class="cart-item-img-placeholder">👗</div>
+                <div class="cart-item-body">
+                  <div class="cart-item-shop">Mode Élégance Brazza</div>
+                  <div class="cart-item-name">Robe Wax Africaine Moderne — Taille M</div>
+                  <div class="cart-item-options">Taille: M • Motif: Bleu royal</div>
+                  <div class="cart-item-actions">
+                    <div class="qty-control">
+                      <button class="qty-btn" onclick="changeQty('item3', -1)">−</button>
+                      <span class="qty-val" id="qty-item3">1</span>
+                      <button class="qty-btn" onclick="changeQty('item3', 1)">+</button>
+                    </div>
+                    <button class="btn-remove" onclick="removeItem('item3')">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+                <div class="cart-item-price">
+                  <div class="item-price" id="price-item3">35 $</div>
+                  <div class="item-price-unit">35 $/unité</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-checkout" onclick="goToStep(2)">
+            Continuer vers la livraison
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- STEP 2: Delivery -->
+        <div id="cartStep2" style="display:none">
+          <!-- Address -->
+          <div class="address-section">
+            <div class="cart-section-title">Adresse de livraison</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="form-group">
+                <label>Prénom</label>
+                <input type="text" placeholder="Jean-Paul" />
+              </div>
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" placeholder="Mbemba" />
+              </div>
+              <div class="form-group">
+                <label>Téléphone WhatsApp</label>
+                <input type="tel" placeholder="+243 81 000 0000" />
+              </div>
+              <div class="form-group">
+                <label>Ville</label>
+                <select>
+                  <option>Kinshasa</option>
+                  <option>Brazzaville</option>
+                  <option>Lubumbashi</option>
+                  <option>Pointe-Noire</option>
+                  <option>Goma</option>
+                  <option>Bukavu</option>
+                </select>
+              </div>
+              <div class="form-group" style="grid-column:1/-1">
+                <label>Quartier / Adresse précise</label>
+                <input type="text" placeholder="Ex: Commune de Gombe, Av. du Kasaï..." />
+              </div>
+              <div class="form-group" style="grid-column:1/-1">
+                <label>Instructions pour le livreur (optionnel)</label>
+                <input type="text" placeholder="Ex: Appeler avant d'arriver, porte bleue..." />
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery options -->
+          <div class="delivery-section">
+            <div class="cart-section-title">Mode de livraison</div>
+            <div class="delivery-options">
+              <label class="delivery-option selected" onclick="selectDelivery(this, 5)">
+                <input type="radio" name="delivery" checked />
+                <div class="delivery-label">
+                  <div class="delivery-name">Livraison standard <span class="delivery-badge">2-3 jours</span></div>
+                  <div class="delivery-desc">Livraison à domicile dans votre ville</div>
+                </div>
+                <div class="delivery-price">5 $</div>
+              </label>
+              <label class="delivery-option" onclick="selectDelivery(this, 10)">
+                <input type="radio" name="delivery" />
+                <div class="delivery-label">
+                  <div class="delivery-name">Livraison express <span class="delivery-badge" style="background:rgba(255,107,53,0.12);color:var(--accent);border-color:rgba(255,107,53,0.3)">Aujourd'hui</span></div>
+                  <div class="delivery-desc">Livraison le jour même avant 20h (commande avant 14h)</div>
+                </div>
+                <div class="delivery-price">10 $</div>
+              </label>
+              <label class="delivery-option" onclick="selectDelivery(this, 0)">
+                <input type="radio" name="delivery" />
+                <div class="delivery-label">
+                  <div class="delivery-name">Retrait en boutique <span class="delivery-badge" style="background:rgba(92,219,149,0.12);color:#5CDB95;border-color:rgba(92,219,149,0.3)">Gratuit</span></div>
+                  <div class="delivery-desc">Retirez votre commande directement chez le vendeur</div>
+                </div>
+                <div class="delivery-price">0 $</div>
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px">
+            <button class="btn-checkout" style="background:var(--bg-3);color:var(--text);box-shadow:none;border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:16px 24px" onclick="goToStep(1)">
+              ← Retour
+            </button>
+            <button class="btn-checkout" onclick="goToStep(3)">
+              Continuer vers le paiement
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Payment -->
+        <div id="cartStep3" style="display:none">
+          <div class="delivery-section">
+            <div class="cart-section-title">Méthode de paiement</div>
+            <div class="payment-methods" id="paymentMethods">
+              <label class="payment-method selected" onclick="selectPayment(this, 'airtel')">
+                <input type="radio" name="payment" checked />
+                <div class="payment-icon airtel">A</div>
+                <div>
+                  <div class="payment-name">Airtel Money</div>
+                  <div class="payment-desc">Paiement instantané via Airtel</div>
+                </div>
+                <span class="payment-badge">Rapide</span>
+              </label>
+              <label class="payment-method" onclick="selectPayment(this, 'mtn')">
+                <input type="radio" name="payment" />
+                <div class="payment-icon mtn">M</div>
+                <div>
+                  <div class="payment-name">MTN Mobile Money</div>
+                  <div class="payment-desc">Paiement via MTN MoMo</div>
+                </div>
+                <span class="payment-badge">Populaire</span>
+              </label>
+              <label class="payment-method" onclick="selectPayment(this, 'orange')">
+                <input type="radio" name="payment" />
+                <div class="payment-icon orange">O</div>
+                <div>
+                  <div class="payment-name">Orange Money</div>
+                  <div class="payment-desc">Paiement via Orange Money</div>
+                </div>
+              </label>
+              <label class="payment-method" onclick="selectPayment(this, 'cash')">
+                <input type="radio" name="payment" />
+                <div class="payment-icon cash">💵</div>
+                <div>
+                  <div class="payment-name">Paiement à la livraison</div>
+                  <div class="payment-desc">Payez en cash lors de la réception</div>
+                </div>
+              </label>
+            </div>
+
+            <div class="phone-input-wrap visible" id="mobileMoneyPhone">
+              <label style="font-size:0.82rem;color:var(--text-muted);font-weight:500;display:block;margin-top:16px;margin-bottom:4px">Numéro Mobile Money</label>
+              <div class="phone-input-inner">
+                <span class="phone-prefix" id="phonePrefix">+243</span>
+                <input type="tel" id="mmPhone" placeholder="81 000 0000" />
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px">
+            <button class="btn-checkout" style="background:var(--bg-3);color:var(--text);box-shadow:none;border:1.5px solid var(--border);flex:0 0 auto;width:auto;padding:16px 24px" onclick="goToStep(2)">
+              ← Retour
+            </button>
+            <button class="btn-checkout" id="placeOrderBtn" onclick="placeOrder()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Confirmer la commande — <span id="totalInBtn">448 $</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Summary -->
+      <div class="cart-right">
+        <div class="order-summary">
+          <div class="summary-title">Récapitulatif</div>
+
+          <div class="summary-line">
+            <span class="label">Sous-total (3 articles)</span>
+            <span class="value" id="subtotal">443 $</span>
+          </div>
+          <div class="summary-line">
+            <span class="label">Livraison</span>
+            <span class="value" id="deliveryCost">5 $</span>
+          </div>
+          <div class="summary-line economy">
+            <span class="label">💚 Économie flash</span>
+            <span class="value">-12 $</span>
+          </div>
+          <div class="summary-line total">
+            <span class="label">Total</span>
+            <span class="value" id="grandTotal">448 $</span>
+          </div>
+
+          <!-- Promo -->
+          <div class="promo-row">
+            <input type="text" id="promoInput" placeholder="Code promo" />
+            <button class="btn-promo" onclick="applyPromo()">Appliquer</button>
+          </div>
+
+          <!-- Trust -->
+          <div class="order-trust">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Paiement 100% sécurisé
+          </div>
+          <div class="order-trust" style="margin-top:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.18"/></svg>
+            Retour gratuit sous 7 jours
+          </div>
+
+          <!-- Payment logos -->
+          <div style="display:flex;gap:8px;margin-top:20px;justify-content:center;flex-wrap:wrap">
+            <span style="background:rgba(255,0,0,0.1);color:#FF3B3B;padding:4px 10px;border-radius:6px;font-size:0.7rem;font-weight:700">Airtel</span>
+            <span style="background:rgba(255,204,0,0.12);color:#FFCC00;padding:4px 10px;border-radius:6px;font-size:0.7rem;font-weight:700">MTN</span>
+            <span style="background:rgba(255,107,53,0.12);color:#FF6B35;padding:4px 10px;border-radius:6px;font-size:0.7rem;font-weight:700">Orange</span>
+            <span style="background:rgba(92,219,149,0.12);color:#5CDB95;padding:4px 10px;border-radius:6px;font-size:0.7rem;font-weight:700">Cash</span>
+          </div>
+        </div>
+
+        <!-- WhatsApp group order tip -->
+        <div style="background:rgba(37,211,102,0.06);border:1px solid rgba(37,211,102,0.2);border-radius:var(--radius-xl);padding:20px;margin-top:16px">
+          <div style="font-size:0.85rem;font-weight:600;color:var(--whatsapp);margin-bottom:6px">💬 Commander directement sur WhatsApp</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">Vous préférez discuter avec le vendeur ? Cliquez sur "Contacter" à côté de chaque boutique.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ORDER CONFIRMATION MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h2>Commande confirmée !</h2>
+    <p>Votre commande a été passée avec succès. Le vendeur vous contactera sur WhatsApp.</p>
+    <div class="modal-order-id" id="orderIdDisplay">YS-2024-7842</div>
+    <p style="font-size:0.85rem">Numéro de commande — gardez-le précieusement</p>
+    <div class="modal-actions">
+      <a href="tracking.html?order=YS-2024-7842" class="btn-track">
+        Suivre ma commande
+      </a>
+      <a href="marketplace.html" class="btn-continue">
+        Continuer mes achats
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-full);padding:12px 24px;font-size:0.875rem;font-weight:500;z-index:9999;transition:transform 0.3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)"></div>
+
+<script src="assets/app.js"></script>
+<script>
+  // State
+  const prices = { item1: 350, item2: 29, item3: 35 };
+  const qtys   = { item1: 1,   item2: 2,  item3: 1  };
+  let deliveryCost = 5;
+  let currentStep = 1;
+  let selectedPayment = 'airtel';
+  const phonePrefixes = { airtel: '+243', mtn: '+243', orange: '+242' };
+
+  function updateSummary() {
+    let sub = 0;
+    for (const id in prices) {
+      const el = document.getElementById('item' + id.slice(-1));
+      if (!el || el.style.display === 'none') continue;
+      const q = qtys[id];
+      sub += prices[id] * q;
+      document.getElementById('price-' + id).textContent = (prices[id] * q) + ' $';
+    }
+    const total = sub + deliveryCost - 12;
+    document.getElementById('subtotal').textContent = sub + ' $';
+    document.getElementById('deliveryCost').textContent = deliveryCost + ' $';
+    document.getElementById('grandTotal').textContent = total + ' $';
+    document.getElementById('totalInBtn').textContent = total + ' $';
+
+    // Update count
+    let count = 0;
+    for (const id in qtys) {
+      const el = document.getElementById(id);
+      if (el && el.style.display !== 'none') count += qtys[id];
+    }
+    document.getElementById('cartItemCount').textContent = count + ' article' + (count > 1 ? 's' : '');
+  }
+
+  function changeQty(itemId, delta) {
+    const q = Math.max(1, Math.min(99, (qtys[itemId] || 1) + delta));
+    qtys[itemId] = q;
+    document.getElementById('qty-' + itemId).textContent = q;
+    updateSummary();
+  }
+
+  function removeItem(itemId) {
+    const el = document.getElementById(itemId);
+    el.style.animation = 'fadeOut 0.3s ease forwards';
+    setTimeout(() => { el.style.display = 'none'; updateSummary(); }, 280);
+    showToast('Article retiré du panier', 'info');
+  }
+
+  function selectDelivery(el, cost) {
+    document.querySelectorAll('.delivery-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    deliveryCost = cost;
+    updateSummary();
+  }
+
+  function selectPayment(el, type) {
+    document.querySelectorAll('.payment-method').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPayment = type;
+    const phoneWrap = document.getElementById('mobileMoneyPhone');
+    if (type === 'cash') {
+      phoneWrap.classList.remove('visible');
+    } else {
+      phoneWrap.classList.add('visible');
+      document.getElementById('phonePrefix').textContent = phonePrefixes[type] || '+243';
+    }
+  }
+
+  function goToStep(n) {
+    if (n < currentStep) {
+      // going back: always allowed
+    }
+    currentStep = n;
+    [1, 2, 3].forEach(i => {
+      const step = document.getElementById('step' + i);
+      const panel = document.getElementById('cartStep' + i);
+      step.classList.toggle('active', i === n);
+      step.classList.toggle('done', i < n);
+      if (panel) panel.style.display = i === n ? 'block' : 'none';
+      // checkmark for done
+      const num = document.getElementById('stepNum' + i);
+      num.textContent = i < n ? '✓' : i;
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function applyPromo() {
+    const code = document.getElementById('promoInput').value.trim().toUpperCase();
+    if (code === 'YARO10') {
+      showToast('Code promo appliqué ! -10%', 'success');
+    } else {
+      showToast('Code promo invalide', 'error');
+    }
+  }
+
+  function placeOrder() {
+    const btn = document.getElementById('placeOrderBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> Traitement en cours...';
+
+    setTimeout(() => {
+      const orderId = 'YS-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('orderIdDisplay').textContent = orderId;
+      document.getElementById('confirmModal').classList.add('active');
+      btn.disabled = false;
+      btn.innerHTML = 'Confirmer la commande';
+    }, 2000);
+  }
+
+  // Add fadeOut keyframe
+  const style = document.createElement('style');
+  style.textContent = '@keyframes fadeOut { to { opacity:0; transform:translateX(20px); } } @keyframes spin { to { transform:rotate(360deg); } }';
+  document.head.appendChild(style);
+
+  // Init
+  updateSummary();
+
+  // Close modal on overlay click
+  document.getElementById('confirmModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
+</script>
+</body>
+</html>
