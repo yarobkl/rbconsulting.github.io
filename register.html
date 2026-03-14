@@ -33,6 +33,12 @@
     .feature-text p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; }
     @media (max-width: 768px) { .register-layout { grid-template-columns: 1fr; } .register-left { display: none; } }
   </style>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6C47FF" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="YaroShop" />
 </head>
 <body>
 
@@ -302,6 +308,11 @@ document.getElementById('password')?.addEventListener('input', function() {
   bar.style.width = widths[strength];
   bar.style.background = colors[strength];
 });
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
 </script>
 </body>
 </html>

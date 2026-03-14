@@ -376,3 +376,104 @@ function togglePricing() {
     el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
   });
 }
+
+// ── Enhanced Navbar: cart panel + profile dropdown ───────────────
+(function initNavbar() {
+  // Inject cart panel + overlay into every page
+  const cartPanel = document.createElement('div');
+  cartPanel.id = 'cartPanelOverlay';
+  cartPanel.className = 'cart-panel-overlay';
+  cartPanel.innerHTML = `
+    <div class="cart-panel" id="cartPanel">
+      <div class="cart-panel-header">
+        <span class="cart-panel-title">Mon Panier <span id="cpCount" style="background:var(--primary);color:white;font-size:0.7rem;font-weight:800;padding:2px 8px;border-radius:999px;margin-left:6px">3</span></span>
+        <button class="cart-panel-close" onclick="closeCartPanel()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="cart-panel-body">
+        <div class="cart-panel-item">
+          <div class="cart-panel-emoji">📱</div>
+          <div class="cart-panel-info">
+            <div class="cart-panel-name">Samsung Galaxy A54 5G</div>
+            <div class="cart-panel-opts">Noir · 256Go</div>
+            <div class="cart-panel-row">
+              <span class="cart-panel-price">350 $</span>
+              <span class="cart-panel-qty">× 1</span>
+            </div>
+          </div>
+        </div>
+        <div class="cart-panel-item">
+          <div class="cart-panel-emoji">🎧</div>
+          <div class="cart-panel-info">
+            <div class="cart-panel-name">Écouteurs TWS Pro Max</div>
+            <div class="cart-panel-opts">Blanc</div>
+            <div class="cart-panel-row">
+              <span class="cart-panel-price">58 $</span>
+              <span class="cart-panel-qty">× 2</span>
+            </div>
+          </div>
+        </div>
+        <div class="cart-panel-item">
+          <div class="cart-panel-emoji">👗</div>
+          <div class="cart-panel-info">
+            <div class="cart-panel-name">Robe Wax Africaine</div>
+            <div class="cart-panel-opts">Taille M · Bleu royal</div>
+            <div class="cart-panel-row">
+              <span class="cart-panel-price">35 $</span>
+              <span class="cart-panel-qty">× 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cart-panel-footer">
+        <div class="cart-panel-total">
+          <span class="cart-panel-total-label">Total</span>
+          <span class="cart-panel-total-val">448 $</span>
+        </div>
+        <a href="cart.html" class="btn-cart-checkout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Finaliser la commande
+        </a>
+        <a href="cart.html" class="btn-cart-view">Voir le panier complet →</a>
+      </div>
+    </div>`;
+  document.body.appendChild(cartPanel);
+  cartPanel.addEventListener('click', e => { if (e.target === cartPanel) closeCartPanel(); });
+})();
+
+function openCartPanel() {
+  document.getElementById('cartPanelOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCartPanel() {
+  document.getElementById('cartPanelOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleProfileDropdown() {
+  const dd = document.getElementById('profileDropdown');
+  if (dd) dd.classList.toggle('open');
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('profileDropdownWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    const dd = document.getElementById('profileDropdown');
+    if (dd) dd.classList.remove('open');
+  }
+});
+
+// ── NavSearch global ────────────────────────────────────────────
+function navSearch() {
+  const inp = document.getElementById('navSearchInput');
+  if (!inp) return;
+  const q = inp.value.trim();
+  if (q) window.location.href = 'search.html?q=' + encodeURIComponent(q);
+}
+if (document.getElementById('navSearchInput')) {
+  document.getElementById('navSearchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') navSearch();
+  });
+}

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma Liste de Souhaits — YaroShop</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .wishlist-page { padding: 90px 0 80px; min-height: 100vh; }
+    .wishlist-container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .wishlist-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; flex-wrap: wrap; gap: 12px;
+    }
+    .wishlist-header h1 { font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; }
+    .wishlist-header-actions { display: flex; gap: 10px; }
+    .btn-wl-action {
+      padding: 9px 18px; border-radius: var(--radius-full); font-size: 0.85rem;
+      font-weight: 600; cursor: pointer; transition: all var(--transition);
+    }
+    .btn-wl-outline { background: none; border: 1.5px solid var(--border); color: var(--text-secondary); }
+    .btn-wl-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-wl-primary { background: var(--primary); border: none; color: white; }
+    .btn-wl-primary:hover { opacity: 0.85; }
+
+    /* Sort bar */
+    .wishlist-toolbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .wl-count { font-size: 0.875rem; color: var(--text-muted); flex: 1; }
+    .wl-sort {
+      padding: 8px 12px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-md); color: var(--text); font-family: inherit;
+      font-size: 0.85rem; outline: none; cursor: pointer;
+    }
+    .wl-sort option { background: var(--bg-card); }
+
+    /* Grid */
+    .wishlist-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;
+    }
+
+    /* Product card */
+    .wl-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      animation: fadeIn 0.4s ease;
+    }
+    .wl-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(108,71,255,0.3); }
+    .wl-card-img {
+      height: 200px; background: var(--bg-3); display: flex; align-items: center;
+      justify-content: center; font-size: 4rem; position: relative; overflow: hidden;
+    }
+    .wl-card-img-gradient { position: absolute; inset: 0; opacity: 0.4; }
+    .wl-badge {
+      position: absolute; top: 12px; left: 12px; font-size: 0.7rem; font-weight: 700;
+      padding: 3px 8px; border-radius: var(--radius-full);
+    }
+    .wl-badge-sale { background: var(--accent); color: white; }
+    .wl-badge-new { background: var(--primary); color: white; }
+    .wl-badge-low { background: #FF5555; color: white; }
+    .btn-wl-remove {
+      position: absolute; top: 12px; right: 12px; width: 32px; height: 32px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      border: none; border-radius: 50%; color: #FF5555; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+      transition: all var(--transition);
+    }
+    .btn-wl-remove:hover { background: rgba(255,85,85,0.3); }
+    .wl-card-body { padding: 16px; }
+    .wl-vendor { font-size: 0.75rem; color: var(--primary); font-weight: 500; margin-bottom: 4px; }
+    .wl-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; line-height: 1.3; }
+    .wl-rating { display: flex; align-items: center; gap: 4px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+    .wl-rating span { color: #FFCC00; }
+    .wl-price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+    .wl-price { font-size: 1.1rem; font-weight: 800; }
+    .wl-price-old { font-size: 0.85rem; color: var(--text-muted); text-decoration: line-through; }
+    .wl-price-save { font-size: 0.72rem; font-weight: 700; background: rgba(255,107,53,0.12); color: var(--accent); padding: 2px 7px; border-radius: var(--radius-full); }
+    .wl-actions { display: flex; gap: 8px; }
+    .btn-wl-cart {
+      flex: 1; padding: 10px; background: linear-gradient(135deg, var(--primary), #9B78FF);
+      color: white; border: none; border-radius: var(--radius-md); font-weight: 600;
+      font-size: 0.82rem; cursor: pointer; transition: opacity var(--transition);
+    }
+    .btn-wl-cart:hover { opacity: 0.85; }
+    .btn-wl-wa {
+      width: 40px; height: 38px; background: rgba(37,211,102,0.1);
+      border: 1px solid rgba(37,211,102,0.25); border-radius: var(--radius-md);
+      color: var(--whatsapp); cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: background var(--transition);
+    }
+    .btn-wl-wa:hover { background: rgba(37,211,102,0.2); }
+    .wl-stock-warn { font-size: 0.75rem; color: #FF5555; margin-top: 6px; }
+    .wl-added-date { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* Share button */
+    .btn-share-list {
+      display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px;
+      background: none; border: 1.5px solid var(--border); border-radius: var(--radius-full);
+      color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .btn-share-list:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Empty state */
+    .wishlist-empty {
+      grid-column: 1 / -1; text-align: center; padding: 80px 24px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+    }
+    .wishlist-empty-icon { font-size: 4rem; margin-bottom: 20px; }
+
+    @media (max-width: 480px) {
+      .wishlist-grid { grid-template-columns: repeat(2, 1fr); }
+      .wl-card-img { height: 140px; font-size: 2.5rem; }
+    }
+  </style>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6C47FF" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="YaroShop" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#navGrad)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="navGrad" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-search" id="navSearch">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Rechercher produits, boutiques..." id="navSearchInput" />
+      <button class="search-btn" onclick="navSearch()">Rechercher</button>
+    </div>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="wishlist.html" class="nav-icon-btn" style="border-color:var(--primary);color:var(--primary)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="var(--primary)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="nav-badge">8</span>
+      </a>
+      <a href="notifications.html" class="nav-icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="nav-badge">5</span></a>
+      <button class="nav-icon-btn" onclick="openCartPanel()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="nav-badge">3</span></button>
+      <div class="nav-profile-wrap" id="profileDropdownWrap">
+        <div class="nav-avatar-btn" onclick="toggleProfileDropdown()">J<div class="nav-avatar-online"></div></div>
+        <div class="nav-dropdown" id="profileDropdown">
+          <div class="nav-dropdown-header"><div class="nav-dropdown-name">Jean-Paul Mbemba</div><div class="nav-dropdown-email">jean@email.com</div></div>
+          <a href="profile.html" class="nav-dropdown-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mon profil</a>
+          <a href="orders.html" class="nav-dropdown-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Mes commandes</a>
+          <a href="wishlist.html" class="nav-dropdown-item active"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favoris</a>
+          <a href="dashboard.html" class="nav-dropdown-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard vendeur</a>
+          <div class="nav-dropdown-sep"></div>
+          <button class="nav-dropdown-item danger" onclick="window.location='login.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="orders.html">Mes commandes</a>
+    <a href="profile.html">Mon profil</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<main class="wishlist-page">
+  <div class="wishlist-container">
+    <div class="wishlist-header">
+      <div>
+        <h1>Mes Favoris <span class="gradient-text">8 articles</span></h1>
+      </div>
+      <div class="wishlist-header-actions">
+        <button class="btn-share-list" onclick="shareWishlist()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Partager ma liste
+        </button>
+        <button class="btn-wl-action btn-wl-primary" onclick="addAllToCart()">
+          Tout ajouter au panier
+        </button>
+      </div>
+    </div>
+
+    <div class="wishlist-toolbar">
+      <span class="wl-count">8 produits enregistrés</span>
+      <select class="wl-sort" onchange="sortWishlist(this.value)">
+        <option value="recent">Plus récents</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="promo">Promotions d'abord</option>
+      </select>
+    </div>
+
+    <div class="wishlist-grid" id="wishlistGrid">
+
+      <!-- Item 1 -->
+      <div class="wl-card">
+        <div class="wl-card-img">
+          <div class="wl-card-img-gradient" style="background:linear-gradient(135deg,rgba(108,71,255,0.3),transparent)"></div>
+          📱
+          <span class="wl-badge wl-badge-sale">-15%</span>
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Samsung Galaxy A54')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">TechStyle Kinshasa ✓</div>
+          <div class="wl-name">Samsung Galaxy A54 5G — 256Go</div>
+          <div class="wl-rating"><span>★★★★★</span> 4.9 (112)</div>
+          <div class="wl-price-row">
+            <span class="wl-price">350 $</span>
+            <span class="wl-price-old">412 $</span>
+            <span class="wl-price-save">-15%</span>
+          </div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Samsung Galaxy A54')">Ajouter au panier</button>
+            <a href="https://wa.me/243810000001?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20le%20Samsung%20Galaxy%20A54" class="btn-wl-wa" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            </a>
+          </div>
+          <div class="wl-added-date">Ajouté le 12 mars 2024</div>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="wl-card">
+        <div class="wl-card-img">
+          <div class="wl-card-img-gradient" style="background:linear-gradient(135deg,rgba(255,107,53,0.3),transparent)"></div>
+          👗
+          <span class="wl-badge wl-badge-new">Nouveau</span>
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Robe Kente')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">Mode Élégance Brazza</div>
+          <div class="wl-name">Robe Kente Moderne — Collection 2024</div>
+          <div class="wl-rating"><span>★★★★☆</span> 4.7 (34)</div>
+          <div class="wl-price-row">
+            <span class="wl-price">65 $</span>
+          </div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Robe Kente')">Ajouter au panier</button>
+            <a href="https://wa.me/242060000002?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20la%20Robe%20Kente" class="btn-wl-wa" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            </a>
+          </div>
+          <div class="wl-added-date">Ajouté le 10 mars 2024</div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="wl-card">
+        <div class="wl-card-img">
+          <div class="wl-card-img-gradient" style="background:linear-gradient(135deg,rgba(92,219,149,0.2),transparent)"></div>
+          🌿
+          <span class="wl-badge wl-badge-low">Dernières pièces</span>
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Coffret Bio')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">Beauté Nature KIN ✓</div>
+          <div class="wl-name">Coffret Soins Naturels Bio Complet</div>
+          <div class="wl-rating"><span>★★★★★</span> 5.0 (28)</div>
+          <div class="wl-price-row">
+            <span class="wl-price">78 $</span>
+            <span class="wl-price-old">95 $</span>
+            <span class="wl-price-save">-18%</span>
+          </div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Coffret Bio')">Ajouter au panier</button>
+            <a href="https://wa.me/243810000003?text=Bonjour%2C%20je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20le%20Coffret%20Bio" class="btn-wl-wa" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.371-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51c-.173-.008-.371-.01-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            </a>
+          </div>
+          <div class="wl-stock-warn">⚠ Plus que 3 en stock !</div>
+          <div class="wl-added-date">Ajouté le 8 mars 2024</div>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="wl-card">
+        <div class="wl-card-img">
+          <div class="wl-card-img-gradient" style="background:linear-gradient(135deg,rgba(255,204,0,0.2),transparent)"></div>
+          👟
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Nike AF1')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">SneakerHub Brazza ✓</div>
+          <div class="wl-name">Nike Air Force 1 — Blanc/Or — Taille 42</div>
+          <div class="wl-rating"><span>★★★★★</span> 4.8 (76)</div>
+          <div class="wl-price-row">
+            <span class="wl-price">89 $</span>
+          </div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Nike AF1')">Ajouter au panier</button>
+            <a href="https://wa.me/242060000005?text=Bonjour%2C%20Nike%20Air%20Force%201" class="btn-wl-wa" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.371-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51c-.173-.008-.371-.01-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            </a>
+          </div>
+          <div class="wl-added-date">Ajouté le 5 mars 2024</div>
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="wl-card">
+        <div class="wl-card-img">
+          <div class="wl-card-img-gradient" style="background:linear-gradient(135deg,rgba(108,71,255,0.2),transparent)"></div>
+          💻
+          <span class="wl-badge wl-badge-sale">-8%</span>
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'HP Pavilion')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">TechStyle Kinshasa ✓</div>
+          <div class="wl-name">Laptop HP Pavilion 15 — i5 8Go 512Go SSD</div>
+          <div class="wl-rating"><span>★★★★☆</span> 4.5 (42)</div>
+          <div class="wl-price-row">
+            <span class="wl-price">520 $</span>
+            <span class="wl-price-old">565 $</span>
+            <span class="wl-price-save">-8%</span>
+          </div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('HP Pavilion')">Ajouter au panier</button>
+            <a href="https://wa.me/243810000001?text=Bonjour%2C%20HP%20Pavilion%2015" class="btn-wl-wa" target="_blank">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.371-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51c-.173-.008-.371-.01-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            </a>
+          </div>
+          <div class="wl-added-date">Ajouté le 2 mars 2024</div>
+        </div>
+      </div>
+
+      <!-- Items 6-8: compact -->
+      <div class="wl-card">
+        <div class="wl-card-img">
+          <div class="wl-card-img-gradient" style="background:linear-gradient(135deg,rgba(255,107,53,0.2),transparent)"></div>
+          🍎
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Panier Bio')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">FreshMarket Kin</div>
+          <div class="wl-name">Panier Fruits & Légumes Bio — Grande taille</div>
+          <div class="wl-rating"><span>★★★★★</span> 5.0 (89)</div>
+          <div class="wl-price-row"><span class="wl-price">45 $</span></div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Panier Bio')">Ajouter au panier</button>
+            <a href="https://wa.me/243810000004?text=Panier%20Bio" class="btn-wl-wa" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.371-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51c-.173-.008-.371-.01-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></a>
+          </div>
+          <div class="wl-added-date">Ajouté le 28 fév 2024</div>
+        </div>
+      </div>
+
+      <div class="wl-card">
+        <div class="wl-card-img" style="background:linear-gradient(135deg,rgba(108,71,255,0.1),var(--bg-3))">
+          🎧
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Écouteurs Sony')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">TechStyle Kinshasa ✓</div>
+          <div class="wl-name">Sony WH-1000XM5 Noise Cancelling</div>
+          <div class="wl-rating"><span>★★★★★</span> 4.9 (203)</div>
+          <div class="wl-price-row"><span class="wl-price">280 $</span></div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Sony WH-1000XM5')">Ajouter au panier</button>
+            <a href="https://wa.me/243810000001?text=Sony%20WH-1000XM5" class="btn-wl-wa" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.371-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51c-.173-.008-.371-.01-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></a>
+          </div>
+          <div class="wl-added-date">Ajouté le 20 fév 2024</div>
+        </div>
+      </div>
+
+      <div class="wl-card">
+        <div class="wl-card-img" style="background:linear-gradient(135deg,rgba(255,204,0,0.1),var(--bg-3))">
+          🏠
+          <button class="btn-wl-remove" onclick="removeWishlistItem(this, 'Tableau Moderne')">♥</button>
+        </div>
+        <div class="wl-card-body">
+          <div class="wl-vendor">Décor Maison Kin</div>
+          <div class="wl-name">Tableau Art Africain Moderne — 80x60cm</div>
+          <div class="wl-rating"><span>★★★★☆</span> 4.6 (18)</div>
+          <div class="wl-price-row"><span class="wl-price">95 $</span></div>
+          <div class="wl-actions">
+            <button class="btn-wl-cart" onclick="addToCart('Tableau Africain')">Ajouter au panier</button>
+            <a href="https://wa.me/243810000007?text=Tableau%20Africain" class="btn-wl-wa" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967c-.273-.099-.471-.148-.67.15c-.197.297-.767.966-.94 1.164c-.173.199-.347.223-.644.075c-.297-.15-1.255-.463-2.39-1.475c-.883-.788-1.48-1.761-1.653-2.059c-.173-.297-.018-.458.13-.606c.134-.133.298-.347.446-.52c.149-.174.198-.298.298-.497c.099-.198.05-.371-.025-.52c-.075-.149-.669-1.612-.916-2.207c-.242-.579-.487-.5-.669-.51c-.173-.008-.371-.01-.57-.01c-.198 0-.52.074-.792.372c-.272.297-1.04 1.016-1.04 2.479c0 1.462 1.065 2.875 1.213 3.074c.149.198 2.096 3.2 5.077 4.487c.709.306 1.262.489 1.694.625c.712.227 1.36.195 1.871.118c.571-.085 1.758-.719 2.006-1.413c.248-.694.248-1.289.173-1.413c-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.525 5.847L.057 23.47a.75.75 0 00.918.918l5.623-1.468A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.88 0-3.638-.5-5.157-1.374l-.37-.218-3.835 1.002 1.003-3.835-.218-.37A9.959 9.959 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg></a>
+          </div>
+          <div class="wl-added-date">Ajouté le 15 fév 2024</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-full);padding:12px 24px;font-size:0.875rem;font-weight:500;z-index:9999;transition:transform 0.3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)"></div>
+
+<script src="assets/app.js"></script>
+<script>
+  function removeWishlistItem(btn, name) {
+    const card = btn.closest('.wl-card');
+    card.style.animation = 'fadeOut 0.3s ease forwards';
+    setTimeout(() => {
+      card.remove();
+      showToast(name + ' retiré des favoris', 'info');
+    }, 280);
+  }
+  function addToCart(name) {
+    showToast(name + ' ajouté au panier ✓', 'success');
+  }
+  function addAllToCart() {
+    showToast('Tous les articles ajoutés au panier !', 'success');
+  }
+  function shareWishlist() {
+    if (navigator.share) {
+      navigator.share({ title: 'Ma liste YaroShop', url: window.location.href });
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      showToast('Lien copié dans le presse-papier !', 'success');
+    }
+  }
+  function sortWishlist(val) {
+    showToast('Liste triée par : ' + val, 'info');
+  }
+  const style = document.createElement('style');
+  style.textContent = '@keyframes fadeOut { to { opacity:0; transform:scale(0.9); } }';
+  document.head.appendChild(style);
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "name": "YaroShop — Marketplace Afrique Centrale",
+  "short_name": "YaroShop",
+  "description": "La première grande marketplace d'Afrique centrale. Achetez, vendez, livrez.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0A0A0F",
+  "theme_color": "#6C47FF",
+  "categories": ["shopping", "business"],
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Marketplace",
+      "short_name": "Marché",
+      "description": "Explorer la marketplace",
+      "url": "/marketplace.html",
+      "icons": [{ "src": "assets/logo.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Mon Panier",
+      "short_name": "Panier",
+      "description": "Voir mon panier",
+      "url": "/cart.html",
+      "icons": [{ "src": "assets/logo.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Vendre",
+      "short_name": "Vendre",
+      "description": "Créer ma boutique",
+      "url": "/register.html",
+      "icons": [{ "src": "assets/logo.svg", "sizes": "any" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/logo.svg",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "YaroShop Marketplace"
+    }
+  ]
+}

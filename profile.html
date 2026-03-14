@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Profil — YaroShop</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .profile-page { padding: 90px 0 80px; min-height: 100vh; }
+    .profile-container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+    .profile-grid { display: grid; grid-template-columns: 260px 1fr; gap: 28px; align-items: start; }
+
+    /* Sidebar */
+    .profile-sidebar { display: flex; flex-direction: column; gap: 12px; }
+    .profile-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 28px; text-align: center;
+    }
+    .profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: 16px; }
+    .profile-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 800; color: white; margin: 0 auto;
+      border: 3px solid var(--border);
+    }
+    .avatar-edit-btn {
+      position: absolute; bottom: 0; right: 0; width: 26px; height: 26px;
+      background: var(--primary); border-radius: 50%; border: 2px solid var(--bg-card);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      color: white;
+    }
+    .profile-name { font-weight: 800; font-size: 1.1rem; margin-bottom: 4px; }
+    .profile-handle { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px; }
+    .profile-verified-badge {
+      display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+      background: rgba(108,71,255,0.1); border: 1px solid rgba(108,71,255,0.25);
+      border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; color: var(--primary);
+    }
+    .profile-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px;
+    }
+    .profile-stat {
+      background: var(--bg-3); border-radius: var(--radius-md); padding: 10px;
+      text-align: center;
+    }
+    .profile-stat-val { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .profile-stat-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Nav links */
+    .profile-nav {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 8px; overflow: hidden;
+    }
+    .profile-nav-item {
+      display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+      border-radius: var(--radius-lg); font-size: 0.875rem; color: var(--text-secondary);
+      cursor: pointer; transition: all var(--transition); text-decoration: none;
+    }
+    .profile-nav-item:hover { background: var(--bg-3); color: var(--text); }
+    .profile-nav-item.active { background: rgba(108,71,255,0.1); color: var(--primary); font-weight: 600; }
+    .profile-nav-item svg { flex-shrink: 0; }
+    .profile-nav-sep { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* Main content */
+    .profile-section { display: none; animation: fadeIn 0.3s ease; }
+    .profile-section.active { display: block; }
+    .section-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 28px; margin-bottom: 20px;
+    }
+    .section-card-title {
+      font-size: 1rem; font-weight: 700; margin-bottom: 6px;
+      display: flex; align-items: center; gap: 10px; justify-content: space-between;
+    }
+    .section-card-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 0.82rem; font-weight: 500; color: var(--text-secondary); }
+    .form-field input, .form-field select, .form-field textarea {
+      padding: 10px 14px; background: var(--bg-3); border: 1.5px solid var(--border);
+      border-radius: var(--radius-md); color: var(--text); font-family: inherit;
+      font-size: 0.9rem; transition: border-color var(--transition); width: 100%;
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--primary); }
+    .form-field textarea { resize: vertical; min-height: 80px; }
+    .form-field select option { background: var(--bg-card); }
+    .btn-save {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--primary); color: white; border: none; padding: 11px 24px;
+      border-radius: var(--radius-lg); font-weight: 600; font-size: 0.875rem;
+      cursor: pointer; transition: opacity var(--transition);
+    }
+    .btn-save:hover { opacity: 0.85; }
+    .btn-save-outline {
+      background: none; border: 1.5px solid var(--border); color: var(--text);
+      padding: 11px 24px; border-radius: var(--radius-lg); font-weight: 600;
+      font-size: 0.875rem; cursor: pointer; transition: all var(--transition);
+    }
+    .btn-save-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Avatar upload */
+    .avatar-upload {
+      border: 2px dashed var(--border); border-radius: var(--radius-xl); padding: 32px;
+      text-align: center; cursor: pointer; transition: all var(--transition);
+    }
+    .avatar-upload:hover { border-color: var(--primary); background: rgba(108,71,255,0.03); }
+    .avatar-upload-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .avatar-upload p { font-size: 0.875rem; color: var(--text-muted); }
+    .avatar-upload strong { color: var(--primary); }
+
+    /* Security */
+    .security-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px;
+    }
+    .security-item:last-child { border-bottom: none; }
+    .security-info h4 { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+    .security-info p { font-size: 0.8rem; color: var(--text-muted); }
+    .security-status {
+      font-size: 0.75rem; font-weight: 600; padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+    .security-status.ok { background: rgba(92,219,149,0.12); color: #5CDB95; border: 1px solid rgba(92,219,149,0.3); }
+    .security-status.warn { background: rgba(255,204,0,0.1); color: #FFCC00; border: 1px solid rgba(255,204,0,0.25); }
+    .btn-security {
+      background: none; border: 1.5px solid var(--border); color: var(--text-secondary);
+      padding: 7px 14px; border-radius: var(--radius-md); font-size: 0.8rem;
+      font-weight: 500; cursor: pointer; transition: all var(--transition);
+    }
+    .btn-security:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Sessions */
+    .session-item {
+      display: flex; align-items: center; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .session-item:last-child { border-bottom: none; }
+    .session-device {
+      width: 40px; height: 40px; background: var(--bg-3); border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .session-info h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 2px; }
+    .session-info p { font-size: 0.78rem; color: var(--text-muted); }
+    .session-current { margin-left: auto; font-size: 0.72rem; font-weight: 600; color: #5CDB95; background: rgba(92,219,149,0.1); padding: 3px 8px; border-radius: var(--radius-full); }
+    .btn-session-revoke { margin-left: auto; background: none; border: 1px solid rgba(255,85,85,0.3); color: #FF5555; padding: 5px 12px; border-radius: var(--radius-md); font-size: 0.78rem; cursor: pointer; transition: background var(--transition); }
+    .btn-session-revoke:hover { background: rgba(255,85,85,0.08); }
+
+    /* Payment methods */
+    .payment-method-item {
+      display: flex; align-items: center; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .payment-method-item:last-child { border-bottom: none; }
+    .pm-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-md); font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 800;
+    }
+    .pm-icon.airtel { background: rgba(255,0,0,0.1); color: #FF3B3B; }
+    .pm-icon.mtn { background: rgba(255,204,0,0.12); color: #FFCC00; }
+    .pm-icon.orange { background: rgba(255,107,53,0.12); color: var(--accent); }
+    .pm-info h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 2px; }
+    .pm-info p { font-size: 0.78rem; color: var(--text-muted); }
+    .pm-default { font-size: 0.7rem; font-weight: 700; background: rgba(108,71,255,0.1); color: var(--primary); padding: 2px 8px; border-radius: var(--radius-full); }
+    .btn-pm-remove { margin-left: auto; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; transition: color var(--transition); }
+    .btn-pm-remove:hover { color: #FF5555; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .profile-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .profile-stats { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6C47FF" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="YaroShop" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#navGrad)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="navGrad" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-search" id="navSearch">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Rechercher produits, boutiques..." id="navSearchInput" />
+      <button class="search-btn" onclick="navSearch()">Rechercher</button>
+    </div>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="wishlist.html" class="nav-icon-btn" title="Favoris">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </a>
+      <a href="notifications.html" class="nav-icon-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="nav-badge">5</span>
+      </a>
+      <button class="nav-icon-btn" onclick="openCartPanel()" title="Panier">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="nav-badge">3</span>
+      </button>
+      <div class="nav-profile-wrap" id="profileDropdownWrap">
+        <div class="nav-avatar-btn" onclick="toggleProfileDropdown()">J<div class="nav-avatar-online"></div></div>
+        <div class="nav-dropdown" id="profileDropdown">
+          <div class="nav-dropdown-header">
+            <div class="nav-dropdown-name">Jean-Paul Mbemba</div>
+            <div class="nav-dropdown-email">jean@email.com</div>
+          </div>
+          <a href="profile.html" class="nav-dropdown-item active"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mon profil</a>
+          <a href="orders.html" class="nav-dropdown-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Mes commandes</a>
+          <a href="wishlist.html" class="nav-dropdown-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Favoris</a>
+          <a href="dashboard.html" class="nav-dropdown-item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard vendeur</a>
+          <div class="nav-dropdown-sep"></div>
+          <button class="nav-dropdown-item danger" onclick="window.location='login.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="orders.html">Mes commandes</a>
+    <a href="wishlist.html">Favoris</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<main class="profile-page">
+  <div class="profile-container">
+    <div class="profile-grid">
+
+      <!-- SIDEBAR -->
+      <div class="profile-sidebar">
+        <div class="profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">J</div>
+            <div class="avatar-edit-btn" onclick="document.getElementById('avatarFile').click()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <input type="file" id="avatarFile" accept="image/*" style="display:none" />
+          </div>
+          <div class="profile-name">Jean-Paul Mbemba</div>
+          <div class="profile-handle">@jeanpaul · Kinshasa, DRC</div>
+          <div class="profile-verified-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Compte vérifié
+          </div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-val">24</div>
+              <div class="profile-stat-label">Commandes</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val">8</div>
+              <div class="profile-stat-label">Favoris</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val">4.9</div>
+              <div class="profile-stat-label">Note</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-val">2</div>
+              <div class="profile-stat-label">Avis</div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="profile-nav">
+          <a class="profile-nav-item active" onclick="showSection('info', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Informations personnelles
+          </a>
+          <a class="profile-nav-item" onclick="showSection('address', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Adresses
+          </a>
+          <a class="profile-nav-item" onclick="showSection('payments', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Méthodes de paiement
+          </a>
+          <div class="profile-nav-sep"></div>
+          <a class="profile-nav-item" onclick="showSection('security', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Sécurité
+          </a>
+          <a class="profile-nav-item" onclick="showSection('sessions', this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Appareils connectés
+          </a>
+          <div class="profile-nav-sep"></div>
+          <a class="profile-nav-item" style="color:#FF5555" onclick="window.location='login.html'">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Se déconnecter
+          </a>
+        </nav>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="profile-main">
+
+        <!-- INFO SECTION -->
+        <div class="profile-section active" id="section-info">
+          <div class="section-card">
+            <div class="section-card-title">
+              Informations personnelles
+              <button class="btn-save" onclick="saveSection('info')">Enregistrer</button>
+            </div>
+            <div class="section-card-desc">Ces informations sont privées et ne sont pas visibles publiquement.</div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Prénom</label>
+                <input type="text" value="Jean-Paul" />
+              </div>
+              <div class="form-field">
+                <label>Nom</label>
+                <input type="text" value="Mbemba" />
+              </div>
+              <div class="form-field">
+                <label>Email</label>
+                <input type="email" value="jean@email.com" />
+              </div>
+              <div class="form-field">
+                <label>Téléphone WhatsApp</label>
+                <input type="tel" value="+243 81 000 0000" />
+              </div>
+              <div class="form-field">
+                <label>Date de naissance</label>
+                <input type="date" value="1992-03-15" />
+              </div>
+              <div class="form-field">
+                <label>Sexe</label>
+                <select>
+                  <option selected>Homme</option>
+                  <option>Femme</option>
+                  <option>Préfère ne pas indiquer</option>
+                </select>
+              </div>
+              <div class="form-field full">
+                <label>Bio (optionnel)</label>
+                <textarea placeholder="Quelques mots sur vous...">Acheteur passionné de tech et mode africaine. Basé à Kinshasa.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-card-title">Photo de profil</div>
+            <div class="section-card-desc">JPG, PNG ou GIF. Taille max 2MB.</div>
+            <div class="avatar-upload" onclick="document.getElementById('avatarFile').click()">
+              <div class="avatar-upload-icon">📷</div>
+              <p><strong>Cliquez pour choisir une photo</strong> ou glissez-déposez</p>
+              <p style="margin-top:6px;font-size:0.78rem">PNG, JPG jusqu'à 2MB</p>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-card-title">
+              Préférences de langue & région
+            </div>
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Langue</label>
+                <select>
+                  <option selected>Français</option>
+                  <option>English</option>
+                  <option>Lingala</option>
+                  <option>Kituba</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Devise d'affichage</label>
+                <select>
+                  <option selected>USD ($)</option>
+                  <option>CDF (FC)</option>
+                  <option>XAF (FCFA)</option>
+                  <option>EUR (€)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Fuseau horaire</label>
+                <select>
+                  <option selected>Africa/Kinshasa (UTC+1)</option>
+                  <option>Africa/Brazzaville (UTC+1)</option>
+                  <option>Europe/Paris (UTC+1)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Pays</label>
+                <select>
+                  <option selected>République Démocratique du Congo</option>
+                  <option>République du Congo</option>
+                  <option>Angola</option>
+                  <option>France</option>
+                  <option>Belgique</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:10px">
+              <button class="btn-save" onclick="saveSection('prefs')">Enregistrer les préférences</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADDRESS SECTION -->
+        <div class="profile-section" id="section-address">
+          <div class="section-card">
+            <div class="section-card-title">
+              Mes adresses de livraison
+              <button class="btn-save" onclick="addAddress()">+ Ajouter une adresse</button>
+            </div>
+            <div class="section-card-desc">Vos adresses enregistrées pour accélérer le checkout.</div>
+
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <!-- Address 1 -->
+              <div style="background:var(--bg-3);border:1.5px solid var(--primary);border-radius:var(--radius-lg);padding:16px;position:relative">
+                <div style="position:absolute;top:12px;right:12px;font-size:0.7rem;font-weight:700;background:rgba(108,71,255,0.1);color:var(--primary);padding:2px 8px;border-radius:999px">Principale</div>
+                <div style="font-weight:600;margin-bottom:4px">Jean-Paul Mbemba</div>
+                <div style="font-size:0.85rem;color:var(--text-muted)">Commune de Gombe, Avenue du Kasaï<br>Kinshasa, DRC · +243 81 000 0000</div>
+                <div style="display:flex;gap:8px;margin-top:12px">
+                  <button class="btn-save-outline" style="padding:6px 14px;font-size:0.78rem">Modifier</button>
+                  <button class="btn-save-outline" style="padding:6px 14px;font-size:0.78rem;color:#FF5555;border-color:rgba(255,85,85,0.3)">Supprimer</button>
+                </div>
+              </div>
+              <!-- Address 2 -->
+              <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px">
+                <div style="font-weight:600;margin-bottom:4px">Bureau — Lingwala</div>
+                <div style="font-size:0.85rem;color:var(--text-muted)">Commune de Lingwala, Avenue Tombalbaye<br>Kinshasa, DRC · +243 81 000 0001</div>
+                <div style="display:flex;gap:8px;margin-top:12px">
+                  <button class="btn-save-outline" style="padding:6px 14px;font-size:0.78rem">Modifier</button>
+                  <button class="btn-save-outline" style="padding:6px 14px;font-size:0.78rem">Définir principale</button>
+                  <button class="btn-save-outline" style="padding:6px 14px;font-size:0.78rem;color:#FF5555;border-color:rgba(255,85,85,0.3)">Supprimer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAYMENTS SECTION -->
+        <div class="profile-section" id="section-payments">
+          <div class="section-card">
+            <div class="section-card-title">
+              Méthodes de paiement
+              <button class="btn-save" onclick="addPayment()">+ Ajouter</button>
+            </div>
+            <div class="section-card-desc">Vos numéros Mobile Money enregistrés pour le paiement rapide.</div>
+            <div>
+              <div class="payment-method-item">
+                <div class="pm-icon airtel">A</div>
+                <div class="pm-info">
+                  <h4>Airtel Money</h4>
+                  <p>+243 81 *** **00</p>
+                </div>
+                <span class="pm-default">Par défaut</span>
+                <button class="btn-pm-remove" title="Supprimer">×</button>
+              </div>
+              <div class="payment-method-item">
+                <div class="pm-icon mtn">M</div>
+                <div class="pm-info">
+                  <h4>MTN Mobile Money</h4>
+                  <p>+243 97 *** **12</p>
+                </div>
+                <button class="btn-pm-remove" title="Supprimer">×</button>
+              </div>
+              <div class="payment-method-item">
+                <div class="pm-icon orange">O</div>
+                <div class="pm-info">
+                  <h4>Orange Money</h4>
+                  <p>+242 06 *** **45</p>
+                </div>
+                <button class="btn-pm-remove" title="Supprimer">×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECURITY SECTION -->
+        <div class="profile-section" id="section-security">
+          <div class="section-card">
+            <div class="section-card-title">Sécurité du compte</div>
+            <div>
+              <div class="security-item">
+                <div class="security-info">
+                  <h4>Mot de passe</h4>
+                  <p>Dernière modification il y a 3 mois</p>
+                </div>
+                <span class="security-status ok">Sécurisé</span>
+                <button class="btn-security" onclick="changePassword()">Modifier</button>
+              </div>
+              <div class="security-item">
+                <div class="security-info">
+                  <h4>Vérification en 2 étapes (2FA)</h4>
+                  <p>Protège votre compte avec un code SMS</p>
+                </div>
+                <span class="security-status warn">Non activé</span>
+                <button class="btn-security" onclick="enable2FA()">Activer</button>
+              </div>
+              <div class="security-item">
+                <div class="security-info">
+                  <h4>Email de récupération</h4>
+                  <p>jean+recovery@email.com</p>
+                </div>
+                <span class="security-status ok">Vérifié</span>
+                <button class="btn-security">Modifier</button>
+              </div>
+              <div class="security-item">
+                <div class="security-info">
+                  <h4>Connexion via WhatsApp</h4>
+                  <p>Connectez-vous avec votre numéro WhatsApp</p>
+                </div>
+                <span class="security-status warn">Non lié</span>
+                <button class="btn-security">Lier</button>
+              </div>
+              <div class="security-item">
+                <div class="security-info">
+                  <h4>Connexion via Google</h4>
+                  <p>jean@gmail.com</p>
+                </div>
+                <span class="security-status ok">Lié</span>
+                <button class="btn-security">Délier</button>
+              </div>
+            </div>
+          </div>
+          <div class="section-card">
+            <div class="section-card-title" style="color:#FF5555">Zone dangereuse</div>
+            <div class="section-card-desc">Ces actions sont irréversibles. Procédez avec précaution.</div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <button style="padding:10px 20px;background:none;border:1.5px solid rgba(255,204,0,0.4);color:#FFCC00;border-radius:var(--radius-lg);font-weight:600;font-size:0.85rem;cursor:pointer">Télécharger mes données</button>
+              <button style="padding:10px 20px;background:none;border:1.5px solid rgba(255,85,85,0.4);color:#FF5555;border-radius:var(--radius-lg);font-weight:600;font-size:0.85rem;cursor:pointer" onclick="deleteAccount()">Supprimer mon compte</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SESSIONS SECTION -->
+        <div class="profile-section" id="section-sessions">
+          <div class="section-card">
+            <div class="section-card-title">
+              Appareils connectés
+              <button class="btn-save-outline" style="color:#FF5555;border-color:rgba(255,85,85,0.3);padding:8px 16px;font-size:0.82rem" onclick="revokeAll()">Tout déconnecter</button>
+            </div>
+            <div class="section-card-desc">Gérez les appareils qui ont accès à votre compte.</div>
+            <div>
+              <div class="session-item">
+                <div class="session-device">📱</div>
+                <div class="session-info">
+                  <h4>Chrome sur Android</h4>
+                  <p>Kinshasa, DRC · Airtel · Maintenant</p>
+                </div>
+                <span class="session-current">Appareil actuel</span>
+              </div>
+              <div class="session-item">
+                <div class="session-device">💻</div>
+                <div class="session-info">
+                  <h4>Firefox sur Windows</h4>
+                  <p>Kinshasa, DRC · Vodacom · Il y a 2 jours</p>
+                </div>
+                <button class="btn-session-revoke">Révoquer</button>
+              </div>
+              <div class="session-item">
+                <div class="session-device">📱</div>
+                <div class="session-info">
+                  <h4>Safari sur iPhone</h4>
+                  <p>Brazzaville, Congo · Orange · Il y a 5 jours</p>
+                </div>
+                <button class="btn-session-revoke">Révoquer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-full);padding:12px 24px;font-size:0.875rem;font-weight:500;z-index:9999;transition:transform 0.3s ease;white-space:nowrap;box-shadow:var(--shadow-lg)"></div>
+
+<script src="assets/app.js"></script>
+<script>
+  function showSection(id, el) {
+    document.querySelectorAll('.profile-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.profile-nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('section-' + id).classList.add('active');
+    el.classList.add('active');
+  }
+  function saveSection(id) { showToast('Modifications enregistrées !', 'success'); }
+  function addAddress() { showToast('Formulaire d\'adresse bientôt disponible', 'info'); }
+  function addPayment() { showToast('Ajout de méthode de paiement bientôt disponible', 'info'); }
+  function changePassword() { showToast('Un email de réinitialisation a été envoyé', 'info'); }
+  function enable2FA() { showToast('Configuration 2FA bientôt disponible', 'info'); }
+  function revokeAll() {
+    if (confirm('Déconnecter tous les autres appareils ?')) showToast('Tous les appareils ont été déconnectés', 'success');
+  }
+  function deleteAccount() {
+    if (confirm('ATTENTION : Supprimer votre compte est irréversible. Continuer ?')) {
+      showToast('Demande de suppression envoyée', 'error');
+    }
+  }
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>
