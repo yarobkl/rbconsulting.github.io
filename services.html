@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Créer votre site web professionnel — YaroShop Services</title>
+  <meta name="description" content="YaroShop crée votre site web professionnel en quelques jours. E-commerce, vitrine, restaurant. Devis gratuit, livraison rapide." />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .services-pricing { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin: 64px 0; }
+    .pricing-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 36px; position: relative;
+      transition: var(--transition);
+    }
+    .pricing-card:hover { border-color: var(--border-hover); transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .pricing-card.featured {
+      background: linear-gradient(135deg, rgba(108,71,255,0.08), rgba(255,107,53,0.05));
+      border-color: var(--primary);
+      box-shadow: var(--shadow-glow);
+    }
+    .pricing-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; font-size: 12px; font-weight: 700;
+      padding: 4px 16px; border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .pricing-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+    .pricing-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .pricing-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+    .pricing-price { font-size: 36px; font-weight: 900; margin-bottom: 4px; }
+    .pricing-price span { font-size: 16px; font-weight: 500; color: var(--text-secondary); }
+    .pricing-delay { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    .pricing-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .pricing-feature { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .pricing-feature svg { color: var(--success); flex-shrink: 0; }
+    .pricing-feature-no { color: var(--text-muted); }
+    .pricing-feature-no svg { color: var(--text-muted); }
+    .btn-pricing {
+      width: 100%; padding: 14px;
+      border-radius: var(--radius-full);
+      font-size: 15px; font-weight: 700;
+      text-align: center;
+      display: block;
+      transition: var(--transition);
+    }
+    .btn-pricing-primary { background: linear-gradient(135deg,var(--primary),var(--accent)); color: #fff; }
+    .btn-pricing-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(108,71,255,0.5); }
+    .btn-pricing-outline { background: var(--bg-3); border: 1px solid var(--border); color: var(--text); }
+    .btn-pricing-outline:hover { border-color: var(--primary); color: var(--primary-light); }
+
+    .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin: 64px 0; position: relative; }
+    .process-steps::before { content:''; position:absolute; top:40px; left:12%; right:12%; height:2px; background: linear-gradient(90deg,var(--primary),var(--accent)); opacity:0.3; }
+    .process-step { text-align: center; position: relative; }
+    .process-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,var(--primary),var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: #fff;
+      margin: 0 auto 16px;
+      position: relative; z-index: 1;
+    }
+    .process-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .process-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+    .portfolio-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin: 40px 0; }
+    .portfolio-item {
+      border-radius: var(--radius-xl); overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .portfolio-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border-hover); }
+    .portfolio-mockup { height: 200px; position: relative; overflow: hidden; }
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: var(--transition);
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-info { padding: 16px 20px; }
+    .portfolio-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .portfolio-type { font-size: 12px; color: var(--text-muted); }
+
+    .contact-form-section {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) {
+      .services-pricing { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .process-steps::before { display: none; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .contact-form-section { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#lgS)"/><path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/><circle cx="22" cy="11" r="3" fill="white"/><defs><linearGradient id="lgS" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs></svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link" style="color:var(--primary-light)">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Se connecter</a>
+      <a href="register.html" class="btn-primary">Vendre</a>
+    </div>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="index.html">Accueil</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="services.html">Services Web</a>
+    <a href="login.html">Se connecter</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="services-hero">
+  <div class="container">
+    <span class="section-tag" style="display:inline-block;margin-bottom:16px">Services YaroShop</span>
+    <h1>Votre site web<br/><span class="gradient-text">professionnel</span></h1>
+    <p>YaroShop crée votre présence digitale en quelques jours. Sites modernes, rapides et adaptés à votre budget.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="#devis" class="btn-hero-primary">
+        Demander un devis gratuit
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://wa.me/243800000000?text=Bonjour%2C%20je%20veux%20cr%C3%A9er%20un%20site%20web" class="btn-hero-secondary" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Discuter sur WhatsApp
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="hero-stats" style="margin-top:48px">
+      <div class="hero-stat"><span class="stat-number">48</span><span class="stat-label">Sites livrés</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="stat-number">100</span><span class="stat-label">% clients satisfaits</span></div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat"><span class="stat-number">7</span><span class="stat-label">Jours en moyenne</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE TYPES -->
+<section style="padding:80px 0;background:var(--bg-2)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Nos offres</span>
+      <h2>Choisissez votre type de site</h2>
+      <p>Des solutions adaptées à chaque type d'activité, à des tarifs accessibles.</p>
+    </div>
+    <div class="services-types">
+      <div class="service-type-card active" data-type="ecommerce" onclick="selectType(this)">
+        <span class="service-type-icon">🛍️</span>
+        <h3>Site E-commerce</h3>
+        <p>Vendez vos produits en ligne avec panier, paiements intégrés et gestion de stock.</p>
+      </div>
+      <div class="service-type-card" data-type="vitrine" onclick="selectType(this)">
+        <span class="service-type-icon">🏢</span>
+        <h3>Site Vitrine</h3>
+        <p>Présentez votre entreprise avec un site moderne, élégant et professionnel.</p>
+      </div>
+      <div class="service-type-card" data-type="restaurant" onclick="selectType(this)">
+        <span class="service-type-icon">🍽️</span>
+        <h3>Restaurant</h3>
+        <p>Menu en ligne, réservations, commandes à emporter. Tout en un seul site.</p>
+      </div>
+      <div class="service-type-card" data-type="marque" onclick="selectType(this)">
+        <span class="service-type-icon">✨</span>
+        <h3>Marque Personnelle</h3>
+        <p>Portfolio, blog, coaching, influenceur. Votre marque, votre identité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section style="padding:80px 0">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Tarifs</span>
+      <h2>Des prix transparents</h2>
+      <p>Pas de surprises. Un prix fixe pour chaque offre, adapté au marché africain.</p>
+    </div>
+
+    <div class="services-pricing">
+      <div class="pricing-card">
+        <span class="pricing-icon">🌱</span>
+        <div class="pricing-title">Starter</div>
+        <div class="pricing-desc">Pour débuter avec une présence en ligne professionnelle</div>
+        <div class="pricing-price">100<span> USD</span></div>
+        <div class="pricing-delay">⏱ Livraison en 5-7 jours</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Site vitrine 5 pages</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Design responsive mobile</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Formulaire de contact</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Intégration WhatsApp</div>
+          <div class="pricing-feature pricing-feature-no"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> <span style="color:var(--text-muted)">Boutique e-commerce</span></div>
+          <div class="pricing-feature pricing-feature-no"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> <span style="color:var(--text-muted)">SEO avancé</span></div>
+        </div>
+        <a href="#devis" class="btn-pricing btn-pricing-outline" onclick="preselectPlan('Starter - 100$')">Choisir Starter</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">⭐ Le plus populaire</div>
+        <span class="pricing-icon">🚀</span>
+        <div class="pricing-title">Business</div>
+        <div class="pricing-desc">La solution complète pour les entrepreneurs ambitieux</div>
+        <div class="pricing-price">300<span> USD</span></div>
+        <div class="pricing-delay">⏱ Livraison en 7-14 jours</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Site complet jusqu'à 20 pages</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Boutique e-commerce</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Paiement Mobile Money intégré</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> SEO optimisé</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Dashboard admin</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 3 mois de support inclus</div>
+        </div>
+        <a href="#devis" class="btn-pricing btn-pricing-primary" onclick="preselectPlan('Business - 300$')">Choisir Business</a>
+      </div>
+
+      <div class="pricing-card">
+        <span class="pricing-icon">💎</span>
+        <div class="pricing-title">Enterprise</div>
+        <div class="pricing-desc">Pour les grandes entreprises avec des besoins complexes</div>
+        <div class="pricing-price">500+<span> USD</span></div>
+        <div class="pricing-delay">⏱ Délai sur mesure</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Tout Business inclus</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Fonctionnalités sur mesure</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> App mobile (iOS & Android)</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> API intégrations</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 12 mois support dédié</div>
+          <div class="pricing-feature"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Formation équipe incluse</div>
+        </div>
+        <a href="#devis" class="btn-pricing btn-pricing-outline" onclick="preselectPlan('Enterprise - Sur devis')">Demander un devis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section style="padding:80px 0;background:var(--bg-2)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Notre processus</span>
+      <h2>Comment on travaille</h2>
+      <p>Un processus simple et transparent pour livrer votre site en temps record.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-num">1</div>
+        <div class="process-title">Devis gratuit</div>
+        <div class="process-desc">Remplissez le formulaire ou contactez-nous sur WhatsApp. Réponse sous 2h.</div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">2</div>
+        <div class="process-title">Brief & Design</div>
+        <div class="process-desc">Nous créons la maquette de votre site selon votre identité visuelle et vos besoins.</div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">3</div>
+        <div class="process-title">Développement</div>
+        <div class="process-desc">Développement rapide avec suivi quotidien. Vous validez chaque étape.</div>
+      </div>
+      <div class="process-step">
+        <div class="process-num">4</div>
+        <div class="process-title">Livraison</div>
+        <div class="process-desc">Mise en ligne, formation et remise des accès. Support 3 mois inclus.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section style="padding:80px 0">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Portfolio</span>
+      <h2>Nos réalisations</h2>
+      <p>Quelques exemples de sites créés pour nos clients en Afrique centrale.</p>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <div class="portfolio-mockup" style="background:linear-gradient(135deg,#6C47FF,#FF6B35)">
+          <div style="padding:20px;color:white">
+            <div style="background:rgba(255,255,255,0.2);border-radius:8px;height:30px;margin-bottom:12px"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:rgba(255,255,255,0.15);border-radius:8px;height:60px"></div>
+              <div style="background:rgba(255,255,255,0.15);border-radius:8px;height:60px"></div>
+            </div>
+          </div>
+          <div class="portfolio-overlay"><span style="color:white;font-weight:700">Voir le site →</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-name">ModeKinshasa.com</div>
+          <div class="portfolio-type">🛍️ E-commerce Mode • Kinshasa</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item">
+        <div class="portfolio-mockup" style="background:linear-gradient(135deg,#00C853,#0091EA)">
+          <div style="padding:20px;color:white">
+            <div style="background:rgba(255,255,255,0.2);border-radius:8px;height:50px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:24px">🍽️</div>
+            <div style="background:rgba(255,255,255,0.15);border-radius:8px;height:80px"></div>
+          </div>
+          <div class="portfolio-overlay"><span style="color:white;font-weight:700">Voir le site →</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-name">ChezMama-Brazza.com</div>
+          <div class="portfolio-type">🍽️ Restaurant • Brazzaville</div>
+        </div>
+      </div>
+
+      <div class="portfolio-item">
+        <div class="portfolio-mockup" style="background:linear-gradient(135deg,#FF6B35,#FFB800)">
+          <div style="padding:20px;color:white">
+            <div style="background:rgba(255,255,255,0.2);border-radius:50%;width:60px;height:60px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px">✨</div>
+            <div style="background:rgba(255,255,255,0.15);border-radius:8px;height:40px;margin-bottom:8px"></div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:8px;height:30px;width:70%;margin:0 auto"></div>
+          </div>
+          <div class="portfolio-overlay"><span style="color:white;font-weight:700">Voir le site →</span></div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-name">CoachAkira.com</div>
+          <div class="portfolio-type">✨ Marque Personnelle • Lubumbashi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="devis" style="padding:80px 0;background:var(--bg-2)">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Devis gratuit</span>
+      <h2>Commençons votre projet</h2>
+      <p>Remplissez ce formulaire. Notre équipe vous contacte dans les 2 heures.</p>
+    </div>
+
+    <div class="contact-form-section">
+      <form id="webServiceForm" data-validate data-success-msg="Demande envoyée! Nous vous contactons sous 2h sur WhatsApp.">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nom de l'entreprise *</label>
+            <input class="form-input" type="text" name="company" placeholder="Ex: Boutique Élégance" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type d'activité *</label>
+            <input class="form-input" type="text" name="activity" placeholder="Ex: Mode, Restaurant, Coaching..." required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Type de site souhaité *</label>
+          <select class="form-input form-select" name="siteType" id="siteTypeSelect" required>
+            <option value="">Sélectionner...</option>
+            <option value="ecommerce">🛍️ Site E-commerce</option>
+            <option value="vitrine">🏢 Site Vitrine</option>
+            <option value="restaurant">🍽️ Restaurant</option>
+            <option value="marque">✨ Marque Personnelle</option>
+            <option value="autre">📱 Autre (préciser)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description du projet *</label>
+          <textarea class="form-input form-textarea" name="description" placeholder="Décrivez votre projet en quelques lignes. Que souhaitez-vous que votre site fasse? Quels sont vos besoins principaux?" required></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Budget estimé</label>
+            <select class="form-input form-select" name="budget">
+              <option value="">Sélectionner...</option>
+              <option value="100">100 USD (Starter)</option>
+              <option value="300">300 USD (Business)</option>
+              <option value="500">500+ USD (Enterprise)</option>
+              <option value="discuss">À discuter</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Délai souhaité</label>
+            <select class="form-input form-select" name="deadline">
+              <option value="">Sélectionner...</option>
+              <option value="asap">Le plus tôt possible</option>
+              <option value="2weeks">Dans 2 semaines</option>
+              <option value="1month">Dans 1 mois</option>
+              <option value="flexible">Flexible</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Numéro WhatsApp *</label>
+            <input class="form-input" type="tel" name="phone" placeholder="+243 8X XXX XXXX" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email (optionnel)</label>
+            <input class="form-input" type="email" name="email" placeholder="votre@email.com" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Avez-vous un site existant?</label>
+          <input class="form-input" type="url" name="existing" placeholder="https://votre-site-actuel.com (si applicable)" />
+        </div>
+
+        <button type="submit" class="form-submit">
+          Envoyer ma demande gratuitement
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-left:8px"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:12px">✓ Réponse sous 2h &nbsp;•&nbsp; ✓ Devis gratuit et sans engagement &nbsp;•&nbsp; ✓ Confidentialité garantie</p>
+      </form>
+
+      <div style="margin-top:32px;padding-top:32px;border-top:1px solid var(--border);text-align:center">
+        <p style="font-size:15px;color:var(--text-secondary);margin-bottom:16px">Vous préférez discuter directement?</p>
+        <a href="https://wa.me/243800000000?text=Bonjour%20YaroShop%2C%20je%20veux%20cr%C3%A9er%20un%20site%20web%20professionnel" class="btn-hero-secondary" target="_blank" style="display:inline-flex;justify-content:center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Nous contacter sur WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:80px 0">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">FAQ</span>
+      <h2>Questions fréquentes</h2>
+    </div>
+    <div style="max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:12px">
+      <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer">
+        <summary style="font-size:15px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center">Combien de temps pour créer mon site? <span>+</span></summary>
+        <p style="margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.7">Pour un site Starter, nous livrons en 5-7 jours. Pour Business, comptez 7-14 jours. Pour Enterprise, le délai est défini ensemble selon la complexité du projet.</p>
+      </details>
+      <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer">
+        <summary style="font-size:15px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center">Comment se passe le paiement? <span>+</span></summary>
+        <p style="margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.7">50% à la commande, 50% à la livraison. Nous acceptons Airtel Money, MTN Mobile Money, Orange Money et virement bancaire. Le paiement est 100% sécurisé.</p>
+      </details>
+      <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer">
+        <summary style="font-size:15px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center">Que comprend le support après livraison? <span>+</span></summary>
+        <p style="margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.7">Le plan Business inclut 3 mois de support via WhatsApp pour les corrections et petites modifications. Entreprise inclut 12 mois avec un dédié. Possibilité d'étendre via nos plans de maintenance.</p>
+      </details>
+      <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;cursor:pointer">
+        <summary style="font-size:15px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center">Je n'ai pas de logo, est-ce un problème? <span>+</span></summary>
+        <p style="margin-top:12px;font-size:14px;color:var(--text-secondary);line-height:1.7">Pas du tout! Nous créons votre identité visuelle (logo, couleurs, typographie) dans le cadre du projet. Il suffit de nous expliquer votre activité et votre style préféré.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--bg-2);border-top:1px solid var(--border);padding:32px 0">
+  <div class="container" style="text-align:center">
+    <a href="index.html" style="color:var(--primary-light);font-weight:600">← Retour à YaroShop</a>
+    <p style="font-size:13px;color:var(--text-muted);margin-top:12px">© 2024 YaroShop Services. Votre succès digital est notre mission.</p>
+  </div>
+</footer>
+
+<a href="https://wa.me/243800000000?text=Bonjour%2C%20je%20veux%20cr%C3%A9er%20un%20site%20web" class="whatsapp-float" target="_blank">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <span class="whatsapp-float-tooltip">Devis rapide</span>
+</a>
+
+<script src="assets/app.js"></script>
+<script>
+function selectType(card) {
+  document.querySelectorAll('.service-type-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  const typeSelect = document.getElementById('siteTypeSelect');
+  if (typeSelect) typeSelect.value = card.dataset.type;
+}
+function preselectPlan(plan) {
+  const budgetMap = { 'Starter - 100$': '100', 'Business - 300$': '300', 'Enterprise - Sur devis': 'discuss' };
+  const sel = document.querySelector('[name="budget"]');
+  if (sel && budgetMap[plan]) sel.value = budgetMap[plan];
+  document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

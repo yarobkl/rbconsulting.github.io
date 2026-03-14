@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechStyle Kinshasa — YaroShop</title>
+  <meta name="description" content="Boutique TechStyle Kinshasa sur YaroShop. Électronique, mode et accessoires de qualité. Vendeur vérifié avec 1248 ventes." />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .product-tabs { display: flex; gap: 4px; margin-bottom: 32px; border-bottom: 1px solid var(--border); }
+    .product-tab { padding: 12px 20px; font-size: 14px; font-weight: 600; color: var(--text-muted); border-bottom: 2px solid transparent; transition: var(--transition); cursor: pointer; }
+    .product-tab.active { color: var(--primary-light); border-bottom-color: var(--primary); }
+    .product-tab:hover:not(.active) { color: var(--text); }
+
+    .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; margin-bottom: 24px; }
+    .about-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .about-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+    .shop-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .shop-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius-full); padding: 6px 14px; font-size: 13px; font-weight: 500; }
+
+    .review-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 12px; }
+    .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .reviewer-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .reviewer-name { font-size: 14px; font-weight: 700; }
+    .reviewer-date { font-size: 12px; color: var(--text-muted); }
+    .review-text { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    .review-product { font-size: 12px; color: var(--primary-light); margin-top: 8px; }
+
+    .rating-overview { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 28px; margin-bottom: 24px; display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; }
+    .rating-big { text-align: center; }
+    .rating-big-num { font-size: 64px; font-weight: 900; line-height: 1; }
+    .rating-big-stars { font-size: 20px; color: var(--warning); margin: 4px 0; }
+    .rating-big-total { font-size: 13px; color: var(--text-muted); }
+    .rating-bars { display: flex; flex-direction: column; gap: 8px; }
+    .rating-bar-row { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .rating-bar-label { width: 30px; text-align: right; color: var(--text-muted); }
+    .rating-bar-track { flex: 1; height: 8px; background: var(--bg-3); border-radius: 4px; overflow: hidden; }
+    .rating-bar-fill { height: 100%; background: var(--warning); border-radius: 4px; }
+    .rating-bar-count { width: 30px; color: var(--text-muted); }
+
+    .whatsapp-contact {
+      background: linear-gradient(135deg, rgba(37,211,102,0.1), rgba(37,211,102,0.05));
+      border: 1px solid rgba(37,211,102,0.2);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .whatsapp-contact h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .whatsapp-contact p { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+    .btn-whatsapp-lg {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--whatsapp); color: #fff;
+      font-weight: 700; font-size: 15px;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      transition: var(--transition);
+      width: 100%; justify-content: center;
+    }
+    .btn-whatsapp-lg:hover { background: #1ebe5d; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.4); }
+
+    .shop-sidebar { position: sticky; top: calc(var(--nav-height) + 20px); }
+    .shop-main-layout { display: grid; grid-template-columns: 1fr 300px; gap: 32px; padding: 40px 0 80px; }
+    @media (max-width: 768px) { .shop-main-layout { grid-template-columns: 1fr; } .shop-sidebar { position: static; } .rating-overview { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#lg2)"/><path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/><circle cx="22" cy="11" r="3" fill="white"/><defs><linearGradient id="lg2" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs></svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Rechercher dans cette boutique..." />
+      <button class="search-btn">Rechercher</button>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-ghost">Se connecter</a>
+      <a href="register.html" class="btn-primary">Vendre</a>
+    </div>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="nav-mobile-search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Rechercher..."/></div>
+    <a href="index.html">Accueil</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="login.html">Se connecter</a>
+  </div>
+</nav>
+
+<!-- SHOP HERO -->
+<div class="shop-hero">
+  <div class="shop-cover">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.1;">
+      <svg width="300" height="200" viewBox="0 0 300 200"><text x="50%" y="50%" text-anchor="middle" fill="white" font-size="80" font-weight="900">TS</text></svg>
+    </div>
+  </div>
+  <div class="container">
+    <div class="shop-info">
+      <div class="shop-avatar-lg">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="TechStyle Kinshasa"/>
+      </div>
+      <div class="shop-details">
+        <div class="shop-name">
+          TechStyle Kinshasa
+          <span class="vendor-verified" style="font-size:20px">✅</span>
+        </div>
+        <div class="shop-meta">
+          <span class="shop-meta-item">⭐ <strong>4.9</strong> (847 avis)</span>
+          <span class="shop-meta-item">📦 1 248 ventes</span>
+          <span class="shop-meta-item">📍 Kinshasa, Congo</span>
+          <span class="shop-meta-item">📅 Membre depuis Jan 2023</span>
+          <span class="shop-meta-item">💬 Répond en &lt; 1h</span>
+        </div>
+        <p style="font-size:14px;color:var(--text-secondary);max-width:520px">Votre boutique de confiance pour l'électronique, la mode et les accessoires premium à Kinshasa. Livraison rapide, produits authentiques garantis.</p>
+      </div>
+      <div class="shop-actions">
+        <a href="https://wa.me/243800000001?text=Bonjour%20TechStyle%20Kinshasa" class="btn-follow" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:inline;margin-right:6px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Contacter
+        </a>
+        <button class="btn-share" onclick="shareShop()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-right:6px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Partager
+        </button>
+      </div>
+    </div>
+
+    <nav class="shop-nav">
+      <a href="#products" class="shop-nav-link active" onclick="showTab('products', this)">Produits (143)</a>
+      <a href="#about" class="shop-nav-link" onclick="showTab('about', this)">À propos</a>
+      <a href="#reviews" class="shop-nav-link" onclick="showTab('reviews', this)">Avis (847)</a>
+    </nav>
+  </div>
+</div>
+
+<!-- SHOP CONTENT -->
+<main class="container">
+  <div class="shop-main-layout">
+
+    <!-- Main content -->
+    <div>
+      <!-- PRODUCTS TAB -->
+      <div id="tab-products">
+        <div class="product-tabs">
+          <div class="product-tab active" onclick="filterCat(this,'all')">Tout voir</div>
+          <div class="product-tab" onclick="filterCat(this,'electronique')">📱 Électronique</div>
+          <div class="product-tab" onclick="filterCat(this,'mode')">👗 Mode</div>
+          <div class="product-tab" onclick="filterCat(this,'accessoires')">🎒 Accessoires</div>
+        </div>
+
+        <div class="products-grid-2">
+          <div class="product-card">
+            <div class="product-image-wrap">
+              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop" alt="Montre" loading="lazy"/>
+              <div class="product-badges"><span class="badge-hot">🔥 Hot</span></div>
+              <button class="product-wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Montre Connectée Premium</h3>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(124)</span></div>
+              <div class="product-footer">
+                <div class="product-price"><span class="price-current">45 000 FC</span><span class="price-old">60 000 FC</span></div>
+                <a href="https://wa.me/243800000001?text=Bonjour%2C%20Montre%20Connect%C3%A9e%20Premium%20disponible%3F" class="btn-whatsapp" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Commander</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image-wrap">
+              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&h=400&fit=crop" alt="Samsung" loading="lazy"/>
+              <button class="product-wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Samsung Galaxy S24 Ultra</h3>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(78)</span></div>
+              <div class="product-footer">
+                <div class="product-price"><span class="price-current">420 000 FC</span></div>
+                <a href="https://wa.me/243800000001?text=Bonjour%2C%20Samsung%20Galaxy%20S24%20Ultra%20disponible%3F" class="btn-whatsapp" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Commander</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image-wrap">
+              <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=400&fit=crop" alt="Sneakers" loading="lazy"/>
+              <div class="product-badges"><span class="badge-sale">-20%</span></div>
+              <button class="product-wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Sneakers Collection 2024</h3>
+              <div class="product-rating"><span class="stars">★★★★☆</span><span class="rating-count">(55)</span></div>
+              <div class="product-footer">
+                <div class="product-price"><span class="price-current">52 000 FC</span><span class="price-old">65 000 FC</span></div>
+                <a href="https://wa.me/243800000001?text=Bonjour%2C%20Sneakers%202024%20disponibles%3F" class="btn-whatsapp" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Commander</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="product-image-wrap">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop" alt="Chaussures" loading="lazy"/>
+              <button class="product-wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            </div>
+            <div class="product-info">
+              <h3 class="product-name">Chaussures Sport Premium</h3>
+              <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">(34)</span></div>
+              <div class="product-footer">
+                <div class="product-price"><span class="price-current">38 000 FC</span></div>
+                <a href="https://wa.me/243800000001?text=Chaussures%20Sport%20Premium%20dispo%3F" class="btn-whatsapp" target="_blank"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Commander</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT TAB -->
+      <div id="tab-about" style="display:none">
+        <div class="about-card">
+          <h3>À propos de TechStyle Kinshasa</h3>
+          <p>TechStyle Kinshasa est une boutique spécialisée dans la vente d'électronique, de mode et d'accessoires premium à Kinshasa, République Démocratique du Congo.</p>
+          <p style="margin-top:12px">Fondée en 2023, notre boutique s'est rapidement imposée comme l'une des références incontournables du commerce en ligne à Kinshasa. Nous proposons uniquement des produits authentiques, soigneusement sélectionnés auprès de fournisseurs de confiance.</p>
+          <p style="margin-top:12px">Notre engagement: livraison rapide, produits garantis, service client disponible 7j/7 via WhatsApp.</p>
+          <div class="shop-badges">
+            <span class="shop-badge">✅ Vendeur vérifié YaroShop</span>
+            <span class="shop-badge">🚚 Livraison Kinshasa en 24h</span>
+            <span class="shop-badge">💯 Produits authentiques</span>
+            <span class="shop-badge">🔄 Retours acceptés sous 7 jours</span>
+            <span class="shop-badge">📞 Support WhatsApp 24h/24</span>
+          </div>
+        </div>
+        <div class="about-card">
+          <h3>Politique de livraison</h3>
+          <p>📍 <strong>Kinshasa:</strong> Livraison en 24-48h — 3 000 FC</p>
+          <p style="margin-top:8px">🌍 <strong>Autres villes Congo:</strong> 3-7 jours — selon la ville</p>
+          <p style="margin-top:8px">💵 <strong>Paiement accepté:</strong> Airtel Money, MTN Money, Orange Money, Cash à la livraison</p>
+        </div>
+      </div>
+
+      <!-- REVIEWS TAB -->
+      <div id="tab-reviews" style="display:none">
+        <div class="rating-overview">
+          <div class="rating-big">
+            <div class="rating-big-num">4.9</div>
+            <div class="rating-big-stars">★★★★★</div>
+            <div class="rating-big-total">847 avis</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rating-bar-row"><span class="rating-bar-label">5⭐</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:89%"></div></div><span class="rating-bar-count">754</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">4⭐</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:8%"></div></div><span class="rating-bar-count">68</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">3⭐</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%"></div></div><span class="rating-bar-count">17</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">2⭐</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:0.5%"></div></div><span class="rating-bar-count">5</span></div>
+            <div class="rating-bar-row"><span class="rating-bar-label">1⭐</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:0.4%"></div></div><span class="rating-bar-count">3</span></div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face" alt="Marie"/>
+            <div>
+              <div class="reviewer-name">Marie K.</div>
+              <div class="reviewer-date">★★★★★ — il y a 2 jours</div>
+            </div>
+          </div>
+          <p class="review-text">Montre reçue en parfait état! La livraison était rapide, seulement 6 heures après la commande. Le vendeur est très professionnel et répond rapidement sur WhatsApp. Je recommande vivement!</p>
+          <p class="review-product">Montre Connectée Premium</p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Jean"/>
+            <div>
+              <div class="reviewer-name">Jean-Baptiste M.</div>
+              <div class="reviewer-date">★★★★★ — il y a 5 jours</div>
+            </div>
+          </div>
+          <p class="review-text">J'ai commandé le Samsung Galaxy S24. Produit 100% original avec boîte complète. Prix compétitif et livraison sécurisée. TechStyle Kinshasa est la référence pour l'électronique à Kinshasa.</p>
+          <p class="review-product">Samsung Galaxy S24 Ultra</p>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=80&h=80&fit=crop&crop=face" alt="Amina"/>
+            <div>
+              <div class="reviewer-name">Amina D.</div>
+              <div class="reviewer-date">★★★★★ — il y a 1 semaine</div>
+            </div>
+          </div>
+          <p class="review-text">Les sneakers sont exactement comme sur les photos. Vraie pointure, qualité premium. J'ai payé via Airtel Money, confirmation instantanée. Service irréprochable!</p>
+          <p class="review-product">Sneakers Collection 2024</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="shop-sidebar">
+      <div class="whatsapp-contact">
+        <h3>💬 Contacter le vendeur</h3>
+        <p>Posez vos questions, négociez le prix ou passez commande directement via WhatsApp.</p>
+        <a href="https://wa.me/243800000001?text=Bonjour%20TechStyle%20Kinshasa%2C%20je%20visite%20votre%20boutique%20sur%20YaroShop" class="btn-whatsapp-lg" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Ouvrir WhatsApp
+        </a>
+      </div>
+
+      <!-- Shop stats -->
+      <div class="sidebar-section" style="text-align:center">
+        <div class="sidebar-title">Statistiques boutique</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px">
+          <div><div style="font-size:24px;font-weight:900;color:var(--primary-light)">1 248</div><div style="font-size:12px;color:var(--text-muted)">Ventes totales</div></div>
+          <div><div style="font-size:24px;font-weight:900;color:var(--warning)">4.9</div><div style="font-size:12px;color:var(--text-muted)">Note moyenne</div></div>
+          <div><div style="font-size:24px;font-weight:900;color:var(--success)">98%</div><div style="font-size:12px;color:var(--text-muted)">Satisfaction</div></div>
+          <div><div style="font-size:24px;font-weight:900;color:var(--accent)">143</div><div style="font-size:12px;color:var(--text-muted)">Produits</div></div>
+        </div>
+      </div>
+
+      <!-- Payment methods -->
+      <div class="sidebar-section">
+        <div class="sidebar-title">Paiements acceptés</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span>📱</span> Airtel Money</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span>💛</span> MTN Mobile Money</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span>🟠</span> Orange Money</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span>💵</span> Cash à la livraison</div>
+        </div>
+      </div>
+
+      <!-- Report -->
+      <button onclick="reportVendor()" style="width:100%;text-align:center;padding:10px;font-size:13px;color:var(--text-muted);background:none;border:1px solid var(--border);border-radius:var(--radius-md);transition:var(--transition)">
+        ⚠️ Signaler cette boutique
+      </button>
+    </div>
+  </div>
+</main>
+
+<a href="https://wa.me/243800000001" class="whatsapp-float" target="_blank">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <span class="whatsapp-float-tooltip">Contacter le vendeur</span>
+</a>
+
+<script src="assets/app.js"></script>
+<script>
+function showTab(tab, el) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelectorAll('.shop-nav-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  return false;
+}
+function filterCat(el, cat) {
+  document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function shareShop() {
+  if (navigator.share) {
+    navigator.share({ title: 'TechStyle Kinshasa — YaroShop', url: window.location.href });
+  } else {
+    navigator.clipboard?.writeText(window.location.href);
+    alert('Lien copié!');
+  }
+}
+function reportVendor() {
+  if (confirm('Signaler cette boutique pour comportement suspect?')) {
+    alert('Signalement envoyé. Notre équipe va examiner la boutique. Merci!');
+  }
+}
+</script>
+</body>
+</html>
