@@ -363,3 +363,16 @@ window.addEventListener('load', () => {
     el.style.animation = 'fadeIn 0.5s cubic-bezier(0.4,0,0.2,1) both';
   });
 });
+
+// ── Pricing toggle ──────────────────────────────────────────────
+function togglePricing() {
+  const btn = document.getElementById("pricing-toggle");
+  const monthlyLabel = document.getElementById("toggle-monthly");
+  const annualLabel = document.getElementById("toggle-annual");
+  const isAnnual = btn.classList.toggle("annual");
+  monthlyLabel.classList.toggle("active", !isAnnual);
+  annualLabel.classList.toggle("active", isAnnual);
+  document.querySelectorAll(".price-amount").forEach(el => {
+    el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+  });
+}

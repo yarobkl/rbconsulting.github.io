@@ -748,6 +748,127 @@
 </section>
 
 <!-- ═══════════════════════════════════════════
+     PRICING / ABONNEMENTS
+═══════════════════════════════════════════ -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Abonnements</span>
+      <h2 class="section-title">Choisissez votre <span class="gradient-text">plan vendeur</span></h2>
+      <p class="section-subtitle">Commencez gratuitement, évoluez à votre rythme. Pas de frais cachés, pas de surprise.</p>
+    </div>
+
+    <div class="pricing-toggle">
+      <span class="toggle-label active" id="toggle-monthly">Mensuel</span>
+      <button class="toggle-switch" id="pricing-toggle" onclick="togglePricing()" aria-label="Changer facturation">
+        <span class="toggle-thumb"></span>
+      </button>
+      <span class="toggle-label" id="toggle-annual">Annuel <span class="badge-save">-20%</span></span>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="pricing-plan-badge free">Gratuit</div>
+        <h3 class="pricing-name">Starter</h3>
+        <p class="pricing-desc">Parfait pour démarrer et tester le marché</p>
+        <div class="pricing-price">
+          <span class="price-amount" data-monthly="0" data-annual="0">0</span>
+          <span class="price-currency">$</span>
+          <span class="price-period">/mois</span>
+        </div>
+        <ul class="pricing-features">
+          <li class="feat-ok">Jusqu'à 10 produits</li>
+          <li class="feat-ok">Boutique YaroShop publique</li>
+          <li class="feat-ok">Bouton Commander sur WhatsApp</li>
+          <li class="feat-ok">Statistiques de base</li>
+          <li class="feat-ok">Support communautaire</li>
+          <li class="feat-no">Badge "Vendeur Vérifié"</li>
+          <li class="feat-no">Produits sponsorisés</li>
+          <li class="feat-no">Analytics avancés</li>
+          <li class="feat-no">Commission réduite</li>
+        </ul>
+        <div class="pricing-commission">Commission: <strong>5%</strong> par vente</div>
+        <a href="register.html" class="pricing-btn pricing-btn-outline">Commencer gratuitement</a>
+      </div>
+
+      <!-- Pro (featured) -->
+      <div class="pricing-card pricing-card-featured">
+        <div class="pricing-card-glow"></div>
+        <div class="pricing-popular">⭐ Plus populaire</div>
+        <div class="pricing-plan-badge pro">Pro</div>
+        <h3 class="pricing-name">Pro Vendeur</h3>
+        <p class="pricing-desc">Pour les vendeurs sérieux qui veulent scaler</p>
+        <div class="pricing-price">
+          <span class="price-amount" data-monthly="15" data-annual="12">15</span>
+          <span class="price-currency">$</span>
+          <span class="price-period">/mois</span>
+        </div>
+        <ul class="pricing-features">
+          <li class="feat-ok">Produits <strong>illimités</strong></li>
+          <li class="feat-ok">Boutique personnalisée (couleurs, bannière)</li>
+          <li class="feat-ok">Badge "Vendeur Vérifié" ✓</li>
+          <li class="feat-ok">5 produits sponsorisés/mois</li>
+          <li class="feat-ok">Analytics avancés & rapports</li>
+          <li class="feat-ok">Support WhatsApp prioritaire</li>
+          <li class="feat-ok">Apparition prioritaire dans les recherches</li>
+          <li class="feat-ok">Import produits CSV</li>
+          <li class="feat-no">API & intégrations</li>
+        </ul>
+        <div class="pricing-commission">Commission: <strong>3%</strong> par vente</div>
+        <a href="register.html?plan=pro" class="pricing-btn pricing-btn-primary">Démarrer l'essai gratuit</a>
+        <p class="pricing-trial">14 jours gratuits — sans carte bancaire</p>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="pricing-plan-badge enterprise">Business</div>
+        <h3 class="pricing-name">Business</h3>
+        <p class="pricing-desc">Pour les marques et boutiques établies</p>
+        <div class="pricing-price">
+          <span class="price-amount" data-monthly="49" data-annual="39">49</span>
+          <span class="price-currency">$</span>
+          <span class="price-period">/mois</span>
+        </div>
+        <ul class="pricing-features">
+          <li class="feat-ok">Tout le plan Pro</li>
+          <li class="feat-ok">Sous-domaine dédié (marque.yaroshop.cd)</li>
+          <li class="feat-ok">Produits sponsorisés <strong>illimités</strong></li>
+          <li class="feat-ok">Gestionnaire de compte dédié</li>
+          <li class="feat-ok">API & webhooks</li>
+          <li class="feat-ok">Multi-boutiques (3 shops)</li>
+          <li class="feat-ok">Rapports financiers avancés</li>
+          <li class="feat-ok">Formation & onboarding vidéo</li>
+          <li class="feat-ok">SLA support 2h réponse</li>
+        </ul>
+        <div class="pricing-commission">Commission: <strong>1.5%</strong> par vente</div>
+        <a href="register.html?plan=business" class="pricing-btn pricing-btn-outline">Contacter les ventes</a>
+      </div>
+    </div>
+
+    <!-- Guarantee strip -->
+    <div class="pricing-guarantee">
+      <div class="guarantee-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Garantie remboursement 30 jours
+      </div>
+      <div class="guarantee-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Annulation à tout moment
+      </div>
+      <div class="guarantee-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.2 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Support WhatsApp inclus
+      </div>
+      <div class="guarantee-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Paiement Mobile Money accepté
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
      CTA FINAL
 ═══════════════════════════════════════════ -->
 <section class="final-cta">
