@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offres & Promotions — YaroShop</title>
+  <meta name="description" content="Découvrez les meilleures offres et promotions du moment sur YaroShop. Réductions, flash sales, codes promo et deals exclusifs." />
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6C47FF" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="YaroShop" />
+  <style>
+    /* ── DEALS PAGE STYLES ── */
+
+    /* HERO */
+    .deals-hero {
+      position: relative;
+      min-height: 52vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding: calc(var(--nav-height) + 60px) 24px 80px;
+    }
+    .deals-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 30% 20%, rgba(255,107,53,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(108,71,255,0.14) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .deals-hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,107,53,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,107,53,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+    .deals-hero-content { position: relative; max-width: 780px; margin: 0 auto; }
+    .deals-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FF6B35;
+      background: rgba(255,107,53,0.12);
+      border: 1px solid rgba(255,107,53,0.30);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      margin-bottom: 24px;
+    }
+    .deals-eyebrow .pulse { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #FF6B35; animation: pulse-dot 2s ease infinite; }
+    @keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.6} }
+    .deals-hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .deals-hero h1 .grad {
+      background: linear-gradient(135deg, #FF6B35 0%, #8B6FFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .deals-hero p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* COUNTDOWN TIMER */
+    .flash-timer {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,107,53,0.1);
+      border: 1px solid rgba(255,107,53,0.25);
+      border-radius: var(--radius-full);
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #FF6B35;
+      margin-bottom: 0;
+    }
+    .timer-seg {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 36px;
+    }
+    .timer-num {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--text);
+    }
+    .timer-label { font-size: 9px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+    .timer-sep { font-size: 20px; font-weight: 800; color: #FF6B35; margin-bottom: 8px; }
+
+    /* MAIN LAYOUT */
+    .deals-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      padding: 56px 0 100px;
+    }
+    @media (max-width: 900px) { .deals-layout { grid-template-columns: 1fr; } }
+
+    /* SIDEBAR FILTERS */
+    .deals-filters { position: sticky; top: calc(var(--nav-height) + 20px); align-self: start; }
+    .filter-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .filter-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 16px; }
+    .filter-list { display: flex; flex-direction: column; gap: 8px; }
+    .filter-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      transition: background var(--transition);
+      font-size: 14px;
+    }
+    .filter-item:hover, .filter-item.active { background: var(--bg-3); }
+    .filter-item.active { color: var(--primary-light); font-weight: 600; }
+    .filter-count {
+      font-size: 12px;
+      background: var(--bg-3);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 500;
+    }
+    .filter-item.active .filter-count { background: rgba(108,71,255,0.15); color: var(--primary-light); }
+
+    /* DEALS GRID */
+    .deals-main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .deals-count { font-size: 14px; color: var(--text-secondary); }
+    .deals-count strong { color: var(--text); }
+    .sort-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      font-family: inherit;
+    }
+
+    /* FLASH SALE BANNER */
+    .flash-banner {
+      background: linear-gradient(135deg, #FF6B35 0%, #FF3B30 100%);
+      border-radius: var(--radius-xl);
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .flash-banner::before {
+      content: '⚡';
+      position: absolute;
+      font-size: 140px;
+      right: -10px;
+      top: -20px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .flash-banner-left h2 { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .flash-banner-left p { color: rgba(255,255,255,0.8); font-size: 14px; }
+    .flash-banner-timer { display: flex; gap: 12px; }
+    .fbt {
+      background: rgba(255,255,255,0.15);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 56px;
+      backdrop-filter: blur(8px);
+    }
+    .fbt-num { font-size: 24px; font-weight: 800; color: #fff; line-height: 1; display: block; }
+    .fbt-label { font-size: 10px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* PRODUCT CARDS */
+    .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .deal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      position: relative;
+    }
+    .deal-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.25); border-color: rgba(108,71,255,0.3); }
+    .deal-img {
+      aspect-ratio: 1;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+      background: var(--bg-3);
+    }
+    .deal-img-placeholder {
+      aspect-ratio: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-3);
+      font-size: 56px;
+    }
+    .deal-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #FF3B30;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.02em;
+    }
+    .deal-badge.new-badge { background: #6C47FF; }
+    .deal-badge.limited-badge { background: #FF6B35; }
+    .deal-favorite {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px; height: 32px;
+      background: var(--bg-card);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 15px;
+    }
+    .deal-favorite:hover { background: rgba(255,107,53,0.1); border-color: rgba(255,107,53,0.3); }
+    .deal-body { padding: 16px; }
+    .deal-shop { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
+    .deal-name { font-size: 14px; font-weight: 600; margin-bottom: 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .deal-pricing { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .deal-price { font-size: 18px; font-weight: 800; color: var(--text); }
+    .deal-original { font-size: 13px; color: var(--text-muted); text-decoration: line-through; }
+    .deal-saving { font-size: 12px; font-weight: 700; color: #4CAF50; background: rgba(76,175,80,0.12); border-radius: var(--radius-full); padding: 2px 8px; }
+    .deal-stock { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .deal-stock-bar { height: 4px; background: var(--bg-3); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+    .deal-stock-fill { height: 100%; background: linear-gradient(90deg, #FF6B35, #FF3B30); border-radius: 2px; }
+    .btn-deal {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-deal:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+    /* PROMO CODES */
+    .promo-section { margin-bottom: 40px; }
+    .promo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .promo-card {
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .promo-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, #6C47FF, #FF6B35);
+    }
+    .promo-card:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+    .promo-icon { font-size: 32px; flex-shrink: 0; }
+    .promo-info { flex: 1; }
+    .promo-code {
+      font-size: 16px; font-weight: 800; font-family: monospace;
+      color: var(--primary-light);
+      background: rgba(108,71,255,0.1);
+      border: 1px solid rgba(108,71,255,0.25);
+      border-radius: var(--radius-md);
+      padding: 4px 10px;
+      display: inline-block;
+      margin-bottom: 6px;
+      letter-spacing: 0.08em;
+    }
+    .promo-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+    .promo-expiry { font-size: 11px; color: var(--text-muted); }
+    .promo-copy-btn {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .promo-copy-btn:hover { background: var(--primary); color: #fff; border-color: transparent; }
+    .promo-copy-btn.copied { background: #4CAF50; color: #fff; border-color: transparent; }
+
+    /* CATEGORY BANNERS */
+    .cat-banners { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+    @media (max-width: 768px) { .cat-banners { grid-template-columns: 1fr; } }
+    .cat-banner {
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .cat-banner:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.2); }
+    .cat-banner.purple { background: linear-gradient(135deg, rgba(108,71,255,0.15), rgba(108,71,255,0.05)); border: 1px solid rgba(108,71,255,0.2); }
+    .cat-banner.orange { background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,107,53,0.05)); border: 1px solid rgba(255,107,53,0.2); }
+    .cat-banner.green { background: linear-gradient(135deg, rgba(76,175,80,0.15), rgba(76,175,80,0.05)); border: 1px solid rgba(76,175,80,0.2); }
+    .cat-banner-emoji { font-size: 40px; }
+    .cat-banner h3 { font-size: 18px; font-weight: 800; }
+    .cat-banner p { font-size: 13px; color: var(--text-secondary); }
+    .cat-banner-discount {
+      font-size: 28px; font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-light), #FF6B35);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* SECTION TITLES */
+    .deals-section-title {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 20px; font-weight: 800;
+      margin-bottom: 20px;
+    }
+    .deals-section-title .title-badge {
+      font-size: 12px; font-weight: 700;
+      background: rgba(255,107,53,0.12);
+      color: #FF6B35;
+      border: 1px solid rgba(255,107,53,0.25);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+    .deals-section-title .title-badge.purple {
+      background: rgba(108,71,255,0.12);
+      color: var(--primary-light);
+      border-color: rgba(108,71,255,0.25);
+    }
+
+    /* LOAD MORE */
+    .load-more-wrap { text-align: center; margin-top: 16px; }
+    .btn-load-more {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-load-more:hover { background: var(--primary); color: #fff; border-color: transparent; }
+
+    /* NEWSLETTER BAR */
+    .deals-newsletter {
+      background: linear-gradient(135deg, rgba(108,71,255,0.1), rgba(255,107,53,0.08));
+      border: 1px solid rgba(108,71,255,0.2);
+      border-radius: var(--radius-xl);
+      padding: 44px 48px;
+      text-align: center;
+      margin-bottom: 80px;
+    }
+    .deals-newsletter h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+    .deals-newsletter p { color: var(--text-secondary); margin-bottom: 24px; font-size: 15px; }
+    .nl-form { display: flex; gap: 10px; max-width: 460px; margin: 0 auto; }
+    .nl-input {
+      flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-full); padding: 12px 20px;
+      font-size: 14px; color: var(--text); outline: none; font-family: inherit;
+      transition: border-color var(--transition);
+    }
+    .nl-input:focus { border-color: var(--primary); }
+    .nl-btn {
+      background: linear-gradient(135deg, #6C47FF, #FF6B35);
+      color: #fff; font-weight: 700; font-size: 14px;
+      padding: 12px 24px; border-radius: var(--radius-full);
+      border: none; cursor: pointer; white-space: nowrap;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .nl-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    @media (max-width: 500px) { .nl-form { flex-direction: column; } }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════
+     NAVBAR
+══════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#navGrad)"/>
+          <path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/>
+          <circle cx="22" cy="11" r="3" fill="white"/>
+          <defs><linearGradient id="navGrad" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs>
+        </svg>
+      </div>
+      <span class="logo-text">YaroShop</span>
+    </a>
+    <div class="nav-search" id="navSearch">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Rechercher produits, boutiques..." id="navSearchInput" />
+      <button class="search-btn" onclick="navSearch()">Rechercher</button>
+    </div>
+    <div class="nav-links">
+      <a href="marketplace.html" class="nav-link">Marketplace</a>
+      <a href="vendors.html" class="nav-link">Vendeurs</a>
+      <a href="services.html" class="nav-link">Services Web</a>
+    </div>
+    <div class="nav-actions">
+      <a href="wishlist.html" class="nav-icon-btn" title="Favoris">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </a>
+      <a href="notifications.html" class="nav-icon-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="nav-badge">5</span>
+      </a>
+      <button class="nav-icon-btn" onclick="openCartPanel()" title="Panier">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="nav-badge">3</span>
+      </button>
+      <div class="nav-profile-wrap" id="profileDropdownWrap">
+        <div class="nav-avatar-btn" onclick="toggleProfileDropdown()">J<div class="nav-avatar-online"></div></div>
+        <div class="nav-dropdown" id="profileDropdown">
+          <div class="nav-dropdown-header"><div class="nav-dropdown-name">Jean-Paul Mbemba</div><div class="nav-dropdown-email">jean@email.com</div></div>
+          <a href="profile.html" class="nav-dropdown-item">Mon profil</a>
+          <a href="orders.html" class="nav-dropdown-item">Mes commandes</a>
+          <a href="wishlist.html" class="nav-dropdown-item">Favoris</a>
+          <a href="dashboard.html" class="nav-dropdown-item">Dashboard vendeur</a>
+          <div class="nav-dropdown-sep"></div>
+          <button class="nav-dropdown-item danger" onclick="window.location='login.html'">Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="services.html">Services Web</a>
+    <a href="orders.html">Mes commandes</a>
+    <a href="wishlist.html">Favoris</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="profile.html">Mon profil</a>
+    <a href="register.html" class="btn-primary-mobile">Vendre sur YaroShop</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════
+     HERO
+══════════════════════════ -->
+<section class="deals-hero">
+  <div class="deals-hero-bg"></div>
+  <div class="deals-hero-grid"></div>
+  <div class="deals-hero-content">
+    <div class="deals-eyebrow"><span class="pulse"></span> Mises à jour quotidiennes</div>
+    <h1>Les meilleures <span class="grad">offres du moment</span></h1>
+    <p>Flash sales, codes promo et réductions exclusives sélectionnées chaque jour par l'équipe YaroShop. Ne manquez rien !</p>
+    <!-- Live countdown for next flash sale -->
+    <div class="flash-timer">
+      ⚡ Prochaine flash sale dans&nbsp;
+      <div class="timer-seg"><span class="timer-num" id="timerH">04</span><span class="timer-label">heures</span></div>
+      <span class="timer-sep">:</span>
+      <div class="timer-seg"><span class="timer-num" id="timerM">23</span><span class="timer-label">min</span></div>
+      <span class="timer-sep">:</span>
+      <div class="timer-seg"><span class="timer-num" id="timerS">47</span><span class="timer-label">sec</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════
+     MAIN CONTENT
+══════════════════════════ -->
+<div class="container">
+  <div class="deals-layout">
+
+    <!-- SIDEBAR FILTERS -->
+    <aside class="deals-filters">
+      <div class="filter-card">
+        <div class="filter-title">Type de deal</div>
+        <div class="filter-list">
+          <div class="filter-item active" onclick="setFilter(this)">
+            <span>Tous les deals</span>
+            <span class="filter-count">184</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>⚡ Flash Sale</span>
+            <span class="filter-count">28</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>🏷️ Codes Promo</span>
+            <span class="filter-count">15</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>🔥 Liquidation</span>
+            <span class="filter-count">42</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>🆕 Nouveautés</span>
+            <span class="filter-count">37</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>🎁 Offre groupée</span>
+            <span class="filter-count">22</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-title">Catégorie</div>
+        <div class="filter-list">
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>📱 Téléphones</span>
+            <span class="filter-count">38</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>👔 Mode</span>
+            <span class="filter-count">54</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>🍳 Cuisine</span>
+            <span class="filter-count">29</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>💄 Beauté</span>
+            <span class="filter-count">31</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>🪑 Maison</span>
+            <span class="filter-count">20</span>
+          </div>
+          <div class="filter-item" onclick="setFilter(this)">
+            <span>📚 Livres</span>
+            <span class="filter-count">12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-title">Réduction min.</div>
+        <div class="filter-list">
+          <div class="filter-item" onclick="setFilter(this)"><span>10% et plus</span><span class="filter-count">160</span></div>
+          <div class="filter-item" onclick="setFilter(this)"><span>25% et plus</span><span class="filter-count">98</span></div>
+          <div class="filter-item" onclick="setFilter(this)"><span>40% et plus</span><span class="filter-count">55</span></div>
+          <div class="filter-item" onclick="setFilter(this)"><span>60% et plus</span><span class="filter-count">18</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="deals-main">
+
+      <!-- FLASH SALE BANNER -->
+      <div class="flash-banner">
+        <div class="flash-banner-left">
+          <h2>⚡ Flash Sale en cours</h2>
+          <p>Jusqu'à 70% de réduction sur une sélection de produits — offre limitée !</p>
+        </div>
+        <div class="flash-banner-timer">
+          <div class="fbt"><span class="fbt-num" id="flashH">04</span><span class="fbt-label">h</span></div>
+          <div class="fbt"><span class="fbt-num" id="flashM">23</span><span class="fbt-label">min</span></div>
+          <div class="fbt"><span class="fbt-num" id="flashS">47</span><span class="fbt-label">sec</span></div>
+        </div>
+      </div>
+
+      <!-- CATEGORY BANNERS -->
+      <div class="cat-banners">
+        <div class="cat-banner purple" onclick="window.location='marketplace.html?cat=tech'">
+          <span class="cat-banner-emoji">📱</span>
+          <div class="cat-banner-discount">-35%</div>
+          <h3>Téléphones & Tech</h3>
+          <p>Smartphones, accessoires, audio</p>
+        </div>
+        <div class="cat-banner orange" onclick="window.location='marketplace.html?cat=mode'">
+          <span class="cat-banner-emoji">👗</span>
+          <div class="cat-banner-discount">-50%</div>
+          <h3>Mode & Style</h3>
+          <p>Vêtements, chaussures, sacs</p>
+        </div>
+        <div class="cat-banner green" onclick="window.location='marketplace.html?cat=maison'">
+          <span class="cat-banner-emoji">🏠</span>
+          <div class="cat-banner-discount">-40%</div>
+          <h3>Maison & Cuisine</h3>
+          <p>Électroménager, décoration</p>
+        </div>
+      </div>
+
+      <!-- FLASH SALE PRODUCTS -->
+      <div class="deals-section-title">
+        ⚡ Flash Sale
+        <span class="title-badge">Expire bientôt</span>
+      </div>
+      <div class="deals-main-header">
+        <div class="deals-count">Affichage de <strong>28</strong> offres flash</div>
+        <select class="sort-select" onchange="sortDeals(this.value)">
+          <option value="discount">Meilleure réduction</option>
+          <option value="price-asc">Prix croissant</option>
+          <option value="price-desc">Prix décroissant</option>
+          <option value="ending">Se termine bientôt</option>
+        </select>
+      </div>
+
+      <div class="deals-grid" id="flashDealsGrid">
+
+        <!-- DEAL 1 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-55%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">📱</div>
+          <div class="deal-body">
+            <div class="deal-shop">TechStyle Kinshasa</div>
+            <div class="deal-name">Smartphone Android 6.7" 128Go 5000mAh</div>
+            <div class="deal-pricing">
+              <span class="deal-price">85 000 FC</span>
+              <span class="deal-original">190 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 105 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:72%"></div></div>
+              72% vendus — plus que 8 en stock
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 2 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge limited-badge">Limité</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">👟</div>
+          <div class="deal-body">
+            <div class="deal-shop">Sneakers DRC</div>
+            <div class="deal-name">Basket rétro unisexe cuir synthétique</div>
+            <div class="deal-pricing">
+              <span class="deal-price">32 000 FC</span>
+              <span class="deal-original">68 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 36 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:88%"></div></div>
+              88% vendus — plus que 3 paires
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 3 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge" style="background:#6C47FF">-70%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">🍳</div>
+          <div class="deal-body">
+            <div class="deal-shop">Maison & Douceur</div>
+            <div class="deal-name">Blender électrique 1200W pichets en verre</div>
+            <div class="deal-pricing">
+              <span class="deal-price">18 000 FC</span>
+              <span class="deal-original">60 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 42 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:55%"></div></div>
+              55% vendus — 15 disponibles
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 4 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-45%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">💄</div>
+          <div class="deal-body">
+            <div class="deal-shop">Beauté Africaine</div>
+            <div class="deal-name">Coffret soin visage naturel karité & citrus</div>
+            <div class="deal-pricing">
+              <span class="deal-price">14 500 FC</span>
+              <span class="deal-original">26 500 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 12 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:40%"></div></div>
+              40% vendus — 30 coffrets restants
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 5 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-30%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">🎧</div>
+          <div class="deal-body">
+            <div class="deal-shop">TechStyle Kinshasa</div>
+            <div class="deal-name">Écouteurs Bluetooth True Wireless ANC</div>
+            <div class="deal-pricing">
+              <span class="deal-price">22 000 FC</span>
+              <span class="deal-original">31 500 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 9 500 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:60%"></div></div>
+              60% vendus — 12 restants
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 6 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge new-badge">Nouveau</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">👔</div>
+          <div class="deal-body">
+            <div class="deal-shop">Fashion Kin</div>
+            <div class="deal-name">Costume 3 pièces slim fit laine africaine</div>
+            <div class="deal-pricing">
+              <span class="deal-price">55 000 FC</span>
+              <span class="deal-original">85 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 30 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:20%"></div></div>
+              20% vendus — 40 disponibles
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 7 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-38%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">💻</div>
+          <div class="deal-body">
+            <div class="deal-shop">Digital Store KIN</div>
+            <div class="deal-name">Tablette 10" 4G 64Go Android 14</div>
+            <div class="deal-pricing">
+              <span class="deal-price">68 000 FC</span>
+              <span class="deal-original">110 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 42 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:80%"></div></div>
+              80% vendus — plus que 5 en stock
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <!-- DEAL 8 -->
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge limited-badge">-65%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">🛋️</div>
+          <div class="deal-body">
+            <div class="deal-shop">Maison & Douceur</div>
+            <div class="deal-name">Coussin salon tissu imprimé pagne 45x45cm</div>
+            <div class="deal-pricing">
+              <span class="deal-price">4 500 FC</span>
+              <span class="deal-original">12 800 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 8 300 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:95%"></div></div>
+              95% vendus — plus que 2 !
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="load-more-wrap">
+        <button class="btn-load-more" onclick="loadMore()">Voir plus d'offres flash</button>
+      </div>
+
+      <!-- PROMO CODES -->
+      <div class="deals-section-title" style="margin-top:48px">
+        🏷️ Codes Promo du moment
+        <span class="title-badge purple">15 actifs</span>
+      </div>
+      <div class="promo-section">
+        <div class="promo-grid">
+
+          <div class="promo-card">
+            <div class="promo-icon">🎉</div>
+            <div class="promo-info">
+              <div class="promo-code">YARO10</div>
+              <div class="promo-desc">10% sur votre 1ère commande — sans minimum d'achat</div>
+              <div class="promo-expiry">Expire le 31 mars 2025</div>
+            </div>
+            <button class="promo-copy-btn" onclick="copyPromo(this,'YARO10')">Copier</button>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-icon">📦</div>
+            <div class="promo-info">
+              <div class="promo-code">LIVRAISON0</div>
+              <div class="promo-desc">Livraison offerte pour toute commande dès 25 000 FC</div>
+              <div class="promo-expiry">Expire le 15 avril 2025</div>
+            </div>
+            <button class="promo-copy-btn" onclick="copyPromo(this,'LIVRAISON0')">Copier</button>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-icon">📱</div>
+            <div class="promo-info">
+              <div class="promo-code">TECH20</div>
+              <div class="promo-desc">20% sur toute la catégorie Téléphones & Accessoires</div>
+              <div class="promo-expiry">Expire le 20 mars 2025</div>
+            </div>
+            <button class="promo-copy-btn" onclick="copyPromo(this,'TECH20')">Copier</button>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-icon">🧴</div>
+            <div class="promo-info">
+              <div class="promo-code">BEAUTE15</div>
+              <div class="promo-desc">15% sur les produits Beauté & Cosmétiques</div>
+              <div class="promo-expiry">Expire le 30 avril 2025</div>
+            </div>
+            <button class="promo-copy-btn" onclick="copyPromo(this,'BEAUTE15')">Copier</button>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-icon">🎂</div>
+            <div class="promo-info">
+              <div class="promo-code">ANNIVERSAIRE25</div>
+              <div class="promo-desc">25% pour l'anniversaire YaroShop — toutes catégories</div>
+              <div class="promo-expiry">Expire le 10 mars 2025</div>
+            </div>
+            <button class="promo-copy-btn" onclick="copyPromo(this,'ANNIVERSAIRE25')">Copier</button>
+          </div>
+
+          <div class="promo-card">
+            <div class="promo-icon">🛒</div>
+            <div class="promo-info">
+              <div class="promo-code">BULK30</div>
+              <div class="promo-desc">30% pour l'achat de 3 articles ou plus du même vendeur</div>
+              <div class="promo-expiry">Pas de date d'expiration</div>
+            </div>
+            <button class="promo-copy-btn" onclick="copyPromo(this,'BULK30')">Copier</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TRENDING DEALS -->
+      <div class="deals-section-title" style="margin-top:8px">
+        🔥 Meilleures ventes en promo
+        <span class="title-badge">Populaires</span>
+      </div>
+      <div class="deals-grid">
+
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-22%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">👜</div>
+          <div class="deal-body">
+            <div class="deal-shop">Mode Brazza</div>
+            <div class="deal-name">Sac à main cuir végétalien classique</div>
+            <div class="deal-pricing">
+              <span class="deal-price">28 000 FC</span>
+              <span class="deal-original">36 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 8 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:35%"></div></div>
+              35% vendus — 26 disponibles
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-48%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">⚽</div>
+          <div class="deal-body">
+            <div class="deal-shop">Sport & Vie</div>
+            <div class="deal-name">Ballon de foot officiel taille 5 + pompe</div>
+            <div class="deal-pricing">
+              <span class="deal-price">7 500 FC</span>
+              <span class="deal-original">14 500 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 7 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:50%"></div></div>
+              50% vendus — 20 disponibles
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge new-badge">-18%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">📚</div>
+          <div class="deal-body">
+            <div class="deal-shop">Livres du Congo</div>
+            <div class="deal-name">Pack 5 romans africains contemporains</div>
+            <div class="deal-pricing">
+              <span class="deal-price">12 000 FC</span>
+              <span class="deal-original">14 600 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 2 600 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:25%"></div></div>
+              25% vendus — 30 packs restants
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+        <div class="deal-card" onclick="window.location='product.html'">
+          <div class="deal-badge">-60%</div>
+          <button class="deal-favorite" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+          <div class="deal-img-placeholder">🪑</div>
+          <div class="deal-body">
+            <div class="deal-shop">Espace Déco</div>
+            <div class="deal-name">Chaise bureau ergonomique réglable</div>
+            <div class="deal-pricing">
+              <span class="deal-price">38 000 FC</span>
+              <span class="deal-original">95 000 FC</span>
+            </div>
+            <div class="deal-saving">Économisez 57 000 FC</div>
+            <div class="deal-stock">
+              <div class="deal-stock-bar"><div class="deal-stock-fill" style="width:68%"></div></div>
+              68% vendus — 8 restantes
+            </div>
+            <button class="btn-deal" onclick="event.stopPropagation();addToCart()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Ajouter au panier
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="load-more-wrap">
+        <button class="btn-load-more" onclick="loadMore()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Charger plus d'offres
+        </button>
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div class="deals-newsletter" style="margin-top:60px">
+        <div class="deals-eyebrow" style="margin:0 auto 16px;display:table"><span class="pulse"></span> Alertes deals</div>
+        <h2>Ne ratez aucune offre !</h2>
+        <p>Recevez les flash sales et codes promo exclusifs directement dans votre boite mail.</p>
+        <form class="nl-form" onsubmit="subscribeNewsletter(event)">
+          <input type="email" class="nl-input" placeholder="votre@email.com" required />
+          <button type="submit" class="nl-btn">S'abonner</button>
+        </form>
+      </div>
+
+    </div><!-- /.deals-main -->
+  </div><!-- /.deals-layout -->
+</div><!-- /.container -->
+
+<!-- ══════════════════════════
+     FOOTER
+══════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo"><div class="logo-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#fLg2)"/><path d="M8 22L12 10L16 18L20 14L24 22H8Z" fill="white" opacity="0.9"/><circle cx="22" cy="11" r="3" fill="white"/><defs><linearGradient id="fLg2" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#6C47FF"/><stop offset="100%" stop-color="#FF6B35"/></linearGradient></defs></svg></div><span>YaroShop</span></a>
+        <p>La marketplace qui organise le commerce en Afrique centrale.</p>
+      </div>
+      <div class="footer-links"><h4>Marketplace</h4><ul><li><a href="marketplace.html">Tous les produits</a></li><li><a href="deals.html">Offres & Promotions</a></li><li><a href="vendors.html">Vendeurs</a></li></ul></div>
+      <div class="footer-links"><h4>Vendeurs</h4><ul><li><a href="register.html">Créer ma boutique</a></li><li><a href="index.html#pricing">Tarifs</a></li><li><a href="help.html">Guide vendeur</a></li></ul></div>
+      <div class="footer-links"><h4>YaroShop</h4><ul><li><a href="about.html">À propos</a></li><li><a href="help.html">Centre d'aide</a></li><li><a href="terms.html">CGU</a></li><li><a href="privacy.html">Confidentialité</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2024 YaroShop. Tous droits réservés. Fait avec ❤️ en Afrique centrale.</p><div class="footer-legal"><a href="privacy.html">Confidentialité</a><a href="terms.html">CGU</a><a href="help.html">Aide</a></div></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/243800000000?text=Bonjour%20YaroShop" class="whatsapp-float" target="_blank" rel="noopener"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span class="whatsapp-float-tooltip">Support 24h/24</span></a>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span id="toastMsg">Code copié !</span>
+</div>
+
+<script src="assets/app.js"></script>
+<script>
+  /* ── COUNTDOWN TIMERS ── */
+  function startCountdown(endMs) {
+    function tick() {
+      const now = Date.now();
+      const diff = Math.max(0, endMs - now);
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      const pad = n => String(n).padStart(2, '0');
+      ['timerH','flashH'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = pad(h); });
+      ['timerM','flashM'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = pad(m); });
+      ['timerS','flashS'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = pad(s); });
+      if (diff > 0) setTimeout(tick, 1000);
+    }
+    tick();
+  }
+  /* Set flash sale end: 4h23m47s from now */
+  startCountdown(Date.now() + (4*3600 + 23*60 + 47) * 1000);
+
+  /* ── FILTER ── */
+  function setFilter(el) {
+    el.closest('.filter-list').querySelectorAll('.filter-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  /* ── SORT ── */
+  function sortDeals(v) {
+    showToast('Tri appliqué : ' + v);
+  }
+
+  /* ── FAVORITES ── */
+  function toggleFav(btn) {
+    const active = btn.textContent === '❤️';
+    btn.textContent = active ? '🤍' : '❤️';
+    showToast(active ? 'Retiré des favoris' : 'Ajouté aux favoris !');
+  }
+
+  /* ── CART ── */
+  function addToCart() {
+    showToast('Produit ajouté au panier !');
+  }
+
+  /* ── PROMO COPY ── */
+  function copyPromo(btn, code) {
+    navigator.clipboard.writeText(code).catch(() => {});
+    btn.textContent = '✓ Copié !';
+    btn.classList.add('copied');
+    showToast('Code "' + code + '" copié dans le presse-papiers !');
+    setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 2500);
+  }
+
+  /* ── LOAD MORE ── */
+  function loadMore() {
+    showToast('Chargement de plus d\'offres...');
+  }
+
+  /* ── NEWSLETTER ── */
+  function subscribeNewsletter(e) {
+    e.preventDefault();
+    showToast('Inscription réussie ! Vous recevrez les prochaines alertes deals.');
+    e.target.reset();
+  }
+
+  /* ── TOAST ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    const m = document.getElementById('toastMsg');
+    if (!t || !m) return;
+    m.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* ── NAV SEARCH ── */
+  function navSearch() {
+    const q = document.getElementById('navSearchInput').value.trim();
+    if (q) window.location = 'search.html?q=' + encodeURIComponent(q);
+  }
+  document.getElementById('navSearchInput').addEventListener('keydown', e => { if(e.key==='Enter') navSearch(); });
+
+  /* ── NAVBAR SCROLL ── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>
+</body>
+</html>

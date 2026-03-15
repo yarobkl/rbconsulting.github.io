@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centre d'aide – YaroShop</title>
+  <meta name="description" content="Centre d'aide YaroShop. Trouvez des réponses à vos questions sur les commandes, paiements, livraisons et plus encore.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6C47FF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="YaroShop">
+  <style>
+    :root {
+      --primary: #6C47FF;
+      --primary-light: #8B6FFF;
+      --accent: #FF6B35;
+      --bg: #0A0A0F;
+      --bg-2: #111118;
+      --bg-3: #1A1A24;
+      --bg-4: #22222E;
+      --text: #F0F0F5;
+      --text-2: #A0A0B0;
+      --text-3: #606070;
+      --border: rgba(255,255,255,0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 999px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; gap: 1rem;
+      height: 64px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none; color: var(--text);
+      font-weight: 700; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .nav-logo img { border-radius: var(--radius-sm); }
+    .nav-search-wrap {
+      flex: 1; max-width: 480px;
+      display: flex; align-items: center;
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--radius-full); overflow: hidden;
+    }
+    .nav-search {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text); padding: 0.5rem 1rem; font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-search::placeholder { color: var(--text-3); }
+    .nav-search-btn {
+      background: none; border: none; cursor: pointer;
+      padding: 0.5rem 1rem; font-size: 1rem;
+    }
+    .nav-actions {
+      display: flex; align-items: center; gap: 0.5rem; margin-left: auto;
+    }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: var(--radius-full); font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s; }
+    .btn-ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg-3); color: var(--text); }
+    .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.85rem; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-light); }
+    .nav-icon-btn {
+      position: relative; background: none; border: none; cursor: pointer;
+      font-size: 1.2rem; padding: 0.4rem; border-radius: var(--radius-sm);
+      color: var(--text-2); transition: color 0.2s;
+    }
+    .nav-icon-btn:hover { color: var(--text); }
+    .nav-badge {
+      position: absolute; top: 0; right: 0;
+      background: var(--accent); color: #fff; font-size: 0.65rem;
+      font-weight: 700; min-width: 16px; height: 16px;
+      border-radius: var(--radius-full); display: flex;
+      align-items: center; justify-content: center; padding: 0 3px;
+    }
+    .nav-profile-wrap { position: relative; }
+    .nav-avatar-btn { background: none; border: none; cursor: pointer; padding: 0.25rem; }
+    .nav-avatar {
+      width: 36px; height: 36px; border-radius: var(--radius-full);
+      background: var(--primary); display: flex; align-items: center;
+      justify-content: center; font-size: 0.8rem; font-weight: 700; color: #fff;
+    }
+    .nav-dropdown {
+      display: none; position: absolute; right: 0; top: calc(100% + 0.5rem);
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--radius-md); min-width: 200px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4); overflow: hidden;
+    }
+    .nav-dropdown.open { display: block; }
+    .nav-dd-item {
+      display: block; padding: 0.7rem 1rem; color: var(--text-2);
+      text-decoration: none; font-size: 0.875rem; transition: all 0.15s;
+    }
+    .nav-dd-item:hover { background: var(--bg-4); color: var(--text); }
+    .nav-dd-divider { height: 1px; background: var(--border); margin: 0.25rem 0; }
+    .nav-dd-logout { color: #ff4d4d; }
+    .nav-mobile-toggle { display: none; background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--text); }
+    .nav-mobile-menu { display: none; }
+    @media (max-width: 768px) {
+      .nav-search-wrap { display: none; }
+      .nav-actions .btn { display: none; }
+      .nav-mobile-toggle { display: block; }
+      .nav-open .nav-mobile-menu {
+        display: flex; flex-direction: column;
+        padding: 1rem; border-top: 1px solid var(--border);
+        gap: 0.25rem;
+      }
+      .nav-mobile-menu a {
+        padding: 0.75rem 1rem; color: var(--text-2);
+        text-decoration: none; border-radius: var(--radius-sm);
+        transition: all 0.15s;
+      }
+      .nav-mobile-menu a:hover { background: var(--bg-3); color: var(--text); }
+    }
+
+    /* ── HERO ── */
+    .help-hero {
+      background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+      padding: 4rem 1.25rem 3rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .help-hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .help-hero p {
+      color: var(--text-2);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .help-search-bar {
+      display: flex;
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--bg-4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      box-shadow: 0 0 0 0 var(--primary);
+      transition: box-shadow 0.2s;
+    }
+    .help-search-bar:focus-within {
+      box-shadow: 0 0 0 3px rgba(108,71,255,0.25);
+      border-color: var(--primary);
+    }
+    .help-search-bar input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text); padding: 0.85rem 1.25rem;
+      font-size: 1rem; font-family: 'Inter', sans-serif;
+    }
+    .help-search-bar input::placeholder { color: var(--text-3); }
+    .help-search-bar button {
+      background: var(--primary); border: none; cursor: pointer;
+      color: #fff; padding: 0 1.5rem; font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .help-search-bar button:hover { background: var(--primary-light); }
+
+    /* ── CATEGORIES GRID ── */
+    .help-categories { padding: 3rem 0; }
+    .help-categories h2 {
+      font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .category-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .category-card:hover {
+      background: var(--bg-3);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108,71,255,0.15);
+    }
+    .category-icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .category-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .category-count {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      margin-top: 0.3rem;
+    }
+
+    /* ── FAQ SECTIONS ── */
+    .faq-section { padding: 3rem 0; border-top: 1px solid var(--border); }
+    .faq-section-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .faq-section-icon {
+      width: 40px; height: 40px;
+      background: rgba(108,71,255,0.15);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .faq-section-header h2 {
+      font-size: 1.35rem; font-weight: 700; color: var(--text);
+    }
+    .accordion { display: flex; flex-direction: column; gap: 0.5rem; }
+    .accordion-item {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .accordion-item.open { border-color: rgba(108,71,255,0.4); }
+    .accordion-btn {
+      width: 100%; background: none; border: none; cursor: pointer;
+      padding: 1.1rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      text-align: left; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500;
+      transition: background 0.15s;
+    }
+    .accordion-btn:hover { background: var(--bg-3); }
+    .accordion-chevron {
+      font-size: 0.75rem; color: var(--text-3);
+      transition: transform 0.3s; flex-shrink: 0;
+    }
+    .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+    .accordion-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.2s ease;
+      padding: 0 1.25rem;
+    }
+    .accordion-item.open .accordion-body {
+      max-height: 600px;
+      padding: 0 1.25rem 1.25rem;
+    }
+    .accordion-body p {
+      color: var(--text-2); font-size: 0.9rem; line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+    .accordion-body p:last-child { margin-bottom: 0; }
+    .accordion-body ul {
+      color: var(--text-2); font-size: 0.9rem; line-height: 1.7;
+      padding-left: 1.25rem; margin-top: 0.5rem;
+    }
+    .accordion-body li { margin-bottom: 0.3rem; }
+
+    /* ── CONTACT SECTION ── */
+    .contact-section {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .contact-section h2 {
+      font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;
+    }
+    .contact-section > .container > p {
+      color: var(--text-2); margin-bottom: 2.5rem;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .contact-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .contact-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .contact-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .contact-card p { color: var(--text-2); font-size: 0.875rem; margin-bottom: 1.25rem; line-height: 1.5; }
+    .badge-soon {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      background: rgba(255,107,53,0.15); color: var(--accent);
+      border: 1px solid rgba(255,107,53,0.3);
+      border-radius: var(--radius-full); padding: 0.2rem 0.6rem;
+      font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem;
+    }
+    .btn-whatsapp {
+      background: #25D366; color: #fff;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.5rem; border-radius: var(--radius-full);
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+      transition: background 0.2s; border: none; cursor: pointer;
+    }
+    .btn-whatsapp:hover { background: #1EB856; }
+
+    /* Email form */
+    .email-form { display: flex; flex-direction: column; gap: 0.75rem; text-align: left; }
+    .email-form input,
+    .email-form textarea,
+    .email-form select {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 0.65rem 0.9rem;
+      color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.875rem;
+      outline: none; width: 100%; transition: border-color 0.2s;
+    }
+    .email-form input:focus,
+    .email-form textarea:focus,
+    .email-form select:focus { border-color: var(--primary); }
+    .email-form input::placeholder,
+    .email-form textarea::placeholder { color: var(--text-3); }
+    .email-form textarea { min-height: 90px; resize: vertical; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1/-1; }
+    }
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+    .footer-brand p { color: var(--text-2); font-size: 0.9rem; line-height: 1.6; }
+    .footer-social { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .footer-social-link {
+      width: 36px; height: 36px; background: var(--bg-3);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; font-size: 1rem; transition: all 0.2s;
+    }
+    .footer-social-link:hover { background: var(--bg-4); border-color: var(--primary); }
+    .footer-col h4 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; }
+    .footer-col a {
+      display: block; color: var(--text-2); text-decoration: none;
+      font-size: 0.875rem; padding: 0.2rem 0; transition: color 0.15s;
+    }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { color: var(--text-3); font-size: 0.825rem; }
+    .footer-payments { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .payment-badge {
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 0.3rem 0.65rem;
+      font-size: 0.75rem; color: var(--text-2); font-weight: 500;
+    }
+    .whatsapp-float {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200;
+      width: 52px; height: 52px; background: #25D366;
+      border-radius: var(--radius-full);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(37,211,102,0.5); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/logo.svg" alt="YaroShop" width="32" height="32">
+      <span>YaroShop</span>
+    </a>
+    <div class="nav-search-wrap">
+      <input type="text" class="nav-search" placeholder="Rechercher produits, vendeurs…" id="navSearchInput" onkeydown="if(event.key==='Enter')navSearch(this.value)">
+      <button class="nav-search-btn" onclick="navSearch(document.getElementById('navSearchInput').value)">🔍</button>
+    </div>
+    <div class="nav-actions">
+      <a href="marketplace.html" class="btn btn-ghost btn-sm">Marketplace</a>
+      <a href="vendors.html" class="btn btn-ghost btn-sm">Vendeurs</a>
+      <button class="nav-icon-btn" onclick="openCartPanel()" title="Panier" aria-label="Panier">
+        🛒
+        <span class="nav-badge" id="cartBadge">3</span>
+      </button>
+      <button class="nav-icon-btn" onclick="location.href='notifications.html'" title="Notifications" aria-label="Notifications">
+        🔔
+        <span class="nav-badge" id="notifBadge">5</span>
+      </button>
+      <div class="nav-profile-wrap" id="profileDropdownWrap">
+        <button class="nav-avatar-btn" onclick="toggleProfileDropdown()" aria-label="Mon compte">
+          <div class="nav-avatar">YK</div>
+        </button>
+        <div class="nav-dropdown" id="profileDropdown">
+          <a href="profile.html" class="nav-dd-item">👤 Mon profil</a>
+          <a href="orders.html" class="nav-dd-item">📦 Mes commandes</a>
+          <a href="wishlist.html" class="nav-dd-item">❤️ Ma liste de souhaits</a>
+          <a href="dashboard.html" class="nav-dd-item">🏪 Mon dashboard vendeur</a>
+          <div class="nav-dd-divider"></div>
+          <a href="login.html" class="nav-dd-item nav-dd-logout">🚪 Déconnexion</a>
+        </div>
+      </div>
+    </div>
+    <button class="nav-mobile-toggle" onclick="this.closest('nav').classList.toggle('nav-open')" aria-label="Menu">☰</button>
+  </div>
+  <div class="nav-mobile-menu">
+    <a href="marketplace.html">Marketplace</a>
+    <a href="vendors.html">Vendeurs</a>
+    <a href="cart.html">Panier</a>
+    <a href="notifications.html">Notifications</a>
+    <a href="profile.html">Mon compte</a>
+    <a href="orders.html">Mes commandes</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="help-hero">
+  <div class="container">
+    <h1>Centre d'aide 💬</h1>
+    <p>Bienvenue ! Comment pouvons-nous vous aider aujourd'hui ? Trouvez rapidement des réponses à vos questions.</p>
+    <div class="help-search-bar">
+      <input type="text" id="helpSearch" placeholder="Chercher dans l'aide..." aria-label="Rechercher dans l'aide">
+      <button onclick="runHelpSearch()">🔍</button>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK CATEGORIES -->
+<section class="help-categories">
+  <div class="container">
+    <h2>Parcourir par catégorie</h2>
+    <div class="categories-grid">
+      <a href="#commandes" class="category-card">
+        <span class="category-icon">🛒</span>
+        <div class="category-title">Passer une commande</div>
+        <div class="category-count">12 articles</div>
+      </a>
+      <a href="#paiement" class="category-card">
+        <span class="category-icon">💳</span>
+        <div class="category-title">Paiement & Sécurité</div>
+        <div class="category-count">9 articles</div>
+      </a>
+      <a href="#livraison" class="category-card">
+        <span class="category-icon">🚚</span>
+        <div class="category-title">Livraison & Suivi</div>
+        <div class="category-count">11 articles</div>
+      </a>
+      <a href="#retours" class="category-card">
+        <span class="category-icon">↩️</span>
+        <div class="category-title">Retours & Remboursements</div>
+        <div class="category-count">7 articles</div>
+      </a>
+      <a href="#compte" class="category-card">
+        <span class="category-icon">👤</span>
+        <div class="category-title">Mon compte</div>
+        <div class="category-count">8 articles</div>
+      </a>
+      <a href="#vendeurs" class="category-card">
+        <span class="category-icon">🏪</span>
+        <div class="category-title">Vendre sur YaroShop</div>
+        <div class="category-count">14 articles</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ: COMMANDES & ACHATS -->
+<section class="faq-section" id="commandes">
+  <div class="container">
+    <div class="faq-section-header">
+      <div class="faq-section-icon">🛒</div>
+      <h2>Commandes & Achats</h2>
+    </div>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment passer ma première commande sur YaroShop ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Passer une commande sur YaroShop est simple et rapide. Commencez par créer un compte ou vous connecter à votre espace personnel. Naviguez ensuite dans notre marketplace et sélectionnez le produit qui vous intéresse.</p>
+          <p>Cliquez sur "Ajouter au panier" puis accédez à votre panier. Vérifiez votre sélection, choisissez votre adresse de livraison et votre mode de paiement (Mobile Money, espèces, etc.), puis confirmez votre commande. Vous recevrez immédiatement une confirmation par SMS ou email.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Puis-je modifier ma commande après l'avoir passée ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Vous pouvez modifier votre commande dans un délai de 30 minutes après sa validation, tant qu'elle n'a pas encore été traitée par le vendeur. Rendez-vous dans "Mes commandes" et cliquez sur "Modifier".</p>
+          <p>Si le délai est dépassé ou si le vendeur a déjà préparé votre colis, contactez notre service client via WhatsApp pour explorer les options disponibles.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment annuler une commande ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Pour annuler une commande, accédez à "Mes commandes" dans votre profil. Sélectionnez la commande concernée et cliquez sur "Annuler la commande". Vous devrez indiquer une raison d'annulation.</p>
+          <p>L'annulation est gratuite tant que la commande est au statut "En attente" ou "Confirmée". Une fois en préparation ou expédiée, des frais peuvent s'appliquer. Le remboursement est effectué sous 3 à 5 jours ouvrables.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Que faire si un article reçu est différent de la description ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Si l'article reçu ne correspond pas à la description ou aux photos du produit, vous êtes couvert par notre programme de protection acheteur. Prenez des photos de l'article reçu et de son emballage.</p>
+          <p>Signalez le problème dans les 48 heures suivant la réception via "Mes commandes" → "Signaler un problème". Notre équipe intervient sous 24h et vous propose un remboursement complet ou un renvoi de l'article correct.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment suivre plusieurs commandes en même temps ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Toutes vos commandes actives sont visibles dans votre tableau de bord sous "Mes commandes". Chaque commande dispose d'un numéro de suivi unique et d'une timeline de statut en temps réel.</p>
+          <p>Vous pouvez également activer les notifications push dans votre profil pour recevoir des alertes automatiques à chaque étape : confirmation, préparation, expédition, livraison.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ: PAIEMENT -->
+<section class="faq-section" id="paiement">
+  <div class="container">
+    <div class="faq-section-header">
+      <div class="faq-section-icon">💳</div>
+      <h2>Paiement & Sécurité</h2>
+    </div>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Quels modes de paiement sont acceptés sur YaroShop ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>YaroShop accepte les principaux moyens de paiement disponibles en République Démocratique du Congo et en Afrique Centrale :</p>
+          <ul>
+            <li><strong>Airtel Money</strong> — Paiement instantané via votre numéro Airtel</li>
+            <li><strong>MTN Mobile Money (MoMo)</strong> — Pour les abonnés MTN</li>
+            <li><strong>Orange Money</strong> — Pour les abonnés Orange</li>
+            <li><strong>Paiement à la livraison (Cash)</strong> — Disponible dans les grandes villes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment payer avec Airtel Money ou MTN MoMo ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Lors du paiement, sélectionnez "Mobile Money" et choisissez votre opérateur. Entrez votre numéro de téléphone Mobile Money. Vous recevrez immédiatement une notification de paiement sur votre téléphone.</p>
+          <p>Composez votre code PIN Mobile Money pour confirmer la transaction. Une fois le paiement validé, vous recevrez un SMS de confirmation et votre commande sera automatiquement traitée par le vendeur.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Mes informations de paiement sont-elles sécurisées ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>La sécurité de vos données financières est notre priorité absolue. YaroShop utilise un cryptage SSL 256 bits pour toutes les transactions. Nous ne stockons jamais vos codes PIN ni vos identifiants Mobile Money.</p>
+          <p>Toutes les transactions passent par les systèmes sécurisés des opérateurs télécoms. En cas de transaction suspecte, notre système de détection de fraude bloque automatiquement l'opération et vous alerte.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment obtenir un remboursement ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Si votre demande de remboursement est approuvée (annulation, produit non conforme, commande non livrée), le remboursement est effectué sur le même moyen de paiement utilisé lors de l'achat.</p>
+          <p>Les délais de remboursement sont : Mobile Money (1-3 jours ouvrables), paiement à la livraison (bon d'achat immédiat ou virement sous 5 jours). Vous serez notifié par SMS à chaque étape du processus.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Que faire si mon paiement échoue ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Un paiement peut échouer pour plusieurs raisons : solde insuffisant, réseau instable, ou délai d'expiration. Si le paiement échoue, votre commande reste en statut "En attente" pendant 2 heures.</p>
+          <p>Vérifiez votre solde Mobile Money et réessayez. Si le problème persiste, contactez notre support WhatsApp au +242 064 000 000. En cas de double débit accidentel, un remboursement automatique est émis sous 24h.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ: LIVRAISON -->
+<section class="faq-section" id="livraison">
+  <div class="container">
+    <div class="faq-section-header">
+      <div class="faq-section-icon">🚚</div>
+      <h2>Livraison & Suivi</h2>
+    </div>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Quels sont les délais de livraison ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Les délais de livraison varient selon votre localisation :</p>
+          <ul>
+            <li><strong>Kinshasa (zone urbaine)</strong> — 24 à 48 heures</li>
+            <li><strong>Brazzaville</strong> — 24 à 72 heures</li>
+            <li><strong>Autres grandes villes (Lubumbashi, Goma, Kisangani)</strong> — 3 à 5 jours ouvrables</li>
+            <li><strong>Zones périphériques et rurales</strong> — 5 à 10 jours ouvrables</li>
+          </ul>
+          <p>Ces délais peuvent varier en fonction de la disponibilité du produit et des conditions locales.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment suivre mon colis en temps réel ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Dès que votre commande est expédiée, vous recevrez un SMS avec votre numéro de suivi unique. Vous pouvez le tracker directement dans l'application via "Mes commandes" → "Suivre mon colis".</p>
+          <p>La page de suivi affiche une carte en temps réel, les étapes de livraison, et le nom du livreur. Vous pouvez également contacter le livreur directement via le chat intégré pour coordonner la livraison.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Dans quelles zones livrez-vous ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>YaroShop couvre actuellement les principales villes de la République Démocratique du Congo et du Congo-Brazzaville, notamment : Kinshasa, Brazzaville, Lubumbashi, Goma, Bukavu, Kisangani, Mbuji-Mayi, Kolwezi, Likasi et Matadi.</p>
+          <p>Nous étendons progressivement notre réseau de livraison. Si votre ville n'est pas encore couverte, inscrivez-vous à notre liste d'attente et nous vous préviendrons dès que le service sera disponible.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Que se passe-t-il si je suis absent lors de la livraison ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Si vous êtes absent lors de la première tentative de livraison, le livreur vous appellera et laissera un message. Une deuxième tentative sera faite le lendemain. Après deux tentatives infructueuses, votre colis sera mis en dépôt 48 heures dans un point relais partenaire.</p>
+          <p>Vous pouvez reprogrammer la livraison ou récupérer votre colis au point relais. Au-delà du délai de dépôt, la commande est retournée au vendeur et vous serez remboursé (hors frais de livraison).</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Les frais de livraison sont-ils remboursés en cas de retour ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Les frais de livraison initiaux sont remboursés uniquement si le retour est dû à une erreur de notre part ou du vendeur (article défectueux, non conforme, ou non livré).</p>
+          <p>En cas de retour pour convenance personnelle (changement d'avis, taille incorrecte choisie par l'acheteur), les frais de retour sont à la charge de l'acheteur. Des exceptions s'appliquent pour les vendeurs Premium qui offrent les retours gratuits.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ: VENDEURS -->
+<section class="faq-section" id="vendeurs">
+  <div class="container">
+    <div class="faq-section-header">
+      <div class="faq-section-icon">🏪</div>
+      <h2>Vendeurs & Boutiques</h2>
+    </div>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment ouvrir ma boutique sur YaroShop ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Ouvrir votre boutique YaroShop est gratuit et rapide. Créez un compte vendeur depuis "Devenir vendeur" ou votre tableau de bord. Vous devrez fournir : vos informations personnelles ou d'entreprise, une pièce d'identité valide, et un numéro Mobile Money pour recevoir vos paiements.</p>
+          <p>Après validation de votre profil (généralement sous 24-48h), vous pouvez immédiatement commencer à publier vos produits. Notre équipe vous accompagne avec des guides et tutoriels vidéo en français et langues locales.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Quelles sont les commissions de YaroShop ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>YaroShop applique une commission sur chaque vente réalisée, variable selon la catégorie de produit :</p>
+          <ul>
+            <li><strong>Électronique & High-tech</strong> — 8%</li>
+            <li><strong>Mode & Vêtements</strong> — 12%</li>
+            <li><strong>Alimentation & Beauté</strong> — 10%</li>
+            <li><strong>Maison & Décoration</strong> — 10%</li>
+            <li><strong>Autres catégories</strong> — 10% par défaut</li>
+          </ul>
+          <p>Ces commissions couvrent les frais de paiement, la protection acheteur, et l'accès à notre audience de milliers d'acheteurs actifs.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment et quand suis-je payé en tant que vendeur ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Les paiements vendeurs sont versés chaque semaine (le mardi) directement sur votre Mobile Money enregistré. Votre solde disponible correspond aux commandes livrées et confirmées depuis plus de 48 heures.</p>
+          <p>Vous pouvez consulter votre solde en temps réel dans votre tableau de bord vendeur, avec le détail de chaque transaction. Un virement minimum de 5 000 FC est requis pour déclencher un paiement automatique.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Quels types de produits sont autorisés à la vente ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>La grande majorité des produits légaux peut être vendue sur YaroShop : électronique, mode, alimentation, beauté, maison, artisanat local, services numériques, et bien plus. Nous encourageons particulièrement les produits artisanaux et locaux d'Afrique Centrale.</p>
+          <p>Sont strictement interdits : les armes, produits pharmaceutiques non certifiés, alcool sans licence, contrefaçons, et tout produit illégal selon le droit congolais. Toute infraction entraîne la suspension immédiate du compte.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment améliorer la visibilité de mes produits ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Pour maximiser vos ventes sur YaroShop, soignez vos fiches produits : photos haute qualité (minimum 3 images), descriptions détaillées et précises, prix compétitifs, et réponses rapides aux questions acheteurs.</p>
+          <p>Vous pouvez également booster votre visibilité via nos options publicitaires (Produits Sponsorisés) disponibles dans le tableau de bord. Les vendeurs avec note ≥ 4.5/5 bénéficient d'un badge "Vendeur de confiance" qui augmente significativement les conversions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ: COMPTE & SÉCURITÉ -->
+<section class="faq-section" id="compte">
+  <div class="container">
+    <div class="faq-section-header">
+      <div class="faq-section-icon">🔒</div>
+      <h2>Compte & Sécurité</h2>
+    </div>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          J'ai oublié mon mot de passe, comment le récupérer ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Sur la page de connexion, cliquez sur "Mot de passe oublié ?". Entrez l'adresse email ou le numéro de téléphone associé à votre compte. Vous recevrez un code de vérification à 6 chiffres par SMS.</p>
+          <p>Entrez ce code et créez un nouveau mot de passe sécurisé (minimum 8 caractères, avec majuscules, chiffres et symboles). Si vous n'avez plus accès à votre numéro, contactez notre support pour vérification d'identité.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment activer l'authentification à deux facteurs (2FA) ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>La double authentification (2FA) renforce considérablement la sécurité de votre compte. Pour l'activer, allez dans "Mon profil" → "Sécurité" → "Authentification à deux facteurs". Choisissez la méthode : SMS sur votre téléphone ou application d'authentification (Google Authenticator).</p>
+          <p>Une fois activé, chaque connexion nécessitera votre mot de passe + un code temporaire. Nous recommandons vivement cette option, surtout pour les comptes vendeurs avec un solde actif.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment modifier mon adresse email ou mon numéro de téléphone ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Pour modifier vos coordonnées, accédez à "Mon profil" → "Informations personnelles". Cliquez sur le champ à modifier. Pour des raisons de sécurité, vous devrez confirmer votre identité via un code envoyé sur l'ancienne adresse ou l'ancien numéro avant de valider le changement.</p>
+          <p>Pour les comptes vendeurs, la modification du numéro Mobile Money de paiement nécessite une validation supplémentaire par notre équipe (délai de 24-48h) pour prévenir la fraude.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment signaler un compte ou un produit frauduleux ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Si vous suspectez un vendeur ou un produit frauduleux, utilisez le bouton "Signaler" présent sur chaque fiche produit et profil vendeur. Sélectionnez la raison du signalement et ajoutez des détails si possible.</p>
+          <p>Notre équipe de sécurité traite chaque signalement sous 12 heures. Les vendeurs frauduleux sont suspendus immédiatement pendant l'enquête. Vous pouvez également nous contacter directement sur WhatsApp pour les cas urgents.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          Comment supprimer mon compte YaroShop ?
+          <span class="accordion-chevron">▼</span>
+        </button>
+        <div class="accordion-body">
+          <p>Vous pouvez demander la suppression de votre compte dans "Mon profil" → "Paramètres" → "Supprimer mon compte". Cette action est irréversible. Toutes vos données personnelles seront effacées conformément à notre politique de confidentialité.</p>
+          <p>Avant suppression, assurez-vous que toutes vos commandes actives sont terminées et que votre solde vendeur est nul (si vous êtes vendeur). La suppression effective intervient sous 30 jours, pendant lesquels vous pouvez annuler la demande.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+  <div class="container">
+    <h2>Besoin d'aide supplémentaire ?</h2>
+    <p>Notre équipe est disponible 7j/7 pour vous accompagner.</p>
+    <div class="contact-grid">
+      <!-- WhatsApp -->
+      <div class="contact-card">
+        <div class="contact-card-icon">💬</div>
+        <h3>WhatsApp Support</h3>
+        <p>Réponse rapide en moins de 30 minutes. Disponible 8h–22h heure de Kinshasa.</p>
+        <a href="https://wa.me/242064000000" class="btn-whatsapp" target="_blank" rel="noopener">
+          💬 Écrire sur WhatsApp
+        </a>
+      </div>
+
+      <!-- Email form -->
+      <div class="contact-card" style="text-align:left">
+        <div class="contact-card-icon" style="text-align:center">✉️</div>
+        <h3 style="text-align:center;margin-bottom:1rem">Envoyer un email</h3>
+        <form class="email-form" onsubmit="submitHelpForm(event)">
+          <input type="text" placeholder="Votre nom" required>
+          <input type="email" placeholder="Votre email" required>
+          <select>
+            <option value="" disabled selected>Sujet de votre demande</option>
+            <option>Problème de commande</option>
+            <option>Problème de paiement</option>
+            <option>Livraison / suivi</option>
+            <option>Problème de compte</option>
+            <option>Devenir vendeur</option>
+            <option>Autre</option>
+          </select>
+          <textarea placeholder="Décrivez votre problème en détail..."></textarea>
+          <button type="submit" class="btn btn-primary" style="width:100%">Envoyer le message</button>
+        </form>
+      </div>
+
+      <!-- Live Chat -->
+      <div class="contact-card">
+        <div class="contact-card-icon">🤖</div>
+        <h3>Chat en direct</h3>
+        <div class="badge-soon">🔜 Bientôt disponible</div>
+        <p>Notre assistant virtuel et le chat en direct avec nos agents seront bientôt disponibles directement depuis l'application.</p>
+        <button class="btn btn-ghost" onclick="alert('Fonctionnalité bientôt disponible !')">M'avertir au lancement</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:1rem;display:flex">
+          <img src="assets/logo.svg" alt="YaroShop" width="28" height="28">
+          <span style="font-size:1.1rem">YaroShop</span>
+        </a>
+        <p style="color:var(--text-2);font-size:0.9rem;line-height:1.6">La marketplace de référence pour l'Afrique Centrale. Achetez et vendez en toute confiance.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link">📘</a>
+          <a href="#" class="footer-social-link">📸</a>
+          <a href="#" class="footer-social-link">🐦</a>
+          <a href="#" class="footer-social-link">💬</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Marketplace</h4>
+        <a href="marketplace.html">Explorer</a>
+        <a href="vendors.html">Vendeurs</a>
+        <a href="deals.html">Promotions</a>
+        <a href="search.html">Recherche</a>
+      </div>
+      <div class="footer-col">
+        <h4>Mon compte</h4>
+        <a href="profile.html">Mon profil</a>
+        <a href="orders.html">Mes commandes</a>
+        <a href="wishlist.html">Favoris</a>
+        <a href="tracking.html">Suivi colis</a>
+      </div>
+      <div class="footer-col">
+        <h4>YaroShop</h4>
+        <a href="about.html">À propos</a>
+        <a href="help.html">Aide & FAQ</a>
+        <a href="terms.html">CGU</a>
+        <a href="privacy.html">Confidentialité</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 YaroShop. Tous droits réservés. Fait avec ❤️ pour l'Afrique Centrale.</p>
+      <div class="footer-payments">
+        <span class="payment-badge">Airtel Money</span>
+        <span class="payment-badge">MTN MoMo</span>
+        <span class="payment-badge">Orange Money</span>
+        <span class="payment-badge">Cash</span>
+      </div>
+    </div>
+  </div>
+</footer>
+<a href="https://wa.me/242064000000" class="whatsapp-float" target="_blank" rel="noopener" title="Contactez-nous sur WhatsApp">
+  <span>💬</span>
+</a>
+
+<script src="assets/app.js"></script>
+<script>
+  // Accordion logic
+  function toggleAccordion(btn) {
+    const item = btn.closest('.accordion-item');
+    const isOpen = item.classList.contains('open');
+    // Close all open items in same accordion group
+    const accordion = item.closest('.accordion');
+    accordion.querySelectorAll('.accordion-item.open').forEach(el => {
+      el.classList.remove('open');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+    }
+  }
+
+  // Profile dropdown
+  function toggleProfileDropdown() {
+    document.getElementById('profileDropdown').classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    const wrap = document.getElementById('profileDropdownWrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('profileDropdown').classList.remove('open');
+    }
+  });
+
+  // Placeholder nav functions
+  function navSearch(val) { if(val) window.location.href = 'search.html?q=' + encodeURIComponent(val); }
+  function openCartPanel() { window.location.href = 'cart.html'; }
+  function runHelpSearch() {
+    const val = document.getElementById('helpSearch').value;
+    if(val) alert('Recherche dans l\'aide : "' + val + '"\n\nCette fonctionnalité sera bientôt disponible.');
+  }
+  function submitHelpForm(e) {
+    e.preventDefault();
+    alert('Votre message a bien été envoyé ! Notre équipe vous répondra dans les 24 heures.');
+    e.target.reset();
+  }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
