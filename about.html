@@ -797,6 +797,9 @@
     el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
     fadeObserver.observe(el);
   });
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
 </script>
 </body>
 </html>

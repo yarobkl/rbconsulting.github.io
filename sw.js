@@ -1,5 +1,5 @@
 // YaroShop Service Worker v1.0
-const CACHE = 'yaroshop-v1';
+const CACHE = 'yaroshop-v2';
 const STATIC = [
   '/',
   '/index.html',
@@ -13,6 +13,11 @@ const STATIC = [
   '/login.html',
   '/register.html',
   '/404.html',
+  '/about.html',
+  '/deals.html',
+  '/help.html',
+  '/terms.html',
+  '/privacy.html',
   '/assets/styles.css',
   '/assets/app.js',
   '/assets/logo.svg'

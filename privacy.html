@@ -397,6 +397,9 @@
     tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
   });
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
 </script>
 </body>
 </html>
