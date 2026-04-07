@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Romi Oyo — Député de Ouenzé 3 | APERÇU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+/* ================================================================
+   ROMI OYO — Député de Ouenzé 3
+   Design Congo/PCT : Vert #009A44 | Jaune #FCD116 | Rouge #DC143C
+   ================================================================ */
+
+:root {
+  --vert:       #009A44;
+  --vert-fonce: #007A35;
+  --jaune:      #FCD116;
+  --rouge:      #DC143C;
+  --rouge-fonce:#A50E2C;
+  --noir:       #0D1420;
+  --noir-soft:  #1A2535;
+  --blanc:      #FFFFFF;
+  --gris-clair: #F4F6F9;
+  --gris:       #6B7280;
+  --gris-bord:  #E5E7EB;
+  --texte:      #1F2937;
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:  0 8px 24px rgba(0,0,0,0.12);
+  --shadow-lg:  0 20px 60px rgba(0,0,0,0.18);
+  --radius:     12px;
+  --radius-lg:  20px;
+  --transition: all 0.3s ease;
+  --font-titre: 'Playfair Display', Georgia, serif;
+  --font-corps: 'Inter', system-ui, sans-serif;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-corps); color: var(--texte); background: var(--blanc); overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+input, textarea, select, button { font-family: inherit; }
+
+/* ===== UTILITAIRES ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--vert); background: rgba(0,154,68,0.1); padding: 6px 16px; border-radius: 50px; margin-bottom: 14px; }
+.section-tag.light { color: var(--jaune); background: rgba(252,209,22,0.15); }
+.section-header h2 { font-family: var(--font-titre); font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--noir); margin-bottom: 16px; }
+.section-divider { display: flex; justify-content: center; gap: 4px; margin-top: 8px; }
+.section-divider span { height: 4px; border-radius: 4px; }
+.div-vert  { background: var(--vert);  width: 40px; }
+.div-jaune { background: var(--jaune); width: 20px; }
+.div-rouge { background: var(--rouge); width: 40px; }
+
+/* Reveal animation */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Boutons */
+.btn-primaire {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--vert); color: var(--blanc);
+  padding: 16px 32px; border-radius: 50px;
+  font-weight: 600; font-size: 1rem;
+  transition: var(--transition); border: none; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,154,68,0.4);
+}
+.btn-primaire:hover { background: var(--vert-fonce); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,154,68,0.5); }
+
+.btn-secondaire {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent; color: var(--blanc);
+  padding: 16px 32px; border-radius: 50px;
+  font-weight: 600; font-size: 1rem;
+  border: 2px solid rgba(255,255,255,0.5);
+  transition: var(--transition); cursor: pointer;
+}
+.btn-secondaire:hover { background: rgba(255,255,255,0.1); border-color: var(--blanc); }
+
+.btn-form {
+  width: 100%; padding: 16px; border: none; border-radius: var(--radius);
+  background: var(--vert); color: var(--blanc);
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: var(--transition);
+}
+.btn-form:hover { background: var(--vert-fonce); transform: translateY(-1px); }
+.btn-form:disabled { background: var(--gris); cursor: not-allowed; transform: none; }
+
+/* ===== NAVBAR ===== */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(13,20,32,0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  transition: var(--transition);
+}
+#navbar.scrolled { background: rgba(13,20,32,0.98); }
+.nav-flag-strip { display: flex; height: 3px; }
+.nav-flag-strip .flag-vert  { flex: 1; background: var(--vert); }
+.nav-flag-strip .flag-jaune { flex: 0 0 60px; background: var(--jaune); }
+.nav-flag-strip .flag-rouge { flex: 1; background: var(--rouge); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 32px; }
+.nav-logo { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-ro { font-family: var(--font-titre); font-size: 1.6rem; font-weight: 900; color: var(--jaune); }
+.logo-full { font-family: var(--font-titre); font-size: 1.6rem; font-weight: 900; color: var(--blanc); }
+.nav-logo small { font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links a { color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: var(--transition); }
+.nav-links a:hover { color: var(--blanc); background: rgba(255,255,255,0.08); }
+.nav-links .nav-cta { background: var(--vert); color: var(--blanc); padding: 8px 20px; border-radius: 50px; }
+.nav-links .nav-cta:hover { background: var(--vert-fonce); }
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.burger span { display: block; width: 24px; height: 2px; background: var(--blanc); border-radius: 2px; transition: var(--transition); }
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--noir) 0%, #0a2d1a 50%, #1a0a0a 100%);
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,154,68,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(220,20,60,0.1) 0%, transparent 50%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 100px 24px 80px;
+  max-width: 900px; margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8); font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 8px 20px; border-radius: 50px; margin-bottom: 28px;
+}
+.dot-vert { width: 8px; height: 8px; border-radius: 50%; background: var(--vert); display: inline-block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.2)} }
+.hero-honorable { display: block; font-family: var(--font-titre); font-size: clamp(1rem, 2vw, 1.4rem); font-weight: 400; color: var(--jaune); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+.hero-nom { display: block; font-family: var(--font-titre); font-size: clamp(3.5rem, 9vw, 7rem); font-weight: 900; color: var(--blanc); line-height: 0.95; letter-spacing: -2px; }
+.hero-sous-titre { color: rgba(255,255,255,0.65); font-size: clamp(1rem, 2vw, 1.2rem); margin: 24px 0 12px; letter-spacing: 0.5px; }
+.hero-slogan { font-family: var(--font-titre); font-size: clamp(1.2rem, 2.5vw, 1.8rem); color: var(--jaune); font-style: italic; margin-bottom: 40px; }
+.hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+.hero-reseaux { display: flex; gap: 16px; justify-content: center; }
+.hero-reseaux a { color: rgba(255,255,255,0.5); font-size: 1.3rem; transition: var(--transition); }
+.hero-reseaux a:hover { color: var(--jaune); transform: translateY(-3px); }
+.hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.hero-scroll span { display: block; width: 2px; height: 8px; background: rgba(255,255,255,0.3); border-radius: 2px; animation: scroll-anim 1.5s infinite; }
+.hero-scroll span:nth-child(2) { animation-delay: 0.2s; }
+.hero-scroll span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes scroll-anim { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+/* ===== CHIFFRES CLÉS ===== */
+.chiffres { background: var(--noir); padding: 60px 0; }
+.chiffres-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+.chiffre-item {
+  text-align: center; padding: 40px 24px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: var(--transition);
+}
+.chiffre-item:last-child { border-right: none; }
+.chiffre-item:hover { background: rgba(255,255,255,0.03); }
+.chiffre-icone { font-size: 2rem; color: var(--vert); margin-bottom: 12px; }
+.chiffre-valeur { font-family: var(--font-titre); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; color: var(--blanc); line-height: 1; }
+.chiffre-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ===== BIOGRAPHIE ===== */
+.biographie { padding: 100px 0; background: var(--blanc); }
+.bio-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; align-items: start; }
+.bio-photo { position: sticky; top: 100px; }
+.photo-placeholder {
+  width: 100%; aspect-ratio: 3/4; border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--noir) 0%, #0a2d1a 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: rgba(255,255,255,0.3); font-size: 0.9rem;
+  border: 3px solid var(--vert);
+}
+.photo-placeholder i { font-size: 4rem; }
+.photo-placeholder img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); }
+.bio-carte { background: var(--gris-clair); border-radius: var(--radius); padding: 20px; margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.bio-carte-item { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: var(--texte); }
+.bio-carte-item i { color: var(--vert); width: 20px; text-align: center; }
+.bio-intro { font-size: 1.1rem; line-height: 1.8; color: var(--texte); margin-bottom: 40px; font-weight: 400; }
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item { display: flex; gap: 20px; padding-bottom: 32px; position: relative; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-gauche { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 100px; }
+.timeline-annee { font-size: 0.8rem; font-weight: 700; color: var(--vert); text-align: center; background: rgba(0,154,68,0.1); padding: 4px 8px; border-radius: 6px; margin-bottom: 8px; }
+.timeline-ligne { flex: 1; width: 2px; background: var(--gris-bord); }
+.timeline-item:last-child .timeline-ligne { display: none; }
+.timeline-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--vert); border: 2px solid var(--blanc); box-shadow: 0 0 0 3px rgba(0,154,68,0.2); flex-shrink: 0; margin-top: 4px; }
+.timeline-droite { flex: 1; }
+.timeline-titre { font-weight: 700; color: var(--noir); margin-bottom: 6px; font-size: 1rem; }
+.timeline-desc { font-size: 0.9rem; color: var(--gris); line-height: 1.6; }
+
+/* ===== ACTIONS ===== */
+.actions { padding: 100px 0; background: var(--gris-clair); }
+.actions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.action-card {
+  background: var(--blanc); border-radius: var(--radius-lg); padding: 28px;
+  box-shadow: var(--shadow-sm); transition: var(--transition);
+  border-top: 4px solid transparent; cursor: default;
+}
+.action-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-top-color: var(--vert); }
+.action-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.action-icone { width: 52px; height: 52px; border-radius: 14px; background: rgba(0,154,68,0.1); color: var(--vert); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+.action-badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 50px; }
+.badge-jeunesse    { background: rgba(0,154,68,0.1);  color: var(--vert); }
+.badge-education   { background: rgba(252,209,22,0.15); color: #b8870a; }
+.badge-social      { background: rgba(220,20,60,0.1);  color: var(--rouge); }
+.badge-securite    { background: rgba(13,20,32,0.08);  color: var(--noir); }
+.badge-environnement { background: rgba(0,154,68,0.08); color: var(--vert-fonce); }
+.badge-fondation   { background: rgba(252,209,22,0.15); color: #b8870a; }
+.badge-sport       { background: rgba(59,130,246,0.1); color: #2563eb; }
+.action-titre { font-weight: 700; font-size: 1.05rem; color: var(--noir); margin-bottom: 10px; }
+.action-desc { font-size: 0.9rem; color: var(--gris); line-height: 1.6; margin-bottom: 14px; }
+.action-date { font-size: 0.78rem; color: var(--vert); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+
+/* ===== FONDATION ===== */
+.fondation { padding: 100px 0; background: var(--noir); }
+.fondation-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.fondation-texte h2 { font-family: var(--font-titre); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; color: var(--blanc); margin-bottom: 16px; }
+.fondation-texte p { color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 1.05rem; margin-bottom: 24px; }
+.fondation-citation { border-left: 4px solid var(--jaune); padding: 16px 20px; color: var(--jaune); font-style: italic; font-size: 1rem; line-height: 1.7; margin-bottom: 32px; }
+.fondation-domaines { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fondation-domaine { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 14px 16px; color: rgba(255,255,255,0.8); font-size: 0.9rem; transition: var(--transition); }
+.fondation-domaine:hover { background: rgba(0,154,68,0.15); border-color: var(--vert); }
+.fondation-domaine i { color: var(--vert); font-size: 1.1rem; }
+.fondation-bilan { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.bilan-item {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-lg); padding: 32px 24px; text-align: center;
+  transition: var(--transition);
+}
+.bilan-item:hover { background: rgba(0,154,68,0.15); border-color: var(--vert); }
+.bilan-valeur { font-family: var(--font-titre); font-size: 2.5rem; font-weight: 900; color: var(--jaune); }
+.bilan-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 6px; }
+
+/* ===== ASSEMBLÉE ===== */
+.assemblee { padding: 100px 0; background: var(--blanc); }
+.assemblee-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.assemblee-roles { display: flex; flex-direction: column; gap: 20px; }
+.role-card {
+  display: flex; align-items: center; gap: 20px;
+  background: var(--gris-clair); border-radius: var(--radius-lg);
+  padding: 24px; transition: var(--transition);
+  border-left: 4px solid var(--vert);
+}
+.role-card:hover { transform: translateX(6px); box-shadow: var(--shadow-sm); }
+.role-icone { width: 52px; height: 52px; border-radius: 14px; background: rgba(0,154,68,0.12); color: var(--vert); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+.role-titre { font-weight: 700; color: var(--noir); margin-bottom: 4px; }
+.role-detail { font-size: 0.9rem; color: var(--gris); }
+.assemblee-engagements h3 { font-family: var(--font-titre); font-size: 1.5rem; font-weight: 700; color: var(--noir); margin-bottom: 24px; }
+.engagements-list { display: flex; flex-direction: column; gap: 16px; }
+.engagement-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-radius: var(--radius); background: var(--gris-clair); transition: var(--transition); }
+.engagement-item:hover { background: rgba(0,154,68,0.08); }
+.engagement-item .check { color: var(--vert); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+.engagement-item span { font-size: 0.95rem; color: var(--texte); line-height: 1.5; }
+
+/* ===== ACTUALITÉS ===== */
+.actualites { padding: 100px 0; background: var(--gris-clair); }
+.actu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+.actu-card {
+  background: var(--blanc); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition);
+}
+.actu-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.actu-img { height: 180px; background: linear-gradient(135deg, var(--noir) 0%, var(--vert-fonce) 100%); display: flex; align-items: center; justify-content: center; }
+.actu-img i { font-size: 3rem; color: rgba(255,255,255,0.3); }
+.actu-corps { padding: 24px; }
+.actu-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.actu-categorie { font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--vert); background: rgba(0,154,68,0.1); padding: 4px 10px; border-radius: 50px; }
+.actu-date { font-size: 0.8rem; color: var(--gris); }
+.actu-titre { font-weight: 700; color: var(--noir); margin-bottom: 10px; font-size: 1.05rem; line-height: 1.4; }
+.actu-resume { font-size: 0.9rem; color: var(--gris); line-height: 1.6; }
+
+/* ===== GALERIE ===== */
+.galerie { padding: 100px 0; background: var(--blanc); }
+.galerie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.galerie-vide { grid-column: 1/-1; text-align: center; padding: 80px 24px; color: var(--gris); }
+.galerie-vide i { font-size: 4rem; margin-bottom: 16px; opacity: 0.3; }
+.galerie-item { aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; cursor: pointer; background: var(--gris-clair); transition: var(--transition); }
+.galerie-item:hover { transform: scale(1.02); box-shadow: var(--shadow-md); }
+.galerie-item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===== TÉMOIGNAGES ===== */
+.temoignages { padding: 100px 0; background: var(--gris-clair); }
+.temoignages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+.temoignage-card {
+  background: var(--blanc); border-radius: var(--radius-lg); padding: 32px;
+  box-shadow: var(--shadow-sm); transition: var(--transition);
+  position: relative;
+}
+.temoignage-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.temoignage-quote { font-size: 3rem; color: var(--vert); line-height: 1; font-family: var(--font-titre); margin-bottom: 12px; }
+.temoignage-texte { font-size: 1rem; color: var(--texte); line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+.temoignage-auteur { display: flex; align-items: center; gap: 12px; }
+.temoignage-avatar { width: 44px; height: 44px; border-radius: 50%; background: rgba(0,154,68,0.12); color: var(--vert); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.temoignage-nom { font-weight: 600; color: var(--noir); font-size: 0.95rem; }
+.temoignage-quartier { font-size: 0.8rem; color: var(--gris); }
+
+/* ===== FORMULAIRES (Audience, Réclamation, Contact) ===== */
+.audience  { padding: 100px 0; background: var(--blanc); }
+.reclamation { padding: 100px 0; background: var(--gris-clair); }
+.contact   { padding: 100px 0; background: var(--blanc); }
+.form-section-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: start; }
+.form-section-inner.reverse { direction: rtl; }
+.form-section-inner.reverse > * { direction: ltr; }
+.form-section-texte h2 { font-family: var(--font-titre); font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700; color: var(--noir); margin-bottom: 16px; }
+.form-section-texte p { color: var(--gris); line-height: 1.7; margin-bottom: 24px; font-size: 1rem; }
+.form-info { display: flex; flex-direction: column; gap: 12px; }
+.form-info div { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--texte); }
+.form-info i { color: var(--vert); }
+.recla-types { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.recla-type { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--texte); background: var(--blanc); border: 1px solid var(--gris-bord); padding: 10px 14px; border-radius: var(--radius); transition: var(--transition); }
+.recla-type i { color: var(--vert); }
+.form-card { background: var(--blanc); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-md); border: 1px solid var(--gris-bord); }
+.reclamation .form-card { background: var(--blanc); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group label { font-size: 0.875rem; font-weight: 600; color: var(--noir); }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px 16px; border: 1.5px solid var(--gris-bord);
+  border-radius: var(--radius); font-size: 0.95rem; color: var(--texte);
+  background: var(--blanc); transition: var(--transition); outline: none;
+  resize: vertical;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(0,154,68,0.1); }
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error { border-color: var(--rouge); box-shadow: 0 0 0 3px rgba(220,20,60,0.1); }
+.form-msg { margin-top: 14px; padding: 12px 16px; border-radius: var(--radius); font-size: 0.9rem; display: none; }
+.form-msg.success { display: block; background: rgba(0,154,68,0.1); color: var(--vert-fonce); border: 1px solid rgba(0,154,68,0.3); }
+.form-msg.error { display: block; background: rgba(220,20,60,0.08); color: var(--rouge); border: 1px solid rgba(220,20,60,0.3); }
+
+/* ===== CONTACT ===== */
+.contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: start; }
+.contact-infos { display: flex; flex-direction: column; gap: 24px; }
+.contact-item { display: flex; align-items: flex-start; gap: 16px; }
+.contact-icone { width: 44px; height: 44px; border-radius: 12px; background: rgba(0,154,68,0.1); color: var(--vert); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.contact-item strong { display: block; font-weight: 600; color: var(--noir); margin-bottom: 4px; font-size: 0.9rem; }
+.contact-item a { color: var(--vert); font-size: 0.9rem; transition: var(--transition); }
+.contact-item a:hover { color: var(--vert-fonce); }
+.contact-item p { font-size: 0.9rem; color: var(--gris); }
+
+/* ===== FOOTER ===== */
+.footer { background: var(--noir); color: rgba(255,255,255,0.7); padding: 60px 0 0; }
+.footer-flag { display: flex; height: 4px; margin-bottom: 60px; }
+.footer-flag .flag-vert  { flex: 1; background: var(--vert); }
+.footer-flag .flag-jaune { flex: 0 0 80px; background: var(--jaune); }
+.footer-flag .flag-rouge { flex: 1; background: var(--rouge); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 48px; }
+.footer-logo { font-family: var(--font-titre); font-size: 2rem; font-weight: 900; color: var(--blanc); margin-bottom: 12px; }
+.footer-brand p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px; }
+.footer-parti { color: var(--jaune); font-size: 0.85rem; font-weight: 600; }
+.footer-nav h4 { color: var(--blanc); font-weight: 600; margin-bottom: 16px; font-size: 0.95rem; }
+.footer-nav ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-nav a { font-size: 0.875rem; transition: var(--transition); }
+.footer-nav a:hover { color: var(--vert); }
+.footer-reseaux h4 { color: var(--blanc); font-weight: 600; margin-bottom: 16px; font-size: 0.95rem; }
+.footer-social { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-social a { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: var(--transition); }
+.footer-social a:hover { background: var(--vert); color: var(--blanc); transform: translateY(-2px); }
+.footer-comm { font-size: 0.8rem; line-height: 1.5; }
+.footer-comm a { color: var(--jaune); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 24px 0; text-align: center; font-size: 0.85rem; }
+
+/* ===== BACK TO TOP ===== */
+.back-top {
+  position: fixed; bottom: 32px; right: 32px; z-index: 999;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--vert); color: var(--blanc);
+  border: none; cursor: pointer; font-size: 1rem;
+  box-shadow: var(--shadow-md); transition: var(--transition);
+  opacity: 0; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.back-top.visible { opacity: 1; pointer-events: auto; }
+.back-top:hover { background: var(--vert-fonce); transform: translateY(-3px); }
+
+/* ===== FLAG STRIP ===== */
+.flag-vert  { background: var(--vert); }
+.flag-jaune { background: var(--jaune); }
+.flag-rouge { background: var(--rouge); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .bio-grid { grid-template-columns: 1fr; }
+  .bio-photo { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .photo-placeholder { aspect-ratio: 1; }
+  .fondation-inner { grid-template-columns: 1fr; gap: 48px; }
+  .assemblee-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .chiffres-grid { grid-template-columns: repeat(2, 1fr); }
+  .chiffre-item:nth-child(2) { border-right: none; }
+}
+
+@media (max-width: 768px) {
+  .nav-inner { padding: 14px 20px; }
+  .nav-links {
+    display: none; position: fixed; inset: 0; top: 60px;
+    background: var(--noir); flex-direction: column; align-items: center;
+    justify-content: center; gap: 16px; z-index: 999;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { font-size: 1.2rem; padding: 12px 24px; }
+  .burger { display: flex; }
+  .form-section-inner,
+  .form-section-inner.reverse { grid-template-columns: 1fr; direction: ltr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .fondation-bilan { grid-template-columns: 1fr 1fr; }
+  .fondation-domaines { grid-template-columns: 1fr; }
+  .recla-types { grid-template-columns: 1fr; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .bio-photo { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .chiffres-grid { grid-template-columns: 1fr 1fr; }
+  .chiffre-item { padding: 28px 16px; }
+  .actions-grid { grid-template-columns: 1fr; }
+  .temoignages-grid { grid-template-columns: 1fr; }
+  .actu-grid { grid-template-columns: 1fr; }
+  .form-card { padding: 24px 16px; }
+}
+
+  </style>
+</head>
+<body>
+
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-flag-strip">
+    <span class="flag-vert"></span>
+    <span class="flag-jaune"></span>
+    <span class="flag-rouge"></span>
+  </div>
+  <div class="nav-inner">
+    <a href="#accueil" class="nav-logo">
+      <span class="logo-ro">RO</span><span class="logo-full"> Romi Oyo</span>
+      <small>Député de Ouenzé 3</small>
+    </a>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#accueil">Accueil</a></li>
+      <li><a href="#biographie">Biographie</a></li>
+      <li><a href="#actions">Actions</a></li>
+      <li><a href="#fondation">Fondation</a></li>
+      <li><a href="#assemblee">Assemblée</a></li>
+      <li><a href="#actualites">Actualités</a></li>
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="accueil" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot-vert"></span>
+      <span>PCT — Parti Congolais du Travail</span>
+    </div>
+    <h1 class="hero-titre">
+      <span class="hero-honorable">L'Honorable</span>
+      <span class="hero-nom">Romi Oyo</span>
+    </h1>
+    <p class="hero-sous-titre">Député de Ouenzé 3 — Brazzaville, République du Congo</p>
+    <p class="hero-slogan">"Ensemble pour être plus fort"</p>
+    <div class="hero-btns">
+      <a href="#audience" class="btn-primaire">
+        <i class="fa-solid fa-calendar-check"></i> Demander une audience
+      </a>
+      <a href="#actions" class="btn-secondaire">
+        <i class="fa-solid fa-arrow-down"></i> Voir les actions
+      </a>
+    </div>
+    <div class="hero-reseaux">
+      <a href="https://www.instagram.com/romioyo/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://x.com/romi_oyo" target="_blank" aria-label="X/Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.facebook.com/romioyoo/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://www.tiktok.com/@raylebi4" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</section>
+
+<!-- ===== CHIFFRES CLÉS ===== -->
+<section id="chiffres" class="chiffres">
+  <div class="container">
+    <div class="chiffres-grid" id="chiffres-grid">
+      <!-- Rempli par JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== BIOGRAPHIE ===== -->
+<section id="biographie" class="biographie reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Qui est-il ?</span>
+      <h2>Biographie</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-photo">
+        <div class="photo-placeholder" id="bio-photo">
+          <i class="fa-solid fa-user"></i>
+          <span>Photo officielle</span>
+        </div>
+        <div class="bio-carte">
+          <div class="bio-carte-item">
+            <i class="fa-solid fa-map-marker-alt"></i>
+            <span>Ouenzé 3, Brazzaville</span>
+          </div>
+          <div class="bio-carte-item">
+            <i class="fa-solid fa-flag"></i>
+            <span>PCT — Parti Congolais du Travail</span>
+          </div>
+          <div class="bio-carte-item">
+            <i class="fa-solid fa-landmark"></i>
+            <span>Assemblée Nationale du Congo</span>
+          </div>
+        </div>
+      </div>
+      <div class="bio-content">
+        <p class="bio-intro" id="bio-description">Chargement...</p>
+        <div class="timeline" id="timeline">
+          <!-- Rempli par JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ACTIONS ===== -->
+<section id="actions" class="actions reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Sur le terrain</span>
+      <h2>Actions & Réalisations</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="actions-grid" id="actions-grid">
+      <!-- Rempli par JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== FONDATION ===== -->
+<section id="fondation" class="fondation reveal">
+  <div class="container">
+    <div class="fondation-inner">
+      <div class="fondation-texte">
+        <span class="section-tag light">Engagement social</span>
+        <h2>Fondation HARRYS OYO</h2>
+        <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+        <p id="fondation-description">Chargement...</p>
+        <blockquote class="fondation-citation" id="fondation-citation">Chargement...</blockquote>
+        <div class="fondation-domaines" id="fondation-domaines">
+          <!-- Rempli par JS -->
+        </div>
+      </div>
+      <div class="fondation-bilan" id="fondation-bilan">
+        <!-- Rempli par JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ASSEMBLÉE ===== -->
+<section id="assemblee" class="assemblee reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Mandat législatif</span>
+      <h2>Mon rôle à l'Assemblée Nationale</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="assemblee-grid">
+      <div class="assemblee-roles" id="assemblee-roles">
+        <!-- Rempli par JS -->
+      </div>
+      <div class="assemblee-engagements">
+        <h3>Mes engagements</h3>
+        <ul class="engagements-list" id="engagements-list">
+          <!-- Rempli par JS -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ACTUALITÉS ===== -->
+<section id="actualites" class="actualites reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Informations</span>
+      <h2>Actualités</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="actu-grid" id="actu-grid">
+      <!-- Rempli par JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALERIE ===== -->
+<section id="galerie" class="galerie reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">En images</span>
+      <h2>Galerie</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="galerie-grid" id="galerie-grid">
+      <div class="galerie-vide">
+        <i class="fa-solid fa-images"></i>
+        <p>Les photos seront bientôt disponibles</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TÉMOIGNAGES ===== -->
+<section id="temoignages" class="temoignages reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Paroles de citoyens</span>
+      <h2>Témoignages</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="temoignages-grid" id="temoignages-grid">
+      <!-- Rempli par JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== AUDIENCE ===== -->
+<section id="audience" class="audience reveal">
+  <div class="container">
+    <div class="form-section-inner">
+      <div class="form-section-texte">
+        <span class="section-tag light">Rencontre</span>
+        <h2>Demander une audience</h2>
+        <p>Vous souhaitez rencontrer l'Honorable Romi Oyo ? Remplissez ce formulaire. Son équipe vous recontactera dans les plus brefs délais.</p>
+        <div class="form-info">
+          <div><i class="fa-solid fa-clock"></i> Réponse sous 48h</div>
+          <div><i class="fa-solid fa-location-dot"></i> Ouenzé 3, Brazzaville</div>
+        </div>
+      </div>
+      <form class="form-card" id="form-audience" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="aud-nom">Nom complet *</label>
+            <input type="text" id="aud-nom" name="nom" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label for="aud-tel">Téléphone *</label>
+            <input type="tel" id="aud-tel" name="telephone" placeholder="+242 ..." required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="aud-email">Email</label>
+          <input type="email" id="aud-email" name="email" placeholder="Votre email (facultatif)" />
+        </div>
+        <div class="form-group">
+          <label for="aud-objet">Objet de la demande *</label>
+          <input type="text" id="aud-objet" name="objet" placeholder="Ex : Problème d'infrastructure, emploi..." required />
+        </div>
+        <div class="form-group">
+          <label for="aud-message">Message *</label>
+          <textarea id="aud-message" name="message" rows="4" placeholder="Décrivez votre demande..." required></textarea>
+        </div>
+        <button type="submit" class="btn-form" id="btn-audience">
+          <i class="fa-solid fa-calendar-check"></i> Envoyer la demande
+        </button>
+        <div class="form-msg" id="msg-audience"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RÉCLAMATION / ACCOMPAGNEMENT ===== -->
+<section id="reclamation" class="reclamation reveal">
+  <div class="container">
+    <div class="form-section-inner reverse">
+      <div class="form-section-texte">
+        <span class="section-tag">Besoin d'aide ?</span>
+        <h2>Réclamation & Accompagnement</h2>
+        <p>Vous avez un problème dans votre quartier ou besoin d'être accompagné ? Signalez-le directement au bureau du député.</p>
+        <div class="recla-types">
+          <div class="recla-type"><i class="fa-solid fa-road"></i> Infrastructure</div>
+          <div class="recla-type"><i class="fa-solid fa-droplet"></i> Eau & Assainissement</div>
+          <div class="recla-type"><i class="fa-solid fa-bolt"></i> Électricité</div>
+          <div class="recla-type"><i class="fa-solid fa-graduation-cap"></i> Éducation</div>
+          <div class="recla-type"><i class="fa-solid fa-briefcase"></i> Emploi</div>
+          <div class="recla-type"><i class="fa-solid fa-ellipsis"></i> Autre</div>
+        </div>
+      </div>
+      <form class="form-card" id="form-reclamation" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rec-nom">Nom complet *</label>
+            <input type="text" id="rec-nom" name="nom" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label for="rec-tel">Téléphone *</label>
+            <input type="tel" id="rec-tel" name="telephone" placeholder="+242 ..." required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="rec-quartier">Quartier *</label>
+          <select id="rec-quartier" name="quartier" required>
+            <option value="">Sélectionnez votre quartier</option>
+            <option value="Q56">Quartier 56</option>
+            <option value="Q57">Quartier 57</option>
+            <option value="Autre">Autre quartier de Ouenzé</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="rec-type">Type de demande *</label>
+          <select id="rec-type" name="type" required>
+            <option value="">Choisir le type</option>
+            <option value="Infrastructure">Infrastructure / Voirie</option>
+            <option value="Eau">Eau & Assainissement</option>
+            <option value="Electricite">Électricité</option>
+            <option value="Education">Éducation / Scolarité</option>
+            <option value="Emploi">Emploi / Formation</option>
+            <option value="Sécurité">Sécurité</option>
+            <option value="Social">Aide sociale</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="rec-message">Description *</label>
+          <textarea id="rec-message" name="message" rows="4" placeholder="Décrivez votre problème ou besoin..." required></textarea>
+        </div>
+        <button type="submit" class="btn-form" id="btn-reclamation">
+          <i class="fa-solid fa-paper-plane"></i> Envoyer la réclamation
+        </button>
+        <div class="form-msg" id="msg-reclamation"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="contact reveal">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Nous joindre</span>
+      <h2>Contact</h2>
+      <div class="section-divider"><span class="div-vert"></span><span class="div-jaune"></span><span class="div-rouge"></span></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-infos">
+        <div class="contact-item">
+          <div class="contact-icone"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <strong>Adresse</strong>
+            <p>Ouenzé 3 — Quartiers 56 & 57<br />Brazzaville, République du Congo</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icone"><i class="fa-brands fa-instagram"></i></div>
+          <div>
+            <strong>Instagram</strong>
+            <a href="https://www.instagram.com/romioyo/" target="_blank">@romioyo</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icone"><i class="fa-brands fa-x-twitter"></i></div>
+          <div>
+            <strong>X / Twitter</strong>
+            <a href="https://x.com/romi_oyo" target="_blank">@romi_oyo</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icone"><i class="fa-brands fa-facebook"></i></div>
+          <div>
+            <strong>Facebook</strong>
+            <a href="https://www.facebook.com/romioyoo/" target="_blank">Romi Oyo</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icone"><i class="fa-brands fa-tiktok"></i></div>
+          <div>
+            <strong>TikTok (Communication)</strong>
+            <a href="https://www.tiktok.com/@raylebi4" target="_blank">@raylebi4 — Ray Lebi</a>
+          </div>
+        </div>
+      </div>
+      <form class="form-card" id="form-contact" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ct-nom">Nom *</label>
+            <input type="text" id="ct-nom" name="nom" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label for="ct-email">Email *</label>
+            <input type="email" id="ct-email" name="email" placeholder="Votre email" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ct-sujet">Sujet *</label>
+          <input type="text" id="ct-sujet" name="sujet" placeholder="Objet de votre message" required />
+        </div>
+        <div class="form-group">
+          <label for="ct-message">Message *</label>
+          <textarea id="ct-message" name="message" rows="5" placeholder="Votre message..." required></textarea>
+        </div>
+        <button type="submit" class="btn-form">
+          <i class="fa-solid fa-paper-plane"></i> Envoyer
+        </button>
+        <div class="form-msg" id="msg-contact"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-flag">
+    <span class="flag-vert"></span>
+    <span class="flag-jaune"></span>
+    <span class="flag-rouge"></span>
+  </div>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Romi Oyo</div>
+        <p>Député de Ouenzé 3<br />Brazzaville — République du Congo</p>
+        <p class="footer-parti">PCT — Parti Congolais du Travail</p>
+      </div>
+      <div class="footer-nav">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#biographie">Biographie</a></li>
+          <li><a href="#actions">Actions</a></li>
+          <li><a href="#fondation">Fondation HARRYS OYO</a></li>
+          <li><a href="#assemblee">Assemblée Nationale</a></li>
+          <li><a href="#actualites">Actualités</a></li>
+          <li><a href="#galerie">Galerie</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <h4>Citoyens</h4>
+        <ul>
+          <li><a href="#audience">Demander une audience</a></li>
+          <li><a href="#reclamation">Réclamation</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-reseaux">
+        <h4>Réseaux sociaux</h4>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/romioyo/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://x.com/romi_oyo" target="_blank" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="https://www.facebook.com/romioyoo/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="https://cg.linkedin.com/in/romi-oyo-6b2b87135" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="https://www.threads.com/@romioyo" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
+          <a href="https://www.tiktok.com/@raylebi4" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+        <p class="footer-comm">Communication : Ray Lebi<br /><a href="https://www.tiktok.com/@raylebi4" target="_blank">@raylebi4</a> — 40,5K abonnés</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Romi Oyo — Député de Ouenzé 3. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bouton retour en haut -->
+<button class="back-top" id="back-top" aria-label="Retour en haut">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  initNavbar();
+  initReveal();
+  initBackTop();
+  const data = {
+  "biographie": {
+    "nom": "Romi Oyo",
+    "nom_complet": "Jules Junior Romarick Oyo Embounou",
+    "titre": "Député de Ouenzé 3",
+    "circonscription": "Ouenzé 3 — Quartiers 56 & 57, Brazzaville",
+    "parti": "PCT — Parti Congolais du Travail",
+    "slogan": "Ensemble pour être plus fort",
+    "photo": "",
+    "description": "Véritable homme de terrain, Jules Junior Romarick Oyo Embounou, dit Romi Oyo, est le député de la troisième circonscription de Ouenzé à Brazzaville. Engagé depuis plus d'une décennie au service des populations des quartiers 56 et 57, il a débuté sa carrière politique comme conseiller municipal du 5e arrondissement avant d'être élu député sous l'investiture du Parti Congolais du Travail. Rapporteur de la commission Environnement et Développement Durable à l'Assemblée Nationale, il est également Président de Lisanga 242 et Président d'honneur de la Fondation HARRYS OYO. Son engagement sans faille, sa présence constante auprès des populations et sa capacité de mobilisation font de lui un artisan déterminé du développement de Ouenzé 3.",
+    "parcours": [
+      {
+        "annee": "2011 – 2015",
+        "titre": "Engagement associatif",
+        "description": "Lancement des activités annuelles pour les enfants de Ouenzé : tournois de football, distribution de jouets, soutien aux familles vulnérables. Fondation de la Fondation Harris Oyo."
+      },
+      {
+        "annee": "2016 – 2017",
+        "titre": "Conseiller municipal — 5e arrondissement",
+        "description": "Distribution de plus de 200 kits scolaires, aide aux victimes d'inondations, organisation de championnats sportifs. Annonce de sa candidature aux législatives."
+      },
+      {
+        "annee": "Juillet 2017",
+        "titre": "Investi par le PCT",
+        "description": "Investi candidat du Parti Congolais du Travail pour Ouenzé 3. Slogan : \"Ensemble pour être plus fort\"."
+      },
+      {
+        "annee": "2018 – 2022",
+        "titre": "Élu Député de Ouenzé 3",
+        "description": "Représente les quartiers 56 et 57 à l'Assemblée Nationale. Visites régulières des personnes âgées, distribution de denrées, aide médicale, actions de terrain."
+      },
+      {
+        "annee": "2022",
+        "titre": "Réélu Député de Ouenzé 3",
+        "description": "Réélu avec le soutien massif des jeunes et des populations. Poursuite des actions sociales et institutionnelles."
+      },
+      {
+        "annee": "2023 – aujourd'hui",
+        "titre": "Engagement renforcé",
+        "description": "Lutte contre la délinquance juvénile (bébés noirs), plan 1 000 jeunes accompagnés, Travaux Dirigés (80% au BAC), journée de l'arbre, formation de 223 jeunes via la Fondation HARRYS OYO."
+      }
+    ]
+  },
+  "chiffres": [
+    { "valeur": "223", "label": "Jeunes formés et certifiés", "icone": "fa-graduation-cap" },
+    { "valeur": "1 000", "label": "Jeunes à accompagner en 2024", "icone": "fa-users" },
+    { "valeur": "80%", "label": "Taux de réussite au BAC", "icone": "fa-chart-line" },
+    { "valeur": "200+", "label": "Kits scolaires distribués", "icone": "fa-book" }
+  ],
+  "actions": [
+    {
+      "titre": "Formation professionnelle",
+      "description": "La Fondation HARRYS OYO a formé 223 jeunes sur 3 mois dans 8 secteurs : hôtellerie, mécanique, informatique, coiffure, pâtisserie, couture, froid & énergie solaire.",
+      "date": "Février 2026",
+      "icone": "fa-briefcase",
+      "badge": "Fondation"
+    },
+    {
+      "titre": "Travaux Dirigés — BAC",
+      "description": "Organisation de la 2e édition des Travaux Dirigés pour les élèves de Ouenzé 3. Résultat : 80% de réussite au Baccalauréat.",
+      "date": "2024",
+      "icone": "fa-school",
+      "badge": "Éducation"
+    },
+    {
+      "titre": "Plan 1 000 jeunes",
+      "description": "Engagement d'accompagner 1 000 jeunes des quartiers 56 et 57 avec des programmes d'insertion professionnelle et de soutien.",
+      "date": "Janvier 2024",
+      "icone": "fa-rocket",
+      "badge": "Jeunesse"
+    },
+    {
+      "titre": "Lutte contre les bébés noirs",
+      "description": "Rencontres citoyennes pour conscientiser les jeunes délinquants (Koulouna). Programme d'assainissement des rues de Ouenzé 3.",
+      "date": "Janvier 2023",
+      "icone": "fa-shield-halved",
+      "badge": "Sécurité"
+    },
+    {
+      "titre": "Soutien aux personnes âgées",
+      "description": "Visites régulières aux malades et personnes du 3e âge. Distribution de denrées (sucre, huile, riz, lait), aide financière pour soins médicaux.",
+      "date": "Depuis 2018",
+      "icone": "fa-heart",
+      "badge": "Social"
+    },
+    {
+      "titre": "Journée de l'arbre",
+      "description": "Engagement pour un Congo plus vert et durable pour les générations à venir. Actions de reboisement dans la circonscription.",
+      "date": "Novembre 2025",
+      "icone": "fa-tree",
+      "badge": "Environnement"
+    },
+    {
+      "titre": "Championnats sportifs",
+      "description": "Organisation de tournois de football, judo, taekwondo. Le sport comme outil de rassemblement et de cohésion pour la jeunesse de Ouenzé.",
+      "date": "Depuis 2015",
+      "icone": "fa-futbol",
+      "badge": "Sport"
+    },
+    {
+      "titre": "Kits scolaires",
+      "description": "Distribution annuelle de kits scolaires aux élèves de Ouenzé. Plus de 200 élèves bénéficiaires chaque année scolaire.",
+      "date": "Annuel",
+      "icone": "fa-pencil",
+      "badge": "Éducation"
+    }
+  ],
+  "fondation": {
+    "nom": "Fondation HARRYS OYO",
+    "description": "La Fondation HARRYS OYO est l'instrument social du député Romi Oyo au service des populations de Ouenzé 3. Créée pour agir concrètement là où les besoins sont les plus importants, elle intervient dans les domaines de l'éducation, de l'emploi, de la santé et du sport.",
+    "citation": "Agir pour les jeunes, ce n'est pas seulement déclamer des discours : c'est former avec rigueur, accompagner avec bienveillance, bâtir des structures pérennes et créer des opportunités concrètes.",
+    "domaines": [
+      { "nom": "Formation professionnelle", "icone": "fa-briefcase" },
+      { "nom": "Soutien scolaire", "icone": "fa-book-open" },
+      { "nom": "Action sociale & santé", "icone": "fa-heart-pulse" },
+      { "nom": "Sport & cohésion", "icone": "fa-trophy" }
+    ],
+    "bilan": [
+      { "valeur": "223", "label": "jeunes certifiés (2026)" },
+      { "valeur": "8", "label": "filières de formation" },
+      { "valeur": "3 mois", "label": "de formation qualifiante" },
+      { "valeur": "10+", "label": "années d'actions sociales" }
+    ]
+  },
+  "assemblee": {
+    "titre": "Mon rôle à l'Assemblée Nationale",
+    "description": "En tant que député de Ouenzé 3, Romi Oyo siège à l'Assemblée Nationale de la République du Congo et y porte la voix des habitants de sa circonscription.",
+    "roles": [
+      {
+        "titre": "Rapporteur",
+        "detail": "Commission Environnement et Développement Durable",
+        "icone": "fa-leaf"
+      },
+      {
+        "titre": "Président",
+        "detail": "Lisanga 242",
+        "icone": "fa-flag"
+      },
+      {
+        "titre": "Député",
+        "detail": "Ouenzé 3 — Assemblée Nationale du Congo",
+        "icone": "fa-landmark"
+      }
+    ],
+    "engagements": [
+      "Porter les préoccupations des habitants (insalubrité, chômage, sécurité) à l'Assemblée Nationale",
+      "Défendre des lois favorables au développement durable et à la jeunesse",
+      "Accompagner les orientations du Président Denis Sassou Nguesso",
+      "Assurer une présence constante sur le terrain à Ouenzé 3"
+    ]
+  },
+  "actualites": [
+    {
+      "id": 1,
+      "titre": "223 jeunes certifiés par la Fondation HARRYS OYO",
+      "resume": "La Fondation HARRYS OYO a clôturé une session de formation qualifiante de 3 mois en remettant des certificats à 223 jeunes de Ouenzé 3.",
+      "date": "21 Février 2026",
+      "categorie": "Fondation",
+      "lien": ""
+    },
+    {
+      "id": 2,
+      "titre": "Journée de l'arbre : Romi Oyo s'engage pour un Congo vert",
+      "resume": "Le député a renouvelé son engagement environnemental lors de la journée nationale de l'arbre, plaidant pour un Congo plus durable pour les générations futures.",
+      "date": "Novembre 2025",
+      "categorie": "Environnement",
+      "lien": ""
+    },
+    {
+      "id": 3,
+      "titre": "Objectif 1 000 jeunes accompagnés en 2024",
+      "resume": "Romi Oyo annonce son plan ambitieux d'accompagner 1 000 jeunes des quartiers 56 et 57 via des programmes d'insertion et de formation.",
+      "date": "Janvier 2024",
+      "categorie": "Jeunesse",
+      "lien": ""
+    }
+  ],
+  "galerie": [],
+  "temoignages": [
+    {
+      "nom": "Emery Nkoudzilou Ililou",
+      "texte": "Nous sommes très heureux de ce que cet honorable député nous a donné. Il doit continuer ces actions humanitaires.",
+      "quartier": "Quartier 56, Ouenzé"
+    },
+    {
+      "nom": "Massonso Dieuveille",
+      "texte": "Cette formation m'a permis d'acquérir des compétences précieuses et de croire en moi-même.",
+      "quartier": "Bénéficiaire — Fondation HARRYS OYO"
+    },
+    {
+      "nom": "Un habitant de Ouenzé 3",
+      "texte": "Romi Oyo est un véritable homme de terrain. Il est là quand on a besoin de lui.",
+      "quartier": "Quartier 57, Ouenzé"
+    }
+  ],
+  "contact": {
+    "email": "",
+    "telephone": "",
+    "adresse": "Ouenzé 3, Brazzaville — République du Congo",
+    "reseaux": {
+      "instagram": "https://www.instagram.com/romioyo/",
+      "twitter": "https://x.com/romi_oyo",
+      "facebook": "https://www.facebook.com/romioyoo/",
+      "linkedin": "https://cg.linkedin.com/in/romi-oyo-6b2b87135",
+      "threads": "https://www.threads.com/@romioyo",
+      "tiktok": "https://www.tiktok.com/@raylebi4"
+    }
+  },
+  "stats": {
+    "visites": 0,
+    "contacts": 0,
+    "audiences": 0,
+    "reclamations": 0
+  }
+}
+;
+  renderAll(data);
+  initFormsPreview();
+});
+
+function initNavbar() {
+  const navbar = document.getElementById('navbar');
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('nav-links');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('back-top').classList.toggle('visible', window.scrollY > 300);
+  });
+
+  burger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    const spans = burger.querySelectorAll('span');
+    burger.classList.toggle('active');
+    if (burger.classList.contains('active')) {
+      spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+    } else {
+      spans.forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
+  });
+
+  // Fermer menu au clic sur un lien
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      burger.classList.remove('active');
+      burger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    });
+  });
+}
+
+// ===== REVEAL AU SCROLL =====
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// ===== BACK TO TOP =====
+function initBackTop() {
+  document.getElementById('back-top').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ===== CHARGEMENT DES DONNÉES =====
+async function loadData() {
+  try {
+    const res = await fetch('/api/load');
+    if (!res.ok) throw new Error('API non disponible');
+    const data = await res.json();
+    renderAll(data);
+  } catch {
+    // Fallback : charger data.json directement
+    try {
+      const res = await fetch('/data.json');
+      const data = await res.json();
+      renderAll(data);
+    } catch (e) {
+      console.error('Impossible de charger les données', e);
+    }
+  }
+  
+  
+}
+
+function renderAll(data) {
+  renderChiffres(data.chiffres || []);
+  renderBiographie(data.biographie || {});
+  renderTimeline(data.biographie?.parcours || []);
+  renderActions(data.actions || []);
+  renderFondation(data.fondation || {});
+  renderAssemblee(data.assemblee || {});
+  renderActualites(data.actualites || []);
+  renderGalerie(data.galerie || []);
+  renderTemoignages(data.temoignages || []);
+}
+
+// ===== CHIFFRES CLÉS =====
+function renderChiffres(chiffres) {
+  const grid = document.getElementById('chiffres-grid');
+  if (!grid) return;
+  grid.innerHTML = chiffres.map(c => `
+    <div class="chiffre-item">
+      <div class="chiffre-icone"><i class="fa-solid ${c.icone}"></i></div>
+      <div class="chiffre-valeur" data-target="${c.valeur}">${c.valeur}</div>
+      <div class="chiffre-label">${c.label}</div>
+    </div>
+  `).join('');
+  animateCounters();
+}
+
+function animateCounters() {
+  const counters = document.querySelectorAll('.chiffre-valeur');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const raw = el.dataset.target || el.textContent;
+      const numMatch = raw.match(/[\d\s]+/);
+      if (!numMatch) return;
+      const target = parseInt(numMatch[0].replace(/\s/g, ''), 10);
+      if (isNaN(target)) return;
+      const suffix = raw.replace(/[\d\s]/g, '');
+      let current = 0;
+      const step = Math.ceil(target / 60);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current.toLocaleString('fr-FR') + suffix;
+        if (current >= target) clearInterval(timer);
+      }, 30);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => observer.observe(c));
+}
+
+// ===== BIOGRAPHIE =====
+function renderBiographie(bio) {
+  const desc = document.getElementById('bio-description');
+  if (desc) desc.textContent = bio.description || '';
+
+  const photoEl = document.getElementById('bio-photo');
+  if (photoEl && bio.photo) {
+    photoEl.innerHTML = `<img src="${escHtml(bio.photo)}" alt="Photo officielle de Romi Oyo" />`;
+  }
+}
+
+function renderTimeline(parcours) {
+  const tl = document.getElementById('timeline');
+  if (!tl) return;
+  tl.innerHTML = parcours.map(p => `
+    <div class="timeline-item">
+      <div class="timeline-gauche">
+        <span class="timeline-annee">${escHtml(p.annee)}</span>
+        <div class="timeline-ligne"></div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div class="timeline-droite">
+        <div class="timeline-titre">${escHtml(p.titre)}</div>
+        <div class="timeline-desc">${escHtml(p.description)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== ACTIONS =====
+function renderActions(actions) {
+  const grid = document.getElementById('actions-grid');
+  if (!grid) return;
+  const badgeClass = {
+    'Jeunesse': 'badge-jeunesse', 'Éducation': 'badge-education',
+    'Social': 'badge-social', 'Sécurité': 'badge-securite',
+    'Environnement': 'badge-environnement', 'Fondation': 'badge-fondation',
+    'Sport': 'badge-sport'
+  };
+  grid.innerHTML = actions.map(a => `
+    <div class="action-card">
+      <div class="action-header">
+        <div class="action-icone"><i class="fa-solid ${escHtml(a.icone)}"></i></div>
+        <span class="action-badge ${badgeClass[a.badge] || 'badge-jeunesse'}">${escHtml(a.badge)}</span>
+      </div>
+      <div class="action-titre">${escHtml(a.titre)}</div>
+      <div class="action-desc">${escHtml(a.description)}</div>
+      <div class="action-date"><i class="fa-regular fa-calendar"></i> ${escHtml(a.date)}</div>
+    </div>
+  `).join('');
+}
+
+// ===== FONDATION =====
+function renderFondation(fondation) {
+  const desc = document.getElementById('fondation-description');
+  if (desc) desc.textContent = fondation.description || '';
+
+  const citation = document.getElementById('fondation-citation');
+  if (citation) citation.textContent = `"${fondation.citation || ''}"`;
+
+  const domaines = document.getElementById('fondation-domaines');
+  if (domaines && fondation.domaines) {
+    domaines.innerHTML = fondation.domaines.map(d => `
+      <div class="fondation-domaine">
+        <i class="fa-solid ${escHtml(d.icone)}"></i>
+        <span>${escHtml(d.nom)}</span>
+      </div>
+    `).join('');
+  }
+
+  const bilan = document.getElementById('fondation-bilan');
+  if (bilan && fondation.bilan) {
+    bilan.innerHTML = fondation.bilan.map(b => `
+      <div class="bilan-item">
+        <div class="bilan-valeur">${escHtml(b.valeur)}</div>
+        <div class="bilan-label">${escHtml(b.label)}</div>
+      </div>
+    `).join('');
+  }
+}
+
+// ===== ASSEMBLÉE =====
+function renderAssemblee(assemblee) {
+  const rolesEl = document.getElementById('assemblee-roles');
+  if (rolesEl && assemblee.roles) {
+    rolesEl.innerHTML = assemblee.roles.map(r => `
+      <div class="role-card">
+        <div class="role-icone"><i class="fa-solid ${escHtml(r.icone)}"></i></div>
+        <div>
+          <div class="role-titre">${escHtml(r.titre)}</div>
+          <div class="role-detail">${escHtml(r.detail)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const engagementsEl = document.getElementById('engagements-list');
+  if (engagementsEl && assemblee.engagements) {
+    engagementsEl.innerHTML = assemblee.engagements.map(e => `
+      <li class="engagement-item">
+        <i class="fa-solid fa-circle-check check"></i>
+        <span>${escHtml(e)}</span>
+      </li>
+    `).join('');
+  }
+}
+
+// ===== ACTUALITÉS =====
+function renderActualites(actualites) {
+  const grid = document.getElementById('actu-grid');
+  if (!grid) return;
+  if (!actualites.length) {
+    grid.innerHTML = '<p style="text-align:center;color:var(--gris);grid-column:1/-1">Aucune actualité pour le moment.</p>';
+    return;
+  }
+  grid.innerHTML = actualites.map(a => `
+    <div class="actu-card">
+      <div class="actu-img"><i class="fa-solid fa-newspaper"></i></div>
+      <div class="actu-corps">
+        <div class="actu-meta">
+          <span class="actu-categorie">${escHtml(a.categorie)}</span>
+          <span class="actu-date">${escHtml(a.date)}</span>
+        </div>
+        <div class="actu-titre">${escHtml(a.titre)}</div>
+        <div class="actu-resume">${escHtml(a.resume)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== GALERIE =====
+function renderGalerie(galerie) {
+  const grid = document.getElementById('galerie-grid');
+  if (!grid) return;
+  if (!galerie.length) return;
+  grid.innerHTML = galerie.map(g => `
+    <div class="galerie-item">
+      <img src="${escHtml(g.url)}" alt="${escHtml(g.alt || 'Photo Romi Oyo')}" loading="lazy" />
+    </div>
+  `).join('');
+}
+
+// ===== TÉMOIGNAGES =====
+function renderTemoignages(temoignages) {
+  const grid = document.getElementById('temoignages-grid');
+  if (!grid) return;
+  grid.innerHTML = temoignages.map(t => `
+    <div class="temoignage-card">
+      <div class="temoignage-quote">"</div>
+      <p class="temoignage-texte">${escHtml(t.texte)}</p>
+      <div class="temoignage-auteur">
+        <div class="temoignage-avatar"><i class="fa-solid fa-user"></i></div>
+        <div>
+          <div class="temoignage-nom">${escHtml(t.nom)}</div>
+          <div class="temoignage-quartier">${escHtml(t.quartier)}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== FORMULAIRES =====
+function initForms() {
+  setupForm('form-audience',    'btn-audience',    'msg-audience',    '/api/audience');
+  setupForm('form-reclamation', 'btn-reclamation', 'msg-reclamation', '/api/reclamation');
+  setupForm('form-contact',     null,              'msg-contact',     '/api/contact');
+}
+
+function setupForm(formId, btnId, msgId, endpoint) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateForm(form)) return;
+
+    const btn = btnId ? document.getElementById(btnId) : form.querySelector('button[type=submit]');
+    const msgEl = document.getElementById(msgId);
+    const originalText = btn ? btn.innerHTML : '';
+
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi en cours...'; }
+
+    const body = Object.fromEntries(new FormData(form));
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        showMsg(msgEl, 'success', json.message || 'Votre message a bien été envoyé. Merci !');
+        form.reset();
+      } else {
+        showMsg(msgEl, 'error', json.error || 'Une erreur est survenue. Réessayez.');
+      }
+    } catch {
+      showMsg(msgEl, 'error', 'Connexion impossible. Vérifiez votre connexion.');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+    }
+  });
+}
+
+function validateForm(form) {
+  let valid = true;
+  form.querySelectorAll('[required]').forEach(field => {
+    field.classList.remove('error');
+    if (!field.value.trim()) {
+      field.classList.add('error');
+      valid = false;
+    }
+  });
+  return valid;
+}
+
+function showMsg(el, type, text) {
+  if (!el) return;
+  el.className = `form-msg ${type}`;
+  el.textContent = text;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 6000);
+}
+
+// ===== COMPTEUR DE VISITES =====
+async function trackVisit() {
+  try {
+    await fetch('/api/track-visit', { method: 'POST' });
+  } catch {
+    // Silencieux
+  }
+}
+
+// ===== UTILITAIRE : Échapper HTML =====
+function escHtml(str) {
+  if (typeof str !== 'string') return str ?? '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function initFormsPreview() {
+  ['form-audience','form-reclamation','form-contact'].forEach(id => {
+    const f = document.getElementById(id);
+    if (!f) return;
+    f.addEventListener('submit', e => {
+      e.preventDefault();
+      const msgId = id.replace('form-','msg-');
+      const el = document.getElementById(msgId);
+      if (el) { el.className='form-msg success'; el.textContent='✓ (Aperçu) Formulaire reçu !'; el.style.display='block'; }
+      setTimeout(() => { if(el) el.style.display='none'; }, 3000);
+    });
+  });
+}
+
+</script>
+</body>
+</html>
