@@ -42,10 +42,26 @@
     ]
   },
   "chiffres": [
-    { "valeur": "223", "label": "Jeunes formés et certifiés", "icone": "fa-graduation-cap" },
-    { "valeur": "1 000", "label": "Jeunes à accompagner en 2024", "icone": "fa-users" },
-    { "valeur": "80%", "label": "Taux de réussite au BAC", "icone": "fa-chart-line" },
-    { "valeur": "200+", "label": "Kits scolaires distribués", "icone": "fa-book" }
+    {
+      "valeur": "223",
+      "label": "Jeunes formés et certifiés",
+      "icone": "fa-graduation-cap"
+    },
+    {
+      "valeur": "1 000",
+      "label": "Jeunes à accompagner en 2024",
+      "icone": "fa-users"
+    },
+    {
+      "valeur": "80%",
+      "label": "Taux de réussite au BAC",
+      "icone": "fa-chart-line"
+    },
+    {
+      "valeur": "200+",
+      "label": "Kits scolaires distribués",
+      "icone": "fa-book"
+    }
   ],
   "actions": [
     {
@@ -110,16 +126,40 @@
     "description": "La Fondation HARRYS OYO est l'instrument social du député Romi Oyo au service des populations de Ouenzé 3. Créée pour agir concrètement là où les besoins sont les plus importants, elle intervient dans les domaines de l'éducation, de l'emploi, de la santé et du sport.",
     "citation": "Agir pour les jeunes, ce n'est pas seulement déclamer des discours : c'est former avec rigueur, accompagner avec bienveillance, bâtir des structures pérennes et créer des opportunités concrètes.",
     "domaines": [
-      { "nom": "Formation professionnelle", "icone": "fa-briefcase" },
-      { "nom": "Soutien scolaire", "icone": "fa-book-open" },
-      { "nom": "Action sociale & santé", "icone": "fa-heart-pulse" },
-      { "nom": "Sport & cohésion", "icone": "fa-trophy" }
+      {
+        "nom": "Formation professionnelle",
+        "icone": "fa-briefcase"
+      },
+      {
+        "nom": "Soutien scolaire",
+        "icone": "fa-book-open"
+      },
+      {
+        "nom": "Action sociale & santé",
+        "icone": "fa-heart-pulse"
+      },
+      {
+        "nom": "Sport & cohésion",
+        "icone": "fa-trophy"
+      }
     ],
     "bilan": [
-      { "valeur": "223", "label": "jeunes certifiés (2026)" },
-      { "valeur": "8", "label": "filières de formation" },
-      { "valeur": "3 mois", "label": "de formation qualifiante" },
-      { "valeur": "10+", "label": "années d'actions sociales" }
+      {
+        "valeur": "223",
+        "label": "jeunes certifiés (2026)"
+      },
+      {
+        "valeur": "8",
+        "label": "filières de formation"
+      },
+      {
+        "valeur": "3 mois",
+        "label": "de formation qualifiante"
+      },
+      {
+        "valeur": "10+",
+        "label": "années d'actions sociales"
+      }
     ]
   },
   "assemblee": {
@@ -207,7 +247,7 @@
     }
   },
   "stats": {
-    "visites": 0,
+    "visites": 1,
     "contacts": 0,
     "audiences": 0,
     "reclamations": 0
