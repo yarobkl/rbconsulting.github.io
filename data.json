@@ -1,0 +1,255 @@
+{
+  "biographie": {
+    "nom": "Romi Oyo",
+    "nom_complet": "Jules Junior Romarick Oyo Embounou",
+    "titre": "Député de Ouenzé 3",
+    "circonscription": "Ouenzé 3 — Quartiers 56 & 57, Brazzaville",
+    "parti": "PCT — Parti Congolais du Travail",
+    "slogan": "Ensemble pour être plus fort",
+    "photo": "",
+    "description": "Véritable homme de terrain, Jules Junior Romarick Oyo Embounou, dit Romi Oyo, est le député de la troisième circonscription de Ouenzé à Brazzaville. Engagé depuis plus d'une décennie au service des populations des quartiers 56 et 57, il a débuté sa carrière politique comme conseiller municipal du 5e arrondissement avant d'être élu député sous l'investiture du Parti Congolais du Travail. Rapporteur de la commission Environnement et Développement Durable à l'Assemblée Nationale, il est également Président de Lisanga 242 et Président d'honneur de la Fondation HARRYS OYO. Son engagement sans faille, sa présence constante auprès des populations et sa capacité de mobilisation font de lui un artisan déterminé du développement de Ouenzé 3.",
+    "parcours": [
+      {
+        "annee": "2011 – 2015",
+        "titre": "Engagement associatif",
+        "description": "Lancement des activités annuelles pour les enfants de Ouenzé : tournois de football, distribution de jouets, soutien aux familles vulnérables. Fondation de la Fondation Harris Oyo."
+      },
+      {
+        "annee": "2016 – 2017",
+        "titre": "Conseiller municipal — 5e arrondissement",
+        "description": "Distribution de plus de 200 kits scolaires, aide aux victimes d'inondations, organisation de championnats sportifs. Annonce de sa candidature aux législatives."
+      },
+      {
+        "annee": "Juillet 2017",
+        "titre": "Investi par le PCT",
+        "description": "Investi candidat du Parti Congolais du Travail pour Ouenzé 3. Slogan : \"Ensemble pour être plus fort\"."
+      },
+      {
+        "annee": "2018 – 2022",
+        "titre": "Élu Député de Ouenzé 3",
+        "description": "Représente les quartiers 56 et 57 à l'Assemblée Nationale. Visites régulières des personnes âgées, distribution de denrées, aide médicale, actions de terrain."
+      },
+      {
+        "annee": "2022",
+        "titre": "Réélu Député de Ouenzé 3",
+        "description": "Réélu avec le soutien massif des jeunes et des populations. Poursuite des actions sociales et institutionnelles."
+      },
+      {
+        "annee": "2023 – aujourd'hui",
+        "titre": "Engagement renforcé",
+        "description": "Lutte contre la délinquance juvénile (bébés noirs), plan 1 000 jeunes accompagnés, Travaux Dirigés (80% au BAC), journée de l'arbre, formation de 223 jeunes via la Fondation HARRYS OYO."
+      }
+    ]
+  },
+  "chiffres": [
+    {
+      "valeur": "223",
+      "label": "Jeunes formés et certifiés",
+      "icone": "fa-graduation-cap"
+    },
+    {
+      "valeur": "1 000",
+      "label": "Jeunes à accompagner en 2024",
+      "icone": "fa-users"
+    },
+    {
+      "valeur": "80%",
+      "label": "Taux de réussite au BAC",
+      "icone": "fa-chart-line"
+    },
+    {
+      "valeur": "200+",
+      "label": "Kits scolaires distribués",
+      "icone": "fa-book"
+    }
+  ],
+  "actions": [
+    {
+      "titre": "Formation professionnelle",
+      "description": "La Fondation HARRYS OYO a formé 223 jeunes sur 3 mois dans 8 secteurs : hôtellerie, mécanique, informatique, coiffure, pâtisserie, couture, froid & énergie solaire.",
+      "date": "Février 2026",
+      "icone": "fa-briefcase",
+      "badge": "Fondation"
+    },
+    {
+      "titre": "Travaux Dirigés — BAC",
+      "description": "Organisation de la 2e édition des Travaux Dirigés pour les élèves de Ouenzé 3. Résultat : 80% de réussite au Baccalauréat.",
+      "date": "2024",
+      "icone": "fa-school",
+      "badge": "Éducation"
+    },
+    {
+      "titre": "Plan 1 000 jeunes",
+      "description": "Engagement d'accompagner 1 000 jeunes des quartiers 56 et 57 avec des programmes d'insertion professionnelle et de soutien.",
+      "date": "Janvier 2024",
+      "icone": "fa-rocket",
+      "badge": "Jeunesse"
+    },
+    {
+      "titre": "Lutte contre les bébés noirs",
+      "description": "Rencontres citoyennes pour conscientiser les jeunes délinquants (Koulouna). Programme d'assainissement des rues de Ouenzé 3.",
+      "date": "Janvier 2023",
+      "icone": "fa-shield-halved",
+      "badge": "Sécurité"
+    },
+    {
+      "titre": "Soutien aux personnes âgées",
+      "description": "Visites régulières aux malades et personnes du 3e âge. Distribution de denrées (sucre, huile, riz, lait), aide financière pour soins médicaux.",
+      "date": "Depuis 2018",
+      "icone": "fa-heart",
+      "badge": "Social"
+    },
+    {
+      "titre": "Journée de l'arbre",
+      "description": "Engagement pour un Congo plus vert et durable pour les générations à venir. Actions de reboisement dans la circonscription.",
+      "date": "Novembre 2025",
+      "icone": "fa-tree",
+      "badge": "Environnement"
+    },
+    {
+      "titre": "Championnats sportifs",
+      "description": "Organisation de tournois de football, judo, taekwondo. Le sport comme outil de rassemblement et de cohésion pour la jeunesse de Ouenzé.",
+      "date": "Depuis 2015",
+      "icone": "fa-futbol",
+      "badge": "Sport"
+    },
+    {
+      "titre": "Kits scolaires",
+      "description": "Distribution annuelle de kits scolaires aux élèves de Ouenzé. Plus de 200 élèves bénéficiaires chaque année scolaire.",
+      "date": "Annuel",
+      "icone": "fa-pencil",
+      "badge": "Éducation"
+    }
+  ],
+  "fondation": {
+    "nom": "Fondation HARRYS OYO",
+    "description": "La Fondation HARRYS OYO est l'instrument social du député Romi Oyo au service des populations de Ouenzé 3. Créée pour agir concrètement là où les besoins sont les plus importants, elle intervient dans les domaines de l'éducation, de l'emploi, de la santé et du sport.",
+    "citation": "Agir pour les jeunes, ce n'est pas seulement déclamer des discours : c'est former avec rigueur, accompagner avec bienveillance, bâtir des structures pérennes et créer des opportunités concrètes.",
+    "domaines": [
+      {
+        "nom": "Formation professionnelle",
+        "icone": "fa-briefcase"
+      },
+      {
+        "nom": "Soutien scolaire",
+        "icone": "fa-book-open"
+      },
+      {
+        "nom": "Action sociale & santé",
+        "icone": "fa-heart-pulse"
+      },
+      {
+        "nom": "Sport & cohésion",
+        "icone": "fa-trophy"
+      }
+    ],
+    "bilan": [
+      {
+        "valeur": "223",
+        "label": "jeunes certifiés (2026)"
+      },
+      {
+        "valeur": "8",
+        "label": "filières de formation"
+      },
+      {
+        "valeur": "3 mois",
+        "label": "de formation qualifiante"
+      },
+      {
+        "valeur": "10+",
+        "label": "années d'actions sociales"
+      }
+    ]
+  },
+  "assemblee": {
+    "titre": "Mon rôle à l'Assemblée Nationale",
+    "description": "En tant que député de Ouenzé 3, Romi Oyo siège à l'Assemblée Nationale de la République du Congo et y porte la voix des habitants de sa circonscription.",
+    "roles": [
+      {
+        "titre": "Rapporteur",
+        "detail": "Commission Environnement et Développement Durable",
+        "icone": "fa-leaf"
+      },
+      {
+        "titre": "Président",
+        "detail": "Lisanga 242",
+        "icone": "fa-flag"
+      },
+      {
+        "titre": "Député",
+        "detail": "Ouenzé 3 — Assemblée Nationale du Congo",
+        "icone": "fa-landmark"
+      }
+    ],
+    "engagements": [
+      "Porter les préoccupations des habitants (insalubrité, chômage, sécurité) à l'Assemblée Nationale",
+      "Défendre des lois favorables au développement durable et à la jeunesse",
+      "Accompagner les orientations du Président Denis Sassou Nguesso",
+      "Assurer une présence constante sur le terrain à Ouenzé 3"
+    ]
+  },
+  "actualites": [
+    {
+      "id": 1,
+      "titre": "223 jeunes certifiés par la Fondation HARRYS OYO",
+      "resume": "La Fondation HARRYS OYO a clôturé une session de formation qualifiante de 3 mois en remettant des certificats à 223 jeunes de Ouenzé 3.",
+      "date": "21 Février 2026",
+      "categorie": "Fondation",
+      "lien": ""
+    },
+    {
+      "id": 2,
+      "titre": "Journée de l'arbre : Romi Oyo s'engage pour un Congo vert",
+      "resume": "Le député a renouvelé son engagement environnemental lors de la journée nationale de l'arbre, plaidant pour un Congo plus durable pour les générations futures.",
+      "date": "Novembre 2025",
+      "categorie": "Environnement",
+      "lien": ""
+    },
+    {
+      "id": 3,
+      "titre": "Objectif 1 000 jeunes accompagnés en 2024",
+      "resume": "Romi Oyo annonce son plan ambitieux d'accompagner 1 000 jeunes des quartiers 56 et 57 via des programmes d'insertion et de formation.",
+      "date": "Janvier 2024",
+      "categorie": "Jeunesse",
+      "lien": ""
+    }
+  ],
+  "galerie": [],
+  "temoignages": [
+    {
+      "nom": "Emery Nkoudzilou Ililou",
+      "texte": "Nous sommes très heureux de ce que cet honorable député nous a donné. Il doit continuer ces actions humanitaires.",
+      "quartier": "Quartier 56, Ouenzé"
+    },
+    {
+      "nom": "Massonso Dieuveille",
+      "texte": "Cette formation m'a permis d'acquérir des compétences précieuses et de croire en moi-même.",
+      "quartier": "Bénéficiaire — Fondation HARRYS OYO"
+    },
+    {
+      "nom": "Un habitant de Ouenzé 3",
+      "texte": "Romi Oyo est un véritable homme de terrain. Il est là quand on a besoin de lui.",
+      "quartier": "Quartier 57, Ouenzé"
+    }
+  ],
+  "contact": {
+    "email": "",
+    "telephone": "",
+    "adresse": "Ouenzé 3, Brazzaville — République du Congo",
+    "reseaux": {
+      "instagram": "https://www.instagram.com/romioyo/",
+      "twitter": "https://x.com/romi_oyo",
+      "facebook": "https://www.facebook.com/romioyoo/",
+      "linkedin": "https://cg.linkedin.com/in/romi-oyo-6b2b87135",
+      "threads": "https://www.threads.com/@romioyo",
+      "tiktok": "https://www.tiktok.com/@raylebi4"
+    }
+  },
+  "stats": {
+    "visites": 1,
+    "contacts": 0,
+    "audiences": 0,
+    "reclamations": 0
+  }
+}
