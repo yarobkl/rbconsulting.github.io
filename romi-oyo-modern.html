@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romi Oyo — Député de Ouenzé 3 | Site Officiel</title>
+    <meta name="description" content="L'Honorable Romi Oyo - Député de Ouenzé 3, Brazzaville. Fondateur de la Fondation HARRYS OYO. Ensemble pour être plus fort.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #009a44;
+            --secondary: #FFD700;
+            --dark: #0a0e27;
+            --text: #e0e0e0;
+            --text-light: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Inter', 'Playfair Display', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #0f1b2e 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .flag-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            display: flex;
+        }
+
+        .flag-vert { flex: 1; background: #009a44; }
+        .flag-jaune { flex: 1; background: #ffd700; }
+        .flag-rouge { flex: 1; background: #ce1126; }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 154, 68, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(0, 154, 68, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10rem 5%;
+            position: relative;
+            overflow: hidden;
+            margin-top: -80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 154, 68, 0.1), rgba(255, 215, 0, 0.05));
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 10;
+            max-width: 600px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(0, 154, 68, 0.1);
+            border: 1px solid var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        .dot-vert {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .hero-honor {
+            color: var(--secondary);
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .hero-slogan {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero-visual {
+            flex: 1;
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #canvas-3d {
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-content > * {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .hero-content > *:nth-child(n+2) {
+            animation-delay: 0.2s;
+        }
+
+        .hero-content > *:nth-child(n+3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 8rem 5%;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Actions Section */
+        .actions {
+            background: linear-gradient(180deg, rgba(0, 154, 68, 0.05), transparent);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .action-card {
+            background: rgba(0, 154, 68, 0.05);
+            border: 1px solid rgba(0, 154, 68, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            background: rgba(0, 154, 68, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 154, 68, 0.15);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .action-card p {
+            color: var(--text-light);
+        }
+
+        /* Video Section */
+        .video-section {
+            background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.05));
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 3rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 50px rgba(0, 154, 68, 0.2);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(0, 154, 68, 0.2), rgba(255, 215, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 154, 68, 0.3);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0;
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 30px solid var(--primary);
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            margin-left: 8px;
+        }
+
+        .play-button:hover {
+            background: rgba(0, 154, 68, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* Achievements */
+        .achievements {
+            background: linear-gradient(180deg, rgba(0, 154, 68, 0.05), transparent);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .achievement-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 154, 68, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 154, 68, 0.2);
+            transition: all 0.3s;
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .achievement-number {
+            font-size: 3rem;
+            color: var(--secondary);
+            font-weight: 900;
+        }
+
+        .achievement-text {
+            color: var(--text-light);
+            margin-top: 1rem;
+        }
+
+        /* Foundation */
+        .foundation {
+            background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.05));
+        }
+
+        .foundation-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 154, 68, 0.05);
+            border: 1px solid rgba(0, 154, 68, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+
+        .foundation-content h3 {
+            color: var(--secondary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .foundation-content p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 8, 16, 0.9);
+            border-top: 2px solid var(--primary);
+            padding: 3rem 5%;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 154, 68, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(0, 154, 68, 0.2);
+            padding-top: 2rem;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .scroll-animate.visible {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero {
+                flex-direction: column;
+                padding: 6rem 5% 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-visual {
+                margin-top: 2rem;
+                height: 400px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flag-bar">
+        <div class="flag-vert"></div>
+        <div class="flag-jaune"></div>
+        <div class="flag-rouge"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">Romi Oyo</a>
+        <ul>
+            <li><a href="#actions">Actions</a></li>
+            <li><a href="#fondation">Fondation</a></li>
+            <li><a href="#réalisations">Réalisations</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button class="cta-button">Audience</button></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot-vert"></span>
+                <span>PCT — Parti Congolais du Travail</span>
+            </div>
+            <h1>
+                <span class="hero-honor">L'Honorable</span>
+                <span>Romi Oyo</span>
+            </h1>
+            <p>Député de Ouenzé 3 — Brazzaville, République du Congo</p>
+            <p class="hero-slogan">"Ensemble pour être plus fort"</p>
+            <div class="hero-buttons">
+                <button class="cta-button">Demander une Audience</button>
+                <a href="#actions" class="btn-secondary">Voir les Actions</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <canvas id="canvas-3d"></canvas>
+        </div>
+    </section>
+
+    <!-- Actions Section -->
+    <section id="actions" class="section actions">
+        <h2 class="section-title">Réalisations & Actions</h2>
+        <p class="section-subtitle">Ensemble pour le développement de Ouenzé</p>
+
+        <div class="actions-grid">
+            <div class="action-card scroll-animate">
+                <div class="action-icon">🏫</div>
+                <h3>Éducation</h3>
+                <p>Amélioration des conditions d'apprentissage et soutien aux établissements scolaires de la circonscription.</p>
+            </div>
+            <div class="action-card scroll-animate">
+                <div class="action-icon">🏥</div>
+                <h3>Santé</h3>
+                <p>Accès aux soins de santé de qualité et renforcement des structures sanitaires locales.</p>
+            </div>
+            <div class="action-card scroll-animate">
+                <div class="action-icon">💼</div>
+                <h3>Emploi</h3>
+                <p>Création d'emplois et soutien aux initiatives entrepreneuriales des jeunes et femmes.</p>
+            </div>
+            <div class="action-card scroll-animate">
+                <div class="action-icon">🌱</div>
+                <h3>Développement</h3>
+                <p>Projets d'infrastructures pour le développement durable de la région.</p>
+            </div>
+            <div class="action-card scroll-animate">
+                <div class="action-icon">👨‍👩‍👧‍👦</div>
+                <h3>Communauté</h3>
+                <p>Renforcement des liens sociaux et soutien aux familles vulnérables.</p>
+            </div>
+            <div class="action-card scroll-animate">
+                <div class="action-icon">🎓</div>
+                <h3>Formation</h3>
+                <p>Programmes de formation professionnelle et d'apprentissage continu.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="section video-section">
+        <h2 class="section-title">Découvrez mon Travail</h2>
+        <p class="section-subtitle">Regardez les moments clés de mon engagement politique</p>
+
+        <div class="video-container">
+            <div class="video-placeholder">
+                <div class="play-button"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements -->
+    <section class="section achievements">
+        <h2 class="section-title">Chiffres Clés</h2>
+
+        <div class="achievements-grid">
+            <div class="achievement-item scroll-animate">
+                <div class="achievement-number">50+</div>
+                <div class="achievement-text">Projets réalisés</div>
+            </div>
+            <div class="achievement-item scroll-animate">
+                <div class="achievement-number">10K+</div>
+                <div class="achievement-text">Bénéficiaires directs</div>
+            </div>
+            <div class="achievement-item scroll-animate">
+                <div class="achievement-number">100%</div>
+                <div class="achievement-text">Engagement</div>
+            </div>
+            <div class="achievement-item scroll-animate">
+                <div class="achievement-number">8</div>
+                <div class="achievement-text">Années de dévouement</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Foundation -->
+    <section class="section foundation">
+        <h2 class="section-title">Fondation HARRYS OYO</h2>
+
+        <div class="foundation-content">
+            <h3>Notre Mission</h3>
+            <p>La Fondation HARRYS OYO œuvre pour l'amélioration des conditions de vie des populations vulnérables et le développement socio-économique de la région de Ouenzé.</p>
+            <p>À travers des projets d'éducation, de santé, d'emploi et d'infrastructure, nous travaillons à construire un avenir meilleur pour tous.</p>
+            <button class="cta-button">Soutenir la Fondation</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>L'Honorable Romi Oyo</h3>
+                <p>Député de Ouenzé 3, fondateur de la Fondation HARRYS OYO</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/romioyo" title="Instagram">📷</a>
+                    <a href="https://twitter.com/romi_oyo" title="Twitter">𝕏</a>
+                    <a href="https://facebook.com/romioyoo" title="Facebook">f</a>
+                    <a href="https://tiktok.com/@raylebi4" title="TikTok">🎵</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="#actions">Actions</a></li>
+                    <li><a href="#fondation">Fondation</a></li>
+                    <li><a href="#réalisations">Réalisations</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:contact@romioyo.cg">contact@romioyo.cg</a></li>
+                    <li><a href="tel:+242066666666">+242 066 666 666</a></li>
+                    <li>Brazzaville, Congo</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 L'Honorable Romi Oyo. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // 3D Scene
+        const canvas = document.getElementById('canvas-3d');
+        if (canvas) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setClearColor(0x000000, 0.1);
+            camera.position.z = 5;
+
+            const geometry = new THREE.IcosahedronGeometry(2, 4);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x009a44,
+                emissive: 0x007030,
+                shininess: 100
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const light1 = new THREE.PointLight(0x009a44, 1, 100);
+            light1.position.set(5, 5, 5);
+            scene.add(light1);
+
+            const light2 = new THREE.PointLight(0xffd700, 0.6, 100);
+            light2.position.set(-5, -5, 5);
+            scene.add(light2);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.x += 0.003;
+                mesh.rotation.y += 0.005;
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            });
+        }
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-animate').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
